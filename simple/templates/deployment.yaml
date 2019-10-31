@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      containers:
+        - name: {{ .Values.name }}
+{{- if hasKey .Values.container "args" }}
+          args:
+{{ toYaml .Values.container.args | indent 12 }}
+{{- end }}
+          image: "{{ .Values.container.image.repository }}:{{ .Values.container.image.tag }}"
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          env:
+          - name: POD_NAME
+            value: {{ .Values.name }}
+          {{- range $key, $value := $.Values.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+          {{- range $key, $ref := $.Values.envSecrets }}
+          - name: {{ $key }}
+            valueFrom:
+              secretKeyRef:
+                name: {{ $ref.name }}
+                key: {{ $ref.key | quote }}
+          {{- end }}
+          {{- if hasKey .Values.deployment  "livenessProbe" }}
+          livenessProbe:
+            {{ toYaml .Values.deployment.livenessProbe | indent 12 }}
+          {{- end }}
+          {{- if hasKey .Values.deployment  "readinessProbe" }}
+          readinessProbe:
+            {{ toYaml .Values.deployment.readinessProbe | indent 12 }}
+          {{- end }}
+          {{- if hasKey .Values.deployment  "volumes" }}
+          volumeMounts:
+            {{- range $key, $vol := $.Values.deployment.volumes }}
+            - name: {{ $vol.name }}
+              mountPath: {{ $vol.path }}
+            {{- end }}
+          {{- end }}
+          resources:
+          {{- if hasKey .Values.deployment  "resources" }}
+            {{ toYaml .Values.deployment.resources | indent 12 }}
+          {{- end }}
+      {{- if hasKey .Values.deployment  "volumes" }}
+      volumes:
+        {{- range $key, $vol := $.Values.deployment.volumes }}
+        - name: {{ $vol.name }}
+          configMap:
+            name: {{ $vol.name }}
+        {{- end }}
+      {{- end }}
+      restartPolicy: Always

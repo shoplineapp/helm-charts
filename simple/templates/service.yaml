@@ -1,0 +1,12 @@
+{{- if .Values.service }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.name }}
+spec:
+  ports:
+{{ toYaml .Values.service.ports | indent 4 }}
+  type: NodePort
+  selector:
+    app: {{ .Values.name }}
+{{- end }}

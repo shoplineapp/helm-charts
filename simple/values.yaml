@@ -1,0 +1,13 @@
+name: app-name
+
+replicaCount: 1
+
+deployment: {}
+
+container:
+  image:
+    repository: repository_name/image
+    tag: tag
+
+global:
+  imagePullPolicy: IfNotPresent
