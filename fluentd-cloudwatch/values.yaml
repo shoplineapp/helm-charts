@@ -1,0 +1,5 @@
+region: ap-southeast-1
+
+log_group_prefix: "/shopline/eks"
+
+cluster_name: ""
