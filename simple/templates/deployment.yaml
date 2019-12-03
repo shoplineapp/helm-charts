@@ -37,13 +37,22 @@ spec:
                 name: {{ $ref.name }}
                 key: {{ $ref.key | quote }}
           {{- end }}
-          {{- if hasKey .Values.deployment  "livenessProbe" }}
+
+{{- if hasKey .Values.service "ports" }}
+          ports:
+{{- range $port := .Values.service.ports }}
+          - name: {{ $port.name }}
+            containerPort: {{ $port.targetPort }}
+            protocol: {{ $port.protocol }}
+{{- end }}
+{{- end }}
+{{- if hasKey .Values.deployment "livenessProbe" }}
           livenessProbe:
-            {{ toYaml .Values.deployment.livenessProbe | indent 12 }}
-          {{- end }}
+            {{ toYaml .Values.deployment.livenessProbe | nindent 12 }}
+{{- end }}
           {{- if hasKey .Values.deployment  "readinessProbe" }}
           readinessProbe:
-            {{ toYaml .Values.deployment.readinessProbe | indent 12 }}
+            {{ toYaml .Values.deployment.readinessProbe | nindent 12 }}
           {{- end }}
           {{- if hasKey .Values.deployment  "volumes" }}
           volumeMounts:

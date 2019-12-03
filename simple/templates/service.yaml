@@ -6,7 +6,9 @@ metadata:
 spec:
   ports:
 {{ toYaml .Values.service.ports | indent 4 }}
-  type: NodePort
+  {{- if hasKey .Values.service "type" }}
+  type: {{ .Values.service.type }}
+  {{- end }}
   selector:
     app: {{ .Values.name }}
 {{- end }}

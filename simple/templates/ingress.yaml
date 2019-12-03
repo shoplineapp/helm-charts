@@ -1,0 +1,12 @@
+{{- if .Values.ingress }}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ .Values.name }}
+  annotations:
+{{ toYaml .Values.ingress.annotations | indent 4 }}
+spec:
+  backend:
+    serviceName: {{ .Values.name }}
+    servicePort: {{ .Values.ingress.servicePort }}
+{{- end }}
