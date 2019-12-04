@@ -7,6 +7,15 @@ metadata:
     app: {{ .Values.name }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  strategy:
+  {{- if hasKey .Values.deployment "strategy" }}
+    {{- toYaml .Values.deployment.strategy | nindent 4 }}
+  {{- else}}
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  {{- end}}
   selector:
     matchLabels:
       app: {{ .Values.name }}
@@ -16,55 +25,13 @@ spec:
         app: {{ .Values.name }}
     spec:
       containers:
-        - name: {{ .Values.name }}
-{{- if hasKey .Values.container "args" }}
-          args:
-{{ toYaml .Values.container.args | indent 12 }}
-{{- end }}
-          image: "{{ .Values.container.image.repository }}:{{ .Values.container.image.tag }}"
-          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
-          env:
-          - name: POD_NAME
-            value: {{ .Values.name }}
-          {{- range $key, $value := $.Values.env }}
-          - name: {{ $key }}
-            value: {{ $value | quote }}
-          {{- end }}
-          {{- range $key, $ref := $.Values.envSecrets }}
-          - name: {{ $key }}
-            valueFrom:
-              secretKeyRef:
-                name: {{ $ref.name }}
-                key: {{ $ref.key | quote }}
-          {{- end }}
-
-{{- if hasKey .Values.service "ports" }}
-          ports:
-{{- range $port := .Values.service.ports }}
-          - name: {{ $port.name }}
-            containerPort: {{ $port.targetPort }}
-            protocol: {{ $port.protocol }}
-{{- end }}
-{{- end }}
-{{- if hasKey .Values.deployment "livenessProbe" }}
-          livenessProbe:
-            {{ toYaml .Values.deployment.livenessProbe | nindent 12 }}
-{{- end }}
-          {{- if hasKey .Values.deployment  "readinessProbe" }}
-          readinessProbe:
-            {{ toYaml .Values.deployment.readinessProbe | nindent 12 }}
-          {{- end }}
-          {{- if hasKey .Values.deployment  "volumes" }}
-          volumeMounts:
-            {{- range $key, $vol := $.Values.deployment.volumes }}
-            - name: {{ $vol.name }}
-              mountPath: {{ $vol.path }}
-            {{- end }}
-          {{- end }}
-          resources:
-          {{- if hasKey .Values.deployment  "resources" }}
-            {{ toYaml .Values.deployment.resources | indent 12 }}
-          {{- end }}
+{{- if hasKey .Values.deployment "containers" }}
+  {{- range .Values.deployment.containers }}
+      - {{ template "deployment.container" . }}
+  {{- end}}
+{{- else}}
+      - {{ template "deployment.container_legacy" .Values }}
+{{- end}}
       {{- if hasKey .Values.deployment  "volumes" }}
       volumes:
         {{- range $key, $vol := $.Values.deployment.volumes }}
