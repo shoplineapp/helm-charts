@@ -18,6 +18,7 @@ spec:
         - backend:
             serviceName: {{ .backend.serviceName }}
             servicePort: {{ .backend.servicePort }}
+          path: {{ .path }}
         {{- end }}
     {{- end }}
 {{- end }}
