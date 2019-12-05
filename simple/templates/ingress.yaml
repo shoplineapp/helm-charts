@@ -6,7 +6,19 @@ metadata:
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:
-  backend:
-    serviceName: {{ .Values.name }}
-    servicePort: {{ .Values.ingress.servicePort }}
+  rules:
+    {{- range .Values.ingress.rules }}
+    - 
+      {{- if .host}}
+      host: {{ .host }}
+      {{- end }}
+      http:
+        paths:
+        {{- range .http.paths }}
+        - backend:
+            serviceName: {{ .backend.serviceName }}
+            servicePort: {{ .backend.servicePort }}
+          path: {{ .path | default "/*"}}
+        {{- end }}
+    {{- end }}
 {{- end }}
