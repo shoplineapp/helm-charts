@@ -1,0 +1,8 @@
+schedule: "0 * * * *"
+
+job:
+  retries: 1
+  timeout: 1800
+
+image:
+  tag: latest
