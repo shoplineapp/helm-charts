@@ -6,7 +6,7 @@ metadata:
 spec:
   ports:
 {{- range .Values.service.ports }}
-  - name: {{ .name | default .port }}
+  - name: {{ .name | default .port | quote }}
     port: {{ .port }}
     targetPort: {{ .target | default .port }}
     protocol: {{ .protocol | default "TCP" }}
