@@ -1,8 +1,7 @@
 {{- define "deployment.container" -}}
         name: {{ .name }}
         {{- if hasKey . "args" }}
-        args:
-        {{ toYaml .args | indent 12 }}
+        args: {{ toYaml .args | nindent 8 }}
         {{- end }}
         image: "{{ .image.repository }}:{{ .image.tag }}"
         imagePullPolicy: {{ .imagePullPolicy | default "IfNotPresent" }}
