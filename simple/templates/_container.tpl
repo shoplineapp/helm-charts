@@ -42,12 +42,12 @@
         {{- end }}
         {{- if hasKey . "volumes" }}
         volumeMounts:
-          {{- range $key, $vol := $.volumes }}
-          - name: {{ $vol.name }}
-            mountPath: {{ $vol.path }}
-            readOnly: {{ $vol.readOnly | default "true" }}
-            {{- if hasKey $vol "subPath" }}
-            subPath: {{ $vol.subPath }}
+          {{- range $.volumes }}
+          - name: {{ .name }}
+            mountPath: {{ .path | quote }}
+            readOnly: {{ .readOnly | default "true" }}
+            {{- if hasKey . "subPath" }}
+            subPath: {{ .subPath }}
             {{- end }}
           {{- end }}
         {{- end }}

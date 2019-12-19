@@ -34,13 +34,13 @@ spec:
 {{- end}}
       {{- if hasKey .Values.deployment  "volumes" }}
       volumes:
-        {{- range . }}
+        {{- range $.Values.deployment.volumes }}
         - name: {{ .name }}
-          {{- if hasKey .name "secret" }}
+          {{- if hasKey . "secret" }}
           secret:
-            {{ toYaml .secret | nindent 12 }}
+            {{- toYaml .secret | nindent 12 }}
           {{- end }}
-          {{- if hasKey .name "configMap" }}
+          {{- if hasKey . "configMap" }}
           configMap:
             name: {{ .name }}
           {{- end }}
