@@ -37,6 +37,10 @@
           {{- range $key, $vol := $.volumes }}
           - name: {{ $vol.name }}
             mountPath: {{ $vol.path }}
+            readOnly: {{ $vol.readOnly | default "true" }}
+            {{- if hasKey $vol "subPath" }}
+            subPath: {{ $vol.subPath }}
+            {{- end }}
           {{- end }}
         {{- end }}
         {{- if hasKey . "resources" }}
