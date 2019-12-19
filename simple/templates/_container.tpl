@@ -1,7 +1,7 @@
 {{- define "deployment.container" -}}
         name: {{ .name }}
         {{- if hasKey . "command" }}
-        commane: {{ .command }}
+        command: {{ .command }}
         {{- end }}
         {{- if hasKey . "args" }}
         args:
