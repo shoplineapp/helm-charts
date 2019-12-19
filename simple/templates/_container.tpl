@@ -1,9 +1,17 @@
 {{- define "deployment.container" -}}
         name: {{ .name }}
+        {{- if hasKey . "command" }}
+        commane: {{ .command }}
+        {{- end }}
         {{- if hasKey . "args" }}
-        args: {{ toYaml .args | nindent 8 }}
+        args:
+          {{ toYaml .args | nindent 10 }}
         {{- end }}
         image: "{{ .image.repository }}:{{ .image.tag }}"
+        {{- if hasKey . "securityContext" }}
+        securityContext:
+          {{ toYaml .securityContext | nindent 10 }}
+        {{- end }}
         imagePullPolicy: {{ .imagePullPolicy | default "IfNotPresent" }}
         env:
         - name: CONTAINER_NAME
