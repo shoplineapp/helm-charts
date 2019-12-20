@@ -23,12 +23,10 @@ spec:
           containers:
             -
               name: app
-              image: {{ .Values.container.image.repository }}:{{ .Values.container.image.tag }}
-              command:
-                {{ toYaml .Values.command | nindent 16 }}
+              image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+              command: {{- toYaml .Values.command | nindent 14 }}
               {{- if hasKey .Values "resources" }}
-              resources:
-                {{ toYaml .Values.resources | nindent 16 }}
+              resources: {{ toYaml .Values.resources | nindent 14 }}
               {{- end }}
               env:
                 - name: POD_NAME
@@ -37,10 +35,10 @@ spec:
                 - name: {{ $key }}
                   value: {{ $value | quote }}
                 {{- end }}
-                {{- range $key, $ref := .Values.envSecrets }}
+                {{- range $key, $name := .Values.envSecrets }}
                 - name: {{ $key }}
                   valueFrom:
                     secretKeyRef:
-                      name: {{ $ref.name }}
-                      key: {{ $ref.key | quote }}
+                      name: {{ $name }}
+                      key: {{ $key | quote }}
                 {{- end }}

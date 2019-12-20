@@ -4,13 +4,11 @@
         command: {{ .command }}
         {{- end }}
         {{- if hasKey . "args" }}
-        args:
-          {{ toYaml .args | nindent 10 }}
+        args: {{ toYaml .args | nindent 8 }}
         {{- end }}
         image: "{{ .image.repository }}:{{ .image.tag }}"
         {{- if hasKey . "securityContext" }}
-        securityContext:
-          {{ toYaml .securityContext | nindent 10 }}
+        securityContext: {{ toYaml .securityContext | nindent 10 }}
         {{- end }}
         imagePullPolicy: {{ .imagePullPolicy | default "IfNotPresent" }}
         env:
@@ -42,12 +40,12 @@
         {{- end }}
         {{- if hasKey . "volumes" }}
         volumeMounts:
-          {{- range $.volumes }}
-          - name: {{ .name }}
-            mountPath: {{ .path | quote }}
-            readOnly: {{ .readOnly | default "true" }}
-            {{- if hasKey . "subPath" }}
-            subPath: {{ .subPath }}
+          {{- range $key, $vol := $.volumes }}
+          - name: {{ $vol.name }}
+            mountPath: {{ $vol.path | quote }}
+            readOnly: {{ $vol.readOnly | default "true" }}
+            {{- if hasKey $vol "subPath" }}
+            subPath: {{ $vol.subPath }}
             {{- end }}
           {{- end }}
         {{- end }}
