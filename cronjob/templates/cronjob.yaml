@@ -26,7 +26,7 @@ spec:
               image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
               command: {{- toYaml .Values.command | nindent 14 }}
               {{- if hasKey .Values "resources" }}
-              resources: {{- toYaml .Values.resources | nindent 14 }}
+              resources: {{ toYaml .Values.resources | nindent 14 }}
               {{- end }}
               env:
                 - name: POD_NAME

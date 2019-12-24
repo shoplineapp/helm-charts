@@ -36,8 +36,14 @@ spec:
       volumes:
         {{- range $key, $vol := $.Values.deployment.volumes }}
         - name: {{ $vol.name }}
+          {{- if hasKey $vol "secret" }}
+          secret:
+            {{- toYaml $vol.secret | nindent 12 }}
+          {{- end }}
+          {{- if hasKey $vol "configMap" }}
           configMap:
             name: {{ $vol.name }}
+          {{- end }}
         {{- end }}
       {{- end }}
       restartPolicy: Always
