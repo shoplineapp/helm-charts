@@ -35,10 +35,10 @@ spec:
                 - name: {{ $key }}
                   value: {{ $value | quote }}
                 {{- end }}
-                {{- range $key, $name := .Values.envSecrets }}
+                {{- range $key, $ref := .Values.envSecrets }}
                 - name: {{ $key }}
                   valueFrom:
                     secretKeyRef:
-                      name: {{ $name }}
+                      name: {{ $ref.name }}
                       key: {{ $key | quote }}
                 {{- end }}
