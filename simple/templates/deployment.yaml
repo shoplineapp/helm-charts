@@ -47,3 +47,6 @@ spec:
         {{- end }}
       {{- end }}
       restartPolicy: Always
+      {{- if .Values.serviceaccount}}
+      serviceAccountName: {{.Values.name }}-pod-service-account
+      {{- end }}
