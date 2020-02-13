@@ -17,7 +17,7 @@ spec:
       template:
         spec:
           {{- if .Values.serviceAccount }}
-          serviceAccountName: {{ .Values.serviceAccount }}
+          serviceAccountName: {{ .Values.serviceAccount.name }}
           {{- end }}
           restartPolicy: Never
           containers:
