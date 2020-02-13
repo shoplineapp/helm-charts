@@ -24,7 +24,9 @@ spec:
             -
               name: app
               image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+              {{- if .Values.command }}
               command: {{- toYaml .Values.command | nindent 14 }}
+              {{- end }}
               {{- if hasKey .Values "resources" }}
               resources: {{ toYaml .Values.resources | nindent 14 }}
               {{- end }}
