@@ -17,7 +17,7 @@ spec:
       template:
         spec:
           {{- if .Values.serviceAccount }}
-          serviceAccountName: {{ .Values.serviceAccount }}
+          serviceAccountName: {{ .Values.name }}-pod-service-account
           {{- end }}
           restartPolicy: Never
           containers:
