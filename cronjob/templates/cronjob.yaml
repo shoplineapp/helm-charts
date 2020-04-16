@@ -7,6 +7,7 @@ spec:
   schedule: {{ .Values.schedule | quote }}
   successfulJobsHistoryLimit: {{ .Values.job.history.success | default 3 }}
   failedJobsHistoryLimit: {{ .Values.job.history.failed | default 1 }}
+  concurrencyPolicy: {{ .Values.job.concurrency | default "Allow" }}
   jobTemplate:
     metadata:
       annotations:
