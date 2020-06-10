@@ -25,6 +25,11 @@
               name: {{ $ref.name }}
               key: {{ $ref.key | quote }}
         {{- end }}
+        {{- if hasKey . "envFromConfigmap" }}
+        envFrom:
+        - configMapRef:
+            name: {{ .envFromConfigmap.name }}
+        {{- end }}
         {{- if hasKey . "ports" }}
         ports:
         {{- range .ports }}
