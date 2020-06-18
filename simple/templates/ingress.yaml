@@ -6,11 +6,19 @@ metadata:
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:
+  {{- if .Values.ingress.tls }}
+  tls:
+    - hosts:
+    {{- range .Values.ingress.tls.hosts }}
+        - "{{ .host }}"
+    {{- end }}
+      secretName: {{ .Values.ingress.tls.secretName }}
+  {{- end }}
   rules:
     {{- range .Values.ingress.rules }}
     - 
       {{- if .host}}
-      host: {{ .host }}
+      host: "{{ .host }}"
       {{- end }}
       http:
         paths:
