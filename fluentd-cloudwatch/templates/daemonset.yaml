@@ -1,4 +1,4 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluentd-cloudwatch
@@ -6,6 +6,9 @@ metadata:
   labels:
     k8s-app: fluentd-cloudwatch
 spec:
+  selector:
+    matchLabels:
+      k8s-app: fluentd-cloudwatch
   template:
     metadata:
       labels:
