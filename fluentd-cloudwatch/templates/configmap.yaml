@@ -41,6 +41,18 @@ data:
         </record>
       </filter>
 
+      <filter var.log.containers.**>
+        @type parser
+        <parse>
+          @type json
+          time_format %Y-%m-%dT%H:%M:%S.%NZ
+        </parse>
+        replace_invalid_sequence true
+        emit_invalid_record_to_error false
+        key_name log
+        reserve_data true
+      </filter>
+
       <match **>
         @type cloudwatch_logs
         @id out_cloudwatch_logs_containers
