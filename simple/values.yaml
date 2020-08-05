@@ -11,3 +11,29 @@ container:
 
 global:
   imagePullPolicy: IfNotPresent
+
+EnableMutilpleIngress: false
+#EnableMutilpleIngress: true
+#ingress:
+#  internal-ingress:
+#    annotations:
+#      kubernetes.io/ingress.class: alb
+#    rules:
+#      - host:
+#        http:
+#          paths:
+#          - backend:
+#              serviceName: example
+#              servicePort: 80
+#            path: /health_check
+#  external-ingress:
+#    annotations:
+#      kubernetes.io/ingress.class: alb
+#    rules:
+#      - host:
+#        http:
+#          paths:
+#          - backend:
+#              serviceName: example
+#              servicePort: 80
+#            path: /health_check
