@@ -1,4 +1,38 @@
-{{- if .Values.ingress }}
+{{- if and .Values.ingress (eq .Values.EnableMutilpleIngress true) }}
+{{- range $ingress_name, $ref := .Values.ingress }}
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $ingress_name }}
+  annotations:
+{{ toYaml $ref.annotations | indent 4 }}
+spec:
+  {{- if $ref.tls }}
+  tls:
+    - hosts:
+    {{- range $ref.tls.hosts }}
+        - "{{ .host }}"
+    {{- end }}
+      secretName: {{ $ref.tls.secretName }}
+  {{- end }}
+  rules:
+    {{- range $ref.rules }}
+    -
+      {{- if .host}}
+      host: "{{ .host }}"
+      {{- end }}
+      http:
+        paths:
+        {{- range .http.paths }}
+        - backend:
+            serviceName: {{ .backend.serviceName }}
+            servicePort: {{ .backend.servicePort }}
+          path: {{ .path | default "/*"}}
+        {{- end }}
+    {{- end }}
+{{- end}}
+{{- else if and .Values.ingress (eq .Values.EnableMutilpleIngress false) }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -16,7 +50,7 @@ spec:
   {{- end }}
   rules:
     {{- range .Values.ingress.rules }}
-    - 
+    -
       {{- if .host}}
       host: "{{ .host }}"
       {{- end }}
@@ -29,4 +63,4 @@ spec:
           path: {{ .path | default "/*"}}
         {{- end }}
     {{- end }}
-{{- end }}
+{{- end}}
