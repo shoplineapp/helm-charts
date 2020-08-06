@@ -1,5 +1,5 @@
 {{- if .Values.ingress }}
-{{- if eq .Values.EnableMutilpleIngress true }}
+{{- if (.Values.EnableMutilpleIngress) and (eq .Values.EnableMutilpleIngress true) }}
 {{- range $ingress_name, $ref := .Values.ingress }}
 ---
 apiVersion: extensions/v1beta1
@@ -33,7 +33,7 @@ spec:
         {{- end }}
     {{- end }}
 {{- end}}
-{{- else if eq .Values.EnableMutilpleIngress false }}
+{{- else }}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
