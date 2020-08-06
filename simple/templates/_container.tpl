@@ -1,7 +1,7 @@
 {{- define "deployment.container" -}}
         name: {{ .name }}
         {{- if hasKey . "command" }}
-        command: {{ .command }}
+        command: {{ toYaml .command | nindent 8 }}
         {{- end }}
         {{- if hasKey . "args" }}
         args: {{ toYaml .args | nindent 8 }}
