@@ -47,4 +47,12 @@
         {{- if hasKey .deployment  "resources" }}
         resources: {{ toYaml .deployment.resources | nindent 10 }}
         {{- end }}
+        {{- if hasKey .deployment  "lifecycle" }}
+        lifecycle: {{ toYaml .deployment.lifecycle | nindent 10 }}
+        {{- else }}
+        lifecycle:
+          preStop:
+            exec:
+              command: ["sleep", "15"]
+        {{- end }}
 {{- end -}}
