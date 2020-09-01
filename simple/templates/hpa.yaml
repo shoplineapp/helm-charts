@@ -11,4 +11,35 @@ spec:
   minReplicas: {{ .Values.hpa.minReplicas }}
   maxReplicas: {{ .Values.hpa.maxReplicas }}
   targetCPUUtilizationPercentage: {{ .Values.hpa.targetCPUUtilizationPercentage }}
+
+{{- else if .Values.hpav2 }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.name }}
+spec:
+  minReplicas: {{ .Values.hpav2.minReplicas }}
+  maxReplicas: {{ .Values.hpav2.maxReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.name }}
+  metrics:
+  {{- range .Values.hpav2.Resource }}
+  - type: Resource
+    resource:
+      name: {{ .name }}
+      target:
+        type: AverageValue
+        averageValue: {{ .value }}
+  {{- end }}
+  {{- range .Values.hpav2.External }}
+  - type: External
+    external:
+      metric:
+        name: {{ .metricName }}
+      target:
+        type: {{ .type }}
+        value: {{ .value }}
+  {{- end }}
 {{- end}}
