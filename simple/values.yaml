@@ -45,3 +45,26 @@ pdb:
   # Note: You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget, and if you setting both will only set maxUnavailable.
   # minAvailable: 50%
   # maxUnavailable: 50%
+
+# autoscaling/v1 block
+# hpa:
+#   minReplicas: 1
+#   maxReplicas: 2
+#   targetCPUUtilizationPercentage: 60
+
+# autoscaling/v2beta2 block
+# hpav2:
+#   minReplicas: 1
+#   maxReplicas: 2
+#   # k8s hpav2 native support cpu and memory
+#   Resource:
+#     cpu:
+#       value: 60
+#     memory:
+#       value: 100Mi
+#   # setting external mertics
+#   External:
+#     - metricName: shop-nc-alb-request
+#       # type support Value and AverageValue
+#       type: Value
+#       value: 10
