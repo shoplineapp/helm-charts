@@ -45,3 +45,19 @@ pdb:
   # Note: You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget, and if you setting both will only set maxUnavailable.
   # minAvailable: 50%
   # maxUnavailable: 50%
+
+# ExternalMetric:
+#   name: shop-nc-alb-request
+#   # queries setting please reference AWS cloudwatch api document link:
+#   # https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricData.html#API_GetMetricData_Examples
+#   queries:
+#     # Note: id can't use "-"
+#     - id: shop_nc_alb_request
+#       metricNamespace: AWS/ApplicationELB
+#       metricName: RequestCount
+#       metricsDimensions:
+#         - name: LoadBalancer
+#           value: app/397da054-core-shopnc-5edd/d8f7dcbb27908840
+#       period: 60
+#       stat: Sum
+#       unit: Count
