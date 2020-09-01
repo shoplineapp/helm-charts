@@ -25,21 +25,13 @@ spec:
     kind: Deployment
     name: {{ .Values.name }}
   metrics:
-  {{- if .Values.hpav2.Resource.cpu }}
+  {{- range .Values.hpav2.Resource }}
   - type: Resource
     resource:
-      name: cpu
+      name: {{ .name }}
       target:
         type: AverageValue
-        averageValue: {{ .Values.hpav2.Resource.cpu.value }}
-  {{- end }}
-  {{- if .Values.hpav2.Resource.memory }}
-  - type: Resource
-    resource:
-      name: memory
-      target:
-        type: AverageValue
-        averageValue: {{ .Values.hpav2.Resource.memory.value }}
+        averageValue: {{ .value }}
   {{- end }}
   {{- range .Values.hpav2.External }}
   - type: External

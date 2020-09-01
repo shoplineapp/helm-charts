@@ -56,11 +56,11 @@ pdb:
 # hpav2:
 #   minReplicas: 1
 #   maxReplicas: 2
-#   # k8s hpav2 native support cpu and memory
+#   # k8s hpav2 native only support cpu and memory
 #   Resource:
-#     cpu:
+#     - name: cpu
 #       value: 60
-#     memory:
+#     - name: memory
 #       value: 100Mi
 #   # setting external mertics
 #   External:
