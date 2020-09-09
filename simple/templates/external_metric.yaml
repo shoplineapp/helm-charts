@@ -19,9 +19,9 @@ spec:
             - name: {{ .name }}
               value: {{ .value | quote }}
           {{- end }}
-        period: 60
-        stat: Sum
-        unit: Count
+        period: {{ .period }}
+        stat: {{ .stat }}
+        unit: {{ .unit }}
       returnData: true
     {{- end }}
 {{- end }}
