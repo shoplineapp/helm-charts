@@ -26,10 +26,10 @@ spec:
               name: app
               image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
               {{- if .Values.command }}
-              command: {{- toYaml .Values.command | nindent 14 }}
+              command: {{- toYaml .Values.command | nindent 16 }}
               {{- end }}
               {{- if hasKey .Values "resources" }}
-              resources: {{ toYaml .Values.resources | nindent 14 }}
+              resources: {{ toYaml .Values.resources | nindent 16 }}
               {{- end }}
               env:
                 - name: POD_NAME
