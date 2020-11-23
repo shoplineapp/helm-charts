@@ -50,3 +50,7 @@ spec:
       {{- if .Values.serviceaccount}}
       serviceAccountName: {{.Values.name }}-pod-service-account
       {{- end }}
+      {{- if .Values.deployment.dnsConfig }}
+      dnsConfig:
+        {{- toYaml .Values.deployment.dnsConfig | nindent 8 }}
+      {{- end }}
