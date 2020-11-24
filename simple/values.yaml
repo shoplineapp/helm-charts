@@ -3,6 +3,18 @@ name: app-name
 replicaCount: 1
 
 deployment: {}
+# deployment example
+# deployment: 
+#   containers:
+#     example-app:
+#       name: example-app
+#       image:
+#         repository: example-app
+#         tag: latest
+#   dnsConfig:
+#     options:
+#       - name: ndots
+#         value: "2"
 
 container:
   image:
