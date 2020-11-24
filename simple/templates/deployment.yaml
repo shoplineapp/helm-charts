@@ -53,4 +53,9 @@ spec:
       {{- if .Values.deployment.dnsConfig }}
       dnsConfig:
         {{- toYaml .Values.deployment.dnsConfig | nindent 8 }}
+      {{- else }}
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "2"
       {{- end }}
