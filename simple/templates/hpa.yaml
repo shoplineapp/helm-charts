@@ -30,8 +30,13 @@ spec:
     resource:
       name: {{ .name }}
       target:
+        {{- if .percent}}
+        type: Utilization
+        averageUtilization: {{ .percent }}
+        {{- else if .value}}
         type: AverageValue
         averageValue: {{ .value }}
+        {{- end }}
   {{- end }}
   {{- range .Values.hpav2.External }}
   - type: External
