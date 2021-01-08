@@ -6,7 +6,9 @@ metadata:
   labels:
     app: {{ .Values.name }}
 spec:
+  {{- if not (or .Values.hpa .Values.hpav2) }}
   replicas: {{ .Values.replicaCount }}
+  {{- end}}
   strategy:
   {{- if hasKey .Values.deployment "strategy" }}
     {{- toYaml .Values.deployment.strategy | nindent 4 }}
