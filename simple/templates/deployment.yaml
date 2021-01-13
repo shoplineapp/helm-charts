@@ -24,6 +24,14 @@ spec:
       labels:
         app: {{ .Values.name }}
     spec:
+      {{- if hasKey .Values "nodeSelector" }}
+      nodeSelector:
+        {{ .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }} 
+      {{- end}}
+      {{- if hasKey .Values.deployment "affinity" }}
+      affinity:
+        {{- toYaml .Values.deployment.affinity | nindent 10 }}
+      {{- end}}
       containers:
 {{- if hasKey .Values.deployment "containers" }}
   {{- range .Values.deployment.containers }}
