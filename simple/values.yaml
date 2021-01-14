@@ -2,6 +2,11 @@ name: app-name
 
 replicaCount: 1
 
+# Note: Please indicate labels of the specific node you willing to place your pods
+# nodeSelector:
+#   labelName: nodegroup
+#   labelValue: "ec-eks-db-cpu-node-autoscaling-group"
+
 deployment: {}
 # deployment example
 # deployment: 
