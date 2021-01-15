@@ -45,3 +45,14 @@ spec:
                       name: {{ $name }}
                       key: {{ $key | quote }}
                 {{- end }}
+              {{- if .Values.envFrom }}
+              envFrom:
+                {{- range .Values.envFrom.configMapRef }}
+                - configMapRef:
+                    name: {{ . }}
+                {{- end }}
+                {{- range .Values.envFrom.secretRef }}
+                - secretRef:
+                    name: {{ . }}
+                {{- end }}
+              {{- end }}
