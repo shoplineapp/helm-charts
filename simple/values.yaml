@@ -87,6 +87,7 @@ pdb:
 #       value: 10
 
 # ExternalMetric:
+#   apiVersion: metrics.aws/v1alpha1
 #   name: shop-nc-alb-request
 #   # queries setting please reference AWS cloudwatch api document link:
 #   # https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricData.html#API_GetMetricData_Examples

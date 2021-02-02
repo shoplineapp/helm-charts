@@ -1,5 +1,5 @@
 {{- if .Values.ExternalMetric }}
-apiVersion: metrics.aws/v1alpha1
+apiVersion: {{ .Values.ExternalMetric.apiVersion | default "metrics.aws/v1alpha1" }}
 kind: ExternalMetric
 metadata:
   name: {{ .Values.ExternalMetric.name }}
