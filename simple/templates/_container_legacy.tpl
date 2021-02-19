@@ -4,6 +4,9 @@
         args: {{ toYaml .container.args | nindent 10 }}
         {{- end }}
         image: "{{ .container.image.repository }}:{{ .container.image.tag }}"
+        {{- if hasKey . "securityContext" }}
+        securityContext: {{ toYaml .securityContext | nindent 10 }}
+        {{- end }}
         imagePullPolicy: {{ .global.imagePullPolicy }}
         env:
         - name: POD_NAME
