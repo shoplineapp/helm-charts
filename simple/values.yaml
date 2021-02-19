@@ -7,6 +7,12 @@ replicaCount: 1
 #   labelName: nodegroup
 #   labelValue: "ec-eks-db-cpu-node-autoscaling-group"
 
+# Note: Please indicate security contexts in here 
+# securityContextForPod:
+#   runAsUser: 1000
+#   runAsGroup: 1000
+#   fsGroup: 1000
+
 deployment: {}
 # deployment example
 # deployment: 
