@@ -4,6 +4,7 @@ kind: Service
 metadata:
   name: {{ .Values.name }}
   annotations: {{ toYaml .Values.service.annotations | nindent 4 }}
+  labels: {{ toYaml .Values.service.labels | nindent 4 }}
 spec:
   ports:
 {{- range .Values.service.ports }}
