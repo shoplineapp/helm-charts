@@ -29,7 +29,7 @@
         {{- range .service.ports }}
         - name: {{ .name }}
           containerPort: {{ .targetPort }}
-          protocol: {{ .protocol }}
+          protocol: {{ .protocol | default "TCP" }}
         {{- end }}
         {{- end }}
         {{- end }}

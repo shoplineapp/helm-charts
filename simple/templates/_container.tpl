@@ -39,6 +39,7 @@
         {{- range .ports }}
         - name: {{ .name }}
           containerPort: {{ .port }}
+          protocol: {{ .protocol | default "TCP" }}
         {{- end }}
         {{- end }}
         {{- if hasKey . "livenessProbe" }}
