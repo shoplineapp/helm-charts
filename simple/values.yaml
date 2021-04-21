@@ -22,6 +22,12 @@ deployment: {}
 #       image:
 #         repository: example-app
 #         tag: latest
+#       env:
+#         RAILS_ENV: staging
+#       envSecrets:
+#         MONGODB_USER:
+#           name: mongodb
+#           key: MONGODB_USER
 #   dnsConfig:
 #     options:
 #       - name: ndots
