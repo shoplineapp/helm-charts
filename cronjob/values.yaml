@@ -6,3 +6,13 @@ job:
 
 image:
   tag: latest
+
+env: {}
+# example
+# env:
+#   RAILS_ENV: staging
+
+envSecrets: {}
+# example
+# envSecrets:
+#   MONGODB_USER: mongodb
