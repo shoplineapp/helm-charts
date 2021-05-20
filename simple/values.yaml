@@ -113,3 +113,15 @@ pdb:
 #       period: 60
 #       stat: Sum
 #       unit: Count
+
+
+# cluterRole:
+#   name: clusterrole_name
+# clusterRoleBinding:
+#   name: clusterrolebinding_name
+#   roleRef:
+#     name: clusterrole_name
+#   subjects:
+#   - kind: ServiceAccount
+#     name: service_account_name
+#     namespace: service_account_namespace
