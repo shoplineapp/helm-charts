@@ -1,8 +1,8 @@
-{{- if .Values.cluterrole }}
+{{- if .Values.clusterRole }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ .Values.cluterrole.name }}
+  name: {{ .Values.clusterRole.name }}
 rules:
-{{ toYaml .Values.cluterrole.rules }}
+{{ toYaml .Values.clusterRole.rules }}
 {{- end }}

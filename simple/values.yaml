@@ -115,9 +115,9 @@ pdb:
 #       unit: Count
 
 
-# cluterrole:
+# cluterRole:
 #   name: clusterrole_name
-# clusterrolebinding:
+# clusterRoleBinding:
 #   name: clusterrolebinding_name
 #   roleRef:
 #     name: clusterrole_name
