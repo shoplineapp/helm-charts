@@ -26,6 +26,10 @@ spec:
       labels:
         app: {{ .Values.name }}
     spec:
+      {{- if hasKey .Values "tolerations" }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end}}
       {{- if hasKey .Values "nodeSelector" }}
       nodeSelector:
         {{ .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }} 

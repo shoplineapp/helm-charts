@@ -7,6 +7,12 @@ replicaCount: 1
 #   labelName: nodegroup
 #   labelValue: "ec-eks-db-cpu-node-autoscaling-group"
 
+# tolerations: 
+# - key: "shop-callback-node"
+#   operator: "Equal"
+#   value: "true"
+#   effect: "NoSchedule"
+
 # Note: Please indicate security contexts in here 
 # securityContextForPod:
 #   runAsUser: 1000
