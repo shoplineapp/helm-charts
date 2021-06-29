@@ -3,12 +3,12 @@ entries:
   fluentd-cloudwatch:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-29T12:59:54.598864+08:00"
+    created: "2021-06-29T13:06:10.462643+08:00"
     description: Helm chart to add fluentd daemonset and send logs to cloudwatch
     digest: ee9dfc822d0b569f34ac98d28d5f60a25fe2576e8dc19ea482e022cd540eecf5
     name: fluentd-cloudwatch
     tillerVersion: '>=2.14.3'
     urls:
-    - https://shoplineapp.github.io/helm-chart/fluentd-cloudwatch/fluentd-cloudwatch-0.0.1.tgz
+    - https://shoplineapp.github.io/helm-charts/fluentd-cloudwatch/fluentd-cloudwatch-0.0.1.tgz
     version: 0.0.1
-generated: "2021-06-29T12:59:54.598091+08:00"
+generated: "2021-06-29T13:06:10.461628+08:00"
