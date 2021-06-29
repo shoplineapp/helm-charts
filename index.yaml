@@ -3,44 +3,31 @@ entries:
   cronjob:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-29T15:58:24.976713+08:00"
+    created: "2021-06-29T16:50:58.327331+08:00"
     description: Helm chart with simple cronjob template
-    digest: 83f3ff1b928ad6ad738b90c600823f8c4234e41cd6547571593daaaaf2e790f1
+    digest: 47c4c3209b55b435a0f705e22eb2bc7b68acaafdc9e29e3904aa22f812e3db23
     name: cronjob
-    tillerVersion: '>=2.14.3'
     urls:
     - https://shoplineapp.github.io/helm-charts/cronjob/cronjob-0.0.1.tgz
     version: 0.0.1
   fluentd-cloudwatch:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-29T15:58:24.977349+08:00"
+    created: "2021-06-29T16:50:58.32877+08:00"
     description: Helm chart to add fluentd daemonset and send logs to cloudwatch
-    digest: ee9dfc822d0b569f34ac98d28d5f60a25fe2576e8dc19ea482e022cd540eecf5
+    digest: f0df1b37df33ea1bbcd5cb1db1039b6e47299834b81ecac81b352e0e385336e4
     name: fluentd-cloudwatch
-    tillerVersion: '>=2.14.3'
     urls:
     - https://shoplineapp.github.io/helm-charts/fluentd-cloudwatch/fluentd-cloudwatch-0.0.1.tgz
     version: 0.0.1
   simple:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-29T15:58:24.978081+08:00"
+    created: "2021-06-29T16:50:58.329154+08:00"
     description: Helm chart with simple deployment/service template
-    digest: 7da13d44ac25ac63bb814d30f1a4ed4648632e9f544070796eb58fc9d99a9579
+    digest: 50497fa574e1145746ce0599d3a580105795dca932b2832e9f737fde327e98f9
     name: simple
-    tillerVersion: '>=2.14.3'
     urls:
     - https://shoplineapp.github.io/helm-charts/simple/simple-0.0.2.tgz
     version: 0.0.2
-  - apiVersion: v1
-    appVersion: 0.0.1
-    created: "2021-06-29T15:58:24.977675+08:00"
-    description: Helm chart with simple deployment/service template
-    digest: da29041c201a77a5aa72dd42c87843a4b4ad7ac34157f91f48ba3b550086a8b8
-    name: simple
-    tillerVersion: '>=2.14.3'
-    urls:
-    - https://shoplineapp.github.io/helm-charts/simple/simple-0.0.1.tgz
-    version: 0.0.1
-generated: "2021-06-29T15:58:24.975632+08:00"
+generated: "2021-06-29T16:50:58.326928+08:00"
