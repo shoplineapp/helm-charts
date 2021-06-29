@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  cronjob:
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: "2021-06-29T12:55:52.889179+08:00"
+    description: Helm chart with simple cronjob template
+    digest: 83f3ff1b928ad6ad738b90c600823f8c4234e41cd6547571593daaaaf2e790f1
+    name: cronjob
+    tillerVersion: '>=2.14.3'
+    urls:
+    - https://shoplineapp.github.io/helm-chart/cronjob/cronjob-0.0.1.tgz
+    version: 0.0.1
+generated: "2021-06-29T12:55:52.887129+08:00"
