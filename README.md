@@ -12,9 +12,9 @@ helm package cronjob -d cronjob
 ```
 # create helm index.yaml
 ```
-helm repo index simple --url https://shoplineapp.github.io/helm-chart/simple
-helm repo index fluentd-cloudwatch --url https://shoplineapp.github.io/helm-chart/fluentd-cloudwatch
-helm repo index cronjob --url https://shoplineapp.github.io/helm-chart/cronjob
+helm repo index simple --url https://shoplineapp.github.io/helm-charts/simple
+helm repo index fluentd-cloudwatch --url https://shoplineapp.github.io/helm-charts/fluentd-cloudwatch
+helm repo index cronjob --url https://shoplineapp.github.io/helm-charts/cronjob
 ```
 # upload index.yaml and helm chart file
 ```
