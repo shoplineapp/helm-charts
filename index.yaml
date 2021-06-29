@@ -3,31 +3,34 @@ entries:
   cronjob:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-29T16:50:58.327331+08:00"
+    created: "2021-06-29T16:57:41.010713+08:00"
     description: Helm chart with simple cronjob template
     digest: 47c4c3209b55b435a0f705e22eb2bc7b68acaafdc9e29e3904aa22f812e3db23
     name: cronjob
+    tillerVersion: '>=2.14.3'
     urls:
     - https://shoplineapp.github.io/helm-charts/cronjob/cronjob-0.0.1.tgz
     version: 0.0.1
   fluentd-cloudwatch:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-29T16:50:58.32877+08:00"
+    created: "2021-06-29T16:57:41.010915+08:00"
     description: Helm chart to add fluentd daemonset and send logs to cloudwatch
     digest: f0df1b37df33ea1bbcd5cb1db1039b6e47299834b81ecac81b352e0e385336e4
     name: fluentd-cloudwatch
+    tillerVersion: '>=2.14.3'
     urls:
     - https://shoplineapp.github.io/helm-charts/fluentd-cloudwatch/fluentd-cloudwatch-0.0.1.tgz
     version: 0.0.1
   simple:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-29T16:50:58.329154+08:00"
+    created: "2021-06-29T16:57:41.011455+08:00"
     description: Helm chart with simple deployment/service template
-    digest: 50497fa574e1145746ce0599d3a580105795dca932b2832e9f737fde327e98f9
+    digest: 1066dc1a84d3a54badc90c29b35615a7681607d5d7fd00ee0933e2500a5c6a36
     name: simple
+    tillerVersion: '>=2.14.3'
     urls:
-    - https://shoplineapp.github.io/helm-charts/simple/simple-0.0.2.tgz
-    version: 0.0.2
-generated: "2021-06-29T16:50:58.326928+08:00"
+    - https://shoplineapp.github.io/helm-charts/simple/simple-0.0.1.tgz
+    version: 0.0.1
+generated: "2021-06-29T16:57:41.010399+08:00"
