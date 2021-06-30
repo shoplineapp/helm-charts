@@ -32,7 +32,7 @@ jobs:
           git fetch
           git checkout github-pages
           git branch --show-current
-          git pull origin/test/pipeline
+          git pull origin test/pipeline
 
       - name: Package helm chart file and create index.yaml
         run: |
