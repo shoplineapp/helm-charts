@@ -32,11 +32,10 @@ jobs:
           git config --global user.name 'andychuang'
           git config --global user.email 'andy.chuang@shoplineapp.com'
           git fetch
-          git checkout github-pages
-          git pull origin github-pages
+          git checkout
           ls -al simple/
           git branch --show-current
-          git reset --hard test/pipeline
+#          git reset --hard test/pipeline
           git pull origin test/pipeline
 
       - name: Package helm chart file and create index.yaml
@@ -54,4 +53,4 @@ jobs:
           git status
           git add */*.tgz index.yaml
           git commit -m 'update chart version'
-# git push origin github-pages
+#          git push origin github-pages
