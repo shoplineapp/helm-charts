@@ -52,4 +52,4 @@ jobs:
           git status
           git add */*.tgz index.yaml
           git commit -m 'update chart version'
-#          git push origin github-pages
+          git push origin github-pages
