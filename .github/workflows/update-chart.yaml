@@ -29,11 +29,12 @@ jobs:
 
       - name: Sync master branch to github-pages branch
         run: |
-          git fetch
-          git checkout github-pages
-          git branch --show-current
           git config --global user.name 'andychuang'
           git config --global user.email 'andy.chuang@shoplineapp.com'
+          git fetch
+          git checkout github-pages
+          git pull
+          git branch --show-current
           git reset --hard test/pipeline
           git pull origin test/pipeline
 
