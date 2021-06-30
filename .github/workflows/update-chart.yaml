@@ -27,7 +27,13 @@ jobs:
       - name: Download helm binary
         run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-      # Runs a set of commands using the runners shell
+      - name: Sync master branch to github-pages branch
+        run: |
+          git fetch
+          git checkout github-pages
+          git branch --show-current
+          git pull origin/test/pipeline
+
       - name: Package helm chart file and create index.yaml
         run: |
           helm version
@@ -40,8 +46,5 @@ jobs:
 
       - name: Update github pages
         run: |
-          git fetch
-          git checkout github-pages
-          git branch --show-current
           git add */*.tgz index.yaml
           git commit -m 'update chart version'
