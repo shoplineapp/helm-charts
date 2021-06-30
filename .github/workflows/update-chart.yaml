@@ -35,7 +35,6 @@ jobs:
           git checkout
           ls -al simple/
           git branch --show-current
-#          git reset --hard test/pipeline
           git pull origin test/pipeline
 
       - name: Package helm chart file and create index.yaml
