@@ -1,0 +1,27 @@
+{{- if .Values.ExternalMetric }}
+apiVersion: metrics.aws/v1alpha1
+kind: ExternalMetric
+metadata:
+  name: {{ .Values.ExternalMetric.name }}
+spec:
+  name: {{ .Values.ExternalMetric.name }}
+  resource:
+    resource: "deployment"
+  queries:
+    {{- range .Values.ExternalMetric.queries }}
+    - id: {{ .id }}
+      metricStat:
+        metric:
+          namespace: {{ .metricNamespace | quote }}
+          metricName: {{ .metricName | quote }}
+          dimensions:
+          {{- range .metricsDimensions }}
+            - name: {{ .name }}
+              value: {{ .value | quote }}
+          {{- end }}
+        period: {{ .period }}
+        stat: {{ .stat }}
+        unit: {{ .unit }}
+      returnData: true
+    {{- end }}
+{{- end }}
