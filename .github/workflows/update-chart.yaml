@@ -50,4 +50,4 @@ jobs:
         run: |
           git add */*.tgz index.yaml
           git commit -m 'update chart version'
-          ggpush
+          git push origin github-pages
