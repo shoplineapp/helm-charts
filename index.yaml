@@ -3,9 +3,9 @@ entries:
   cronjob:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-30T11:43:42.357325934Z"
+    created: "2021-06-30T13:47:47.315173697Z"
     description: Helm chart with simple cronjob template
-    digest: 7145594af1eed239509a02cc894469124c9179d1af469cde416cd46350aa10e5
+    digest: 962325dc3ad135de75c8533b8e7b54413e027e5a7c2eaa7fe14fd120e07188ee
     name: cronjob
     urls:
     - https://shoplineapp.github.io/helm-charts/cronjob/cronjob-0.0.1.tgz
@@ -13,9 +13,9 @@ entries:
   fluentd-cloudwatch:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-30T11:43:42.35764274Z"
+    created: "2021-06-30T13:47:47.315631703Z"
     description: Helm chart to add fluentd daemonset and send logs to cloudwatch
-    digest: 339e9fd87bdc599dbcc9fd67cad2fee6ed779daec6494a5d363ac85fee4fe2ed
+    digest: 96f128c800cffdf32be62564841bdadc96b1132208f26c99523fcb4d036f46dc
     name: fluentd-cloudwatch
     urls:
     - https://shoplineapp.github.io/helm-charts/fluentd-cloudwatch/fluentd-cloudwatch-0.0.1.tgz
@@ -23,7 +23,16 @@ entries:
   simple:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-30T11:43:42.358664758Z"
+    created: "2021-06-30T13:47:47.319113848Z"
+    description: Helm chart with simple deployment/service template
+    digest: 54e04ab3a52f373edeec393fa250845a37ff7d53d596494bc744809e676c8dff
+    name: simple
+    urls:
+    - https://shoplineapp.github.io/helm-charts/simple/simple-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: "2021-06-30T13:47:47.31696352Z"
     description: Helm chart with simple deployment/service template
     digest: 20537261d14ab6c0d8116aca4f43fc4d71c7ba00c65a2eea8e6e72a3b0efb208
     name: simple
@@ -32,11 +41,11 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-06-30T11:43:42.358126449Z"
+    created: "2021-06-30T13:47:47.316251611Z"
     description: Helm chart with simple deployment/service template
     digest: 1faca2628f834316912944528a7e85d7f624ec816b084c8ec59e92cb265c55eb
     name: simple
     urls:
     - https://shoplineapp.github.io/helm-charts/simple/simple-0.0.1.tgz
     version: 0.0.1
-generated: "2021-06-30T11:43:42.356902627Z"
+generated: "2021-06-30T13:47:47.31460039Z"
