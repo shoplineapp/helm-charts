@@ -34,6 +34,8 @@ jobs:
           git fetch
           git checkout github-pages
           git branch --show-current
+          git config --global user.name 'andychuang'
+          git config --global user.email 'andy.chuang@shoplineapp.com'
           git pull origin test/pipeline --allow-unrelated-histories
 
       - name: Package helm chart file and create index.yaml
