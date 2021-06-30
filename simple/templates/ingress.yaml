@@ -1,7 +1,0 @@
-{{- if .Values.ingress }}
-{{- if hasKey .Values "EnableMutilpleIngress" }}
-{{ template "ingress.ingress_multiple" . }}
-{{- else }}
-{{ template "ingress.ingress_single" . }}
-{{- end}}
-{{- end}}
