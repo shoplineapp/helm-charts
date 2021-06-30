@@ -39,8 +39,9 @@ jobs:
           cat index.yaml
 
       - name: Update github pages
-        uses: github-pages
         run: |
+          git fetch
+          git checkout github-pages
           git branch --show-current
           git add */*.tgz index.yaml
           git commit -m 'update chart version'
