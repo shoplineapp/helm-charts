@@ -1,0 +1,17 @@
+{{- if .Values.pdb }}
+{{- if eq .Values.pdb.enable true }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ .Values.name }}
+spec:
+  {{- if .Values.pdb.maxUnavailable }}
+  maxUnavailable: {{ .Values.pdb.maxUnavailable }}
+  {{- else }}
+  minAvailable: {{ .Values.pdb.minAvailable | default "50%" }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+{{- end }}
+{{- end }}
