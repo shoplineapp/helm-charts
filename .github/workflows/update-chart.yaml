@@ -33,7 +33,8 @@ jobs:
           git config --global user.email 'andy.chuang@shoplineapp.com'
           git fetch
           git checkout github-pages
-          git pull
+          git pull origin github-pages
+          ls -al simple/
           git branch --show-current
           git reset --hard test/pipeline
           git pull origin test/pipeline
