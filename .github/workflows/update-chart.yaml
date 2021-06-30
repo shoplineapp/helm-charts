@@ -32,7 +32,7 @@ jobs:
           git config --global user.name 'andychuang'
           git config --global user.email 'andy.chuang@shoplineapp.com'
           git fetch
-          git checkout
+          git checkout github-pages
           ls -al simple/
           git branch --show-current
           git pull origin test/pipeline
