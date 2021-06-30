@@ -35,7 +35,7 @@ jobs:
           git config --global user.name 'andychuang'
           git config --global user.email 'andy.chuang@shoplineapp.com'
           git reset --hard test/pipeline
-          git pull origin test/pipeline --allow-unrelated-histories
+          git pull origin test/pipeline
 
       - name: Package helm chart file and create index.yaml
         run: |
