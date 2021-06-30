@@ -1,0 +1,11 @@
+{{- range $cm_name, $ref := .Values.configmaps }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $cm_name }}
+data:
+  {{- range $key, $value := $ref.data }}
+  {{ $key | quote }} : {{ $value | quote }}
+  {{- end }}
+{{- end}}
