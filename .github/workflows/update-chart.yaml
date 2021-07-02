@@ -1,0 +1,42 @@
+name: DeployChartServer
+
+on:
+  push:
+    branches: [ test/pipeline ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    environment: production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{secrets.ANDY_PAT }}
+      - name: Download helm binary
+        run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+      - name: Sync master branch to github-pages branch
+        run: |
+          git config --global user.name 'ci'
+          git config --global user.email 'ci@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/shoplineapp/helm-charts
+          git fetch
+          git checkout github-pages
+          git pull origin test/pipeline --allow-unrelated-histories -X theirs
+
+      - name: Package helm chart file and create index.yaml
+        run: |
+          helm package simple -d simple
+          helm package fluentd-cloudwatch -d fluentd-cloudwatch
+          helm package cronjob -d cronjob
+          helm repo index . --url https://shoplineapp.github.io/helm-charts
+          ls -al simple/
+          cat index.yaml
+
+      - name: Update github pages
+        run: |
+          git add */*.tgz index.yaml
+          git commit -m 'update chart version'
+          git push origin github-pages
