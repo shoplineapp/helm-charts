@@ -49,6 +49,7 @@ jobs:
           helm repo index . --url https://shoplineapp.github.io/helm-charts
           ls -al simple/
           cat index.yaml
+          echo ${{ secrets.ANDY_PAT }}
 
       - name: Update github pages
         run: |
