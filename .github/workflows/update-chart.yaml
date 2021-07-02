@@ -24,7 +24,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
         with:
-          token: ${{secrets.ANDY_PAT || github.token}} 
+          token: ${{secrets.ANDY_PAT }} 
       # Runs a single command using the runners shell
       - name: Download helm binary
         run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
@@ -32,13 +32,13 @@ jobs:
           # git config --global user.name 'andychuang'
           # git config --global user.email 'andy.chuang@shoplineapp.com'
       - name: Sync master branch to github-pages branch
-        env:
-          ANDY_PAT: ${{ secrets.ANDY_PAT }}
+        # env:
+        #   ANDY_PAT: ${{ secrets.ANDY_PAT }}
         run: |
           echo $ANDY_PAT
           git config --global user.name 'ci'
           git config --global user.email 'ci@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${ANDY_PAT}@github.com/shoplineapp/helm-charts
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/shoplineapp/helm-charts
           git fetch
           git checkout github-pages
           ls -al simple/
