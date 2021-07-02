@@ -31,10 +31,13 @@ jobs:
           # git config --global user.name 'andychuang'
           # git config --global user.email 'andy.chuang@shoplineapp.com'
       - name: Sync master branch to github-pages branch
+        env:
+          ANDY_PAT: ${{ secrets.ANDY_PAT }}
         run: |
+          echo $ANDY_PAT
           git config --global user.name 'ci'
           git config --global user.email 'ci@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/shoplineapp/helm-charts
+          git remote set-url origin https://x-access-token:${ANDY_PAT}@github.com/shoplineapp/helm-charts
           git fetch
           git checkout github-pages
           ls -al simple/
