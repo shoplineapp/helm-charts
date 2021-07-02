@@ -22,7 +22,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+        with:
+          token: ${{secrets.ANDY_PAT}}
       # Runs a single command using the runners shell
       - name: Download helm binary
         run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
@@ -31,8 +32,6 @@ jobs:
           # git config --global user.email 'andy.chuang@shoplineapp.com'
       - name: Sync master branch to github-pages branch
         run: |
-          git config --global user.name 'asdsadasd'
-          git config --global user.email 'csadasdasd@shoplineapp.com'
           git fetch
           git checkout github-pages
           ls -al simple/
