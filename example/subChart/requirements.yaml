@@ -1,9 +1,0 @@
-dependencies:
-- name: simple
-  version: "0.0.1"
-  repository: "https://shoplineapp.github.io/helm-charts"
-  alias: first-subChart
-- name: simple
-  version: "0.0.1"
-  repository: "https://shoplineapp.github.io/helm-charts"
-  alias: second-subChart

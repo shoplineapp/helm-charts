@@ -1,9 +1,0 @@
-dependencies:
-- name: simple
-  repository: https://shoplineapp.github.io/helm-charts
-  version: 0.0.1
-- name: simple
-  repository: https://shoplineapp.github.io/helm-charts
-  version: 0.0.1
-digest: sha256:bdf0694c6eccb81e2f8b7c368b98177292394443b3421509b16e2d2461c09aa1
-generated: "2021-07-01T22:01:46.464566+08:00"
