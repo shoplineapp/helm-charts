@@ -22,8 +22,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-        # with:
-        #   token: ${{secrets.ANDY_PAT || github.token}} 
+        with:
+          token: ${{secrets.ANDY_PAT || github.token}} 
       # Runs a single command using the runners shell
       - name: Download helm binary
         run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
