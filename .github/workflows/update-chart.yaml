@@ -22,7 +22,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+        with:
+          token: ${{secrets.ANDY_PAT || github.token}} 
       # Runs a single command using the runners shell
       - name: Download helm binary
         run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
@@ -31,8 +32,8 @@ jobs:
           # git config --global user.email 'andy.chuang@shoplineapp.com'
       - name: Sync master branch to github-pages branch
         run: |
-          git config --global user.name 'asdsadasd'
-          git config --global user.email 'csadasdasd@shoplineapp.com'
+          git config --global user.name 'andychuang'
+          git config --global user.email 'andy.chuang@shoplineapp.com'
           git fetch
           git checkout github-pages
           ls -al simple/
@@ -51,6 +52,9 @@ jobs:
 
       - name: Update github pages
         run: |
+          git config --global user.name 'andychuang'
+          git config --global user.email 'andy.chuang@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.ANDY_PAT }}@github.com/shoplineapp/helm-charts
           git status
           git add */*.tgz index.yaml
           git commit -m 'update chart version'
