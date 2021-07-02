@@ -34,6 +34,7 @@ jobs:
         run: |
           git config --global user.name 'ci'
           git config --global user.email 'ci@users.noreply.github.com'
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/shoplineapp/helm-charts
           git fetch
           git checkout github-pages
           ls -al simple/
@@ -52,9 +53,6 @@ jobs:
 
       - name: Update github pages
         run: |
-          git config --global user.name 'ci'
-          git config --global user.email 'ci@users.noreply.github.com'
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/shoplineapp/helm-charts
           git status
           git add */*.tgz index.yaml
           git commit -m 'update chart version'
