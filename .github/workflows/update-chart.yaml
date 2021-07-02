@@ -31,8 +31,8 @@ jobs:
           # git config --global user.email 'andy.chuang@shoplineapp.com'
       - name: Sync master branch to github-pages branch
         run: |
-          git config --global user.name 'ci'
-          git config --global user.email 'ci@shoplineapp.com'
+          git config --global user.name 'asdsadasd'
+          git config --global user.email 'csadasdasd@shoplineapp.com'
           git fetch
           git checkout github-pages
           ls -al simple/
