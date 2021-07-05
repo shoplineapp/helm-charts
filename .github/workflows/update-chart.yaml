@@ -19,8 +19,8 @@ jobs:
 
       - name: Sync master branch to github-pages branch
         run: |
-          git config --global user.name 'ci'
-          git config --global user.email 'ci@users.noreply.github.com'
+          git config --global user.name 'shopline-devops'
+          git config --global user.email 'devops@shoplineapp.com'
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/shoplineapp/helm-charts
           git fetch
           git checkout github-pages
