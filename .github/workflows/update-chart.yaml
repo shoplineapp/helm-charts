@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          token: ${{secrets.ANDY_PAT }}
+          token: ${{secrets.SHOPLINE_DEVOPS_PAT }}
       - name: Download helm binary
         run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
