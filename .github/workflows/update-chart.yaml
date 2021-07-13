@@ -2,7 +2,7 @@ name: DeployChartServer
 
 on:
   push:
-    branches: [ test/pipeline ]
+    branches: [ master ]
 
   workflow_dispatch:
 
@@ -24,7 +24,7 @@ jobs:
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/shoplineapp/helm-charts
           git fetch
           git checkout github-pages
-          git pull origin test/pipeline --allow-unrelated-histories -X theirs
+          git pull origin master --allow-unrelated-histories -X theirs
 
       - name: Package helm chart file and create index.yaml
         run: |
