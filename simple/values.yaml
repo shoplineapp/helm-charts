@@ -131,3 +131,18 @@ pdb:
 #   - kind: ServiceAccount
 #     name: service_account_name
 #     namespace: service_account_namespace
+
+# secrets:
+#   example-env:
+#     data: 
+#       data_name: YW5keWNodWFuZw==
+#       data_tls: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUNxRENDQVpBQ0NRQ3NtSEY1ODZDVTRUQU5CZ2txaGtpRzl3MEJBUXNGQURBV01SUXdFZ1lEVlFRRERBdG0KLi4uCnhjUGFMNEdDZ1VsKzhUaUsKLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+#     # no need to base64 encode
+#     stringData:
+#       str_name: "andychuang"
+#       str_tls: |-
+#        -----BEGIN CERTIFICATE-----
+#        MIICqDCCAZACCQCsmHF586CU4TANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDDAtm
+#        ...
+#        xcPaL4GCgUl+8TiK
+#        -----END CERTIFICATE-----
