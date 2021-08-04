@@ -19,6 +19,13 @@ replicaCount: 1
 #   runAsGroup: 1000
 #   fsGroup: 1000
 
+affinity:
+  nodeAffinity: {}
+  podAffinity: {}
+  # if you set .podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution,you will combined with default setting.
+  # default: prefer difference az(weight:100) and node(weight:99)
+  podAntiAffinity: {}
+
 deployment: {}
 # deployment example
 # deployment: 
