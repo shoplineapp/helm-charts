@@ -8,6 +8,9 @@ spec:
   successfulJobsHistoryLimit: {{ .Values.job.history.success | default 3 }}
   failedJobsHistoryLimit: {{ .Values.job.history.failed | default 1 }}
   concurrencyPolicy: {{ .Values.job.concurrency | default "Allow" }}
+  {{- if .Values.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
+  {{- end }}
   jobTemplate:
     metadata:
       annotations:
