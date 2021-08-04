@@ -34,10 +34,39 @@ spec:
       nodeSelector:
         {{ .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }} 
       {{- end}}
-      {{- if hasKey .Values.deployment "affinity" }}
       affinity:
-        {{- toYaml .Values.deployment.affinity | nindent 8 }}
-      {{- end}}
+        {{- if hasKey .Values.affinity "nodeAffinity" }}
+        nodeAffinity: {{- toYaml .Values.affinity.nodeAffinity | nindent 10 }}
+        {{- end }}
+        {{- if hasKey .Values.affinity "podAffinity" }}
+        podAffinity: {{- toYaml .Values.affinity.podAffinity | nindent 10 }}
+        {{- end }}
+        podAntiAffinity:
+          {{- if hasKey .Values.affinity.podAntiAffinity "requiredDuringSchedulingIgnoredDuringExecution" }}
+          requiredDuringSchedulingIgnoredDuringExecution: {{- toYaml .Values.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution | nindent 12 }}
+          {{- end }}
+          preferredDuringSchedulingIgnoredDuringExecution:
+          {{- if hasKey .Values.affinity.podAntiAffinity "preferredDuringSchedulingIgnoredDuringExecution" }}
+            {{- toYaml .Values.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution | nindent 12 }}
+          {{- end }}
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - {{ .Values.name }}
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+              weight: 100
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - {{ .Values.name }}
+                topologyKey: kubernetes.io/hostname
+              weight: 99
       {{- if hasKey .Values "securityContextForPod" }}
       securityContext: 
         {{ toYaml .Values.securityContextForPod | nindent 8 }}        
