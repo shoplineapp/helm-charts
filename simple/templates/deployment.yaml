@@ -34,6 +34,7 @@ spec:
       nodeSelector:
         {{ .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }} 
       {{- end}}
+      {{- if hasKey .Values "affinity" }}
       affinity:
         {{- if hasKey .Values.affinity "nodeAffinity" }}
         nodeAffinity: {{- toYaml .Values.affinity.nodeAffinity | nindent 10 }}
@@ -67,6 +68,7 @@ spec:
                     - {{ .Values.name }}
                 topologyKey: kubernetes.io/hostname
               weight: 99
+      {{- end }}
       {{- if hasKey .Values "securityContextForPod" }}
       securityContext: 
         {{ toYaml .Values.securityContextForPod | nindent 8 }}        
