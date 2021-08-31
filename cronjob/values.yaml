@@ -18,3 +18,13 @@ envSecrets: {}
 # example
 # envSecrets:
 #   MONGODB_USER: mongodb
+
+envFrom: {}
+# example
+# envFrom:
+#   configMapRef:
+#     - test-1-env
+#     - test-2-env
+#   secretRef:
+#     - test-1-secret
+#     - test-2-secret
