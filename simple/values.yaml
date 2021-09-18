@@ -153,3 +153,13 @@ pdb:
 #        ...
 #        xcPaL4GCgUl+8TiK
 #        -----END CERTIFICATE-----
+
+# serviceMonitors:
+#   mongodb-observer:
+#     namespaceSelector:
+#       - shoplytics
+#     selector:
+#       matchLabels:
+#         app: mongodb-observer # which service you want to match
+#     endpoints:
+#       - port: http # port name of the service expose
