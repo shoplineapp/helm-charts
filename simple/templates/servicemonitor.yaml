@@ -1,0 +1,29 @@
+{{- range $serviceMonitorName, $ref := .Values.serviceMonitors }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ $serviceMonitorName }}
+  labels:
+    release: prometheus-operator
+  {{- if hasKey $ref "labels" }}
+    {{- range $key, $value := $ref.labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+  namespace: prometheus-operator
+spec:
+  namespaceSelector:
+    matchNames:
+    {{- range $namespace := $ref.namespaceSelector }}
+      - {{ $namespace }}
+    {{- end }}
+  selector:
+    matchLabels:
+      {{- range $key, $value := $ref.selector.matchLabels }}
+      {{ $key }}: {{ $value | quote }}
+      {{- end }}
+  endpoints:
+  {{- range $ref.endpoints }}
+    - port: {{ .port | quote }}
+  {{- end }}
+{{- end}}
