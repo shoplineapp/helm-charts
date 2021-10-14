@@ -3,7 +3,16 @@ entries:
   cronjob:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:16.986657714Z"
+    created: "2021-10-14T04:05:57.472567055Z"
+    description: Helm chart with simple cronjob template
+    digest: 6f1531f5a37fa9c8bcff57e9c3cceecf59fa5a775034ad88fc8660cf915b13ea
+    name: cronjob
+    urls:
+    - https://shoplineapp.github.io/helm-charts/cronjob/cronjob-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: "2021-10-14T04:05:57.470978856Z"
     description: Helm chart with simple cronjob template
     digest: 9cdff93150c962dde424c7cb6e0fba0104e6aca478146bedf44515a6edf5d89b
     name: cronjob
@@ -12,7 +21,7 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:16.983252088Z"
+    created: "2021-10-14T04:05:57.469813856Z"
     description: Helm chart with simple cronjob template
     digest: 8f31f4642f23bc70d8430c674fb5a3103f4b716cf386b3078a2fb6e76e325185
     name: cronjob
@@ -22,9 +31,9 @@ entries:
   fluentd-cloudwatch:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:16.98753542Z"
+    created: "2021-10-14T04:05:57.473390455Z"
     description: Helm chart to add fluentd daemonset and send logs to cloudwatch
-    digest: f0b82f4f1e5a64a591bb2a6d4e6c60b53ddbe2c64f6a04458034a7a1d0535c6c
+    digest: ec60b0f699d85322e6006b6963ca66038abe10ed1b76bff03cf5001085cf1af4
     name: fluentd-cloudwatch
     urls:
     - https://shoplineapp.github.io/helm-charts/fluentd-cloudwatch/fluentd-cloudwatch-0.0.1.tgz
@@ -32,7 +41,16 @@ entries:
   simple:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:17.002541333Z"
+    created: "2021-10-14T04:05:57.496259949Z"
+    description: Helm chart with simple deployment/service template
+    digest: 63c9a04f61077163eb7edee17a928ac061810b25f7741430bab8950dcc73450c
+    name: simple
+    urls:
+    - https://shoplineapp.github.io/helm-charts/simple/simple-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v1
+    appVersion: 0.0.1
+    created: "2021-10-14T04:05:57.487037551Z"
     description: Helm chart with simple deployment/service template
     digest: b91a7f8f233c6574b556a1a5e9d99733961bcec342047d05ca4a44139f63e228
     name: simple
@@ -41,7 +59,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:16.996581389Z"
+    created: "2021-10-14T04:05:57.482716653Z"
     description: Helm chart with simple deployment/service template
     digest: bc6051328b6615e3b142f565281027bd6deedadd121c82b504bda43856e08606
     name: simple
@@ -50,7 +68,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:16.993805068Z"
+    created: "2021-10-14T04:05:57.479549253Z"
     description: Helm chart with simple deployment/service template
     digest: 3238d8119738ae18e0b8f300842436f811706a362c6b1a3b1d774ff90a26c83b
     name: simple
@@ -59,7 +77,7 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:16.991822853Z"
+    created: "2021-10-14T04:05:57.476870854Z"
     description: Helm chart with simple deployment/service template
     digest: 3fa2d8388efb4e8d7f0955e82e40174f47853f84e0bbb8962b36f8db14199630
     name: simple
@@ -68,7 +86,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:16.989731637Z"
+    created: "2021-10-14T04:05:57.475283055Z"
     description: Helm chart with simple deployment/service template
     digest: 7fb69690579334b064bc9a32fd2c901cbecd354f1adb9b3d416f2efc25304857
     name: simple
@@ -77,11 +95,11 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2021-09-22T07:51:16.988548228Z"
+    created: "2021-10-14T04:05:57.474282955Z"
     description: Helm chart with simple deployment/service template
     digest: 004ae3fce75b7bb4c981274d0bf3771799130e471240d8427c81c6661958528a
     name: simple
     urls:
     - https://shoplineapp.github.io/helm-charts/simple/simple-0.0.1.tgz
     version: 0.0.1
-generated: "2021-09-22T07:51:16.98212318Z"
+generated: "2021-10-14T04:05:57.468605856Z"
