@@ -23,6 +23,12 @@ spec:
       app: {{ .Values.name }}
   template:
     metadata:
+      {{- if hasKey .Values.deployment "annotations" }}
+      annotations:
+        {{- range $key, $value := .Values.deployment.annotations }}
+        {{ $key | quote }} : {{ $value | quote }}
+        {{- end }}
+      {{- end}}
       labels:
         app: {{ .Values.name }}
     spec:
