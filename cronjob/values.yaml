@@ -6,6 +6,8 @@ job:
   retries: 1
   timeout: 1800
 
+annotations: {}
+
 image:
   tag: latest
 
