@@ -29,6 +29,8 @@ affinity:
 deployment: {}
 # deployment example
 # deployment: 
+#   annotations:
+#     checksum/config: checksum
 #   containers:
 #     example-app:
 #       name: example-app

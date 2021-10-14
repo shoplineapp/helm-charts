@@ -19,6 +19,12 @@ spec:
       backoffLimit: {{ .Values.job.retries }}
       activeDeadlineSeconds: {{ .Values.job.timeout }}
       template:
+        metadata:
+          annotations:
+            cronjob_name: {{ .Values.name }}
+            {{- range $key, $value := .Values.annotations }}
+            {{ $key | quote }} : {{ $value | quote }}
+            {{- end }}
         spec:
           {{- if .Values.serviceAccount }}
           serviceAccountName: {{ .Values.name }}-pod-service-account
