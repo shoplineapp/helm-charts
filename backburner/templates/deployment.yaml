@@ -1,0 +1,36 @@
+{{ range .Values.workers }}
+{{ $worker := merge . $.Values.global }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $.Values.name }}-{{ .queue }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    app: {{ $.Values.name }}-{{ .queue }}
+spec:
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ $.Values.name }}-{{ .queue }}
+  template:
+    metadata:
+      labels:
+        app: {{ $.Values.name }}-{{ .queue }}
+    spec:
+      containers:
+      - {{ template "deployment.container" $worker }}
+      restartPolicy: Always
+      {{- if $.Values.serviceaccount}}
+      serviceAccountName: {{ $.Values.name }}-pod-service-account
+      {{- end }}
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "2"
+      terminationGracePeriodSeconds: 61
+---
+{{- end }}

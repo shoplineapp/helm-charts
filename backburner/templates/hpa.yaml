@@ -1,0 +1,40 @@
+{{ range .Values.workers }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ $.Values.name }}-{{ .queue }}
+spec:
+  {{- if .hpav2 }}
+  minReplicas: {{ .hpav2.minReplicas }}
+  maxReplicas: {{ .hpav2.maxReplicas }}
+  metrics:
+  {{- range .hpav2.Resource }}
+  - type: Resource
+    resource:
+      name: {{ .name }}
+      target:
+        {{- if .percent}}
+        type: Utilization
+        averageUtilization: {{ .percent }}
+        {{- else if .value}}
+        type: AverageValue
+        averageValue: {{ .value }}
+        {{- end }}
+  {{- end }}
+  {{- else }}
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  {{- end }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ $.Values.name }}-{{ .queue }}
+---
+{{- end }}
