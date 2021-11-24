@@ -14,6 +14,7 @@ global:
 
 workers: []
 # - queue: custom-jobs
+#   name: custom-jobs
 #   resources:
 #     limits:
 #       cpu: "300m"
@@ -26,6 +27,7 @@ workers: []
 #     - -c
 #   args:
 #     - my custom command;
+#   enableHPA: true
 #   hpav2:
 #     minReplicas: 1
 #     maxReplicas: 1

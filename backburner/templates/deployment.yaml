@@ -1,12 +1,13 @@
 {{ range .Values.workers }}
-{{ $worker := merge . $.Values.global }}
+{{ $resourceName := (ternary .name .queue (not (empty .name))) }}
+{{ $worker := merge . $.Values.global (dict "resourceName" $resourceName) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $.Values.name }}-{{ .queue }}
+  name: {{ $.Values.name }}-{{ $resourceName }}
   namespace: {{ $.Release.Namespace }}
   labels:
-    app: {{ $.Values.name }}-{{ .queue }}
+    app: {{ $.Values.name }}-{{ $resourceName }}
 spec:
   strategy:
     rollingUpdate:
@@ -15,11 +16,11 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: {{ $.Values.name }}-{{ .queue }}
+      app: {{ $.Values.name }}-{{ $resourceName }}
   template:
     metadata:
       labels:
-        app: {{ $.Values.name }}-{{ .queue }}
+        app: {{ $.Values.name }}-{{ $resourceName }}
     spec:
       containers:
       - {{ template "deployment.container" $worker }}

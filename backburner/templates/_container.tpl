@@ -1,5 +1,5 @@
 {{- define "deployment.container" -}}
-        name: {{ .queue }}
+        name: {{ .resourceName }}
         {{- if hasKey . "command" }}
         command: {{ toYaml .command | nindent 8 }}
         {{- else }}
@@ -17,7 +17,7 @@
         imagePullPolicy: "IfNotPresent"
         env:
         - name: CONTAINER_NAME
-          value: {{ .queue }}
+          value: {{ .resourceName }}
         {{- range $key, $value := .env }}
         - name: {{ $key }}
           value: {{ $value | quote }}

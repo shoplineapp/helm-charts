@@ -1,8 +1,10 @@
 {{ range .Values.workers }}
+{{- if ne "false" (.enableHPA | toString) }}
+{{- $resourceName := (ternary .name .queue (not (empty .name))) }}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ $.Values.name }}-{{ .queue }}
+  name: {{ $.Values.name }}-{{ $resourceName }}
 spec:
   {{- if .hpav2 }}
   minReplicas: {{ .hpav2.minReplicas }}
@@ -35,6 +37,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ $.Values.name }}-{{ .queue }}
+    name: {{ $.Values.name }}-{{ $resourceName }}
 ---
+{{- end }}
 {{- end }}
