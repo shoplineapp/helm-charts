@@ -1,0 +1,36 @@
+name: backburner-name
+
+global:
+  image:
+    repository: repository_name/image
+    tag: tag
+  serviceaccount:
+    annotations:
+      eks.amazonaws.com/role-arn: arn:aws:iam::*******:role/*********
+  envFromConfigmap:
+    - name: cm-env
+  envFromSecret:
+    - name: secret-env
+
+workers: []
+# - queue: custom-jobs
+#   name: custom-jobs
+#   resources:
+#     limits:
+#       cpu: "300m"
+#       memory: "500Mi"
+#     requests:
+#       cpu: "300m"
+#       memory: "500Mi"
+#   command:
+#     - sh
+#     - -c
+#   args:
+#     - my custom command;
+#   enableHPA: true
+#   hpav2:
+#     minReplicas: 1
+#     maxReplicas: 1
+#     Resource:
+#       - name: cpu
+#         percent: 70
