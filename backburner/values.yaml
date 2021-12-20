@@ -13,8 +13,10 @@ global:
     - name: secret-env
 
 workers: []
-# - queue: custom-jobs
-#   name: custom-jobs
+# - name: custom-jobs
+#   queue:
+#     - queueName: custom-jobs
+#       listener: 2
 #   resources:
 #     limits:
 #       cpu: "300m"
