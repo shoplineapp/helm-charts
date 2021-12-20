@@ -31,9 +31,11 @@
               {{- if gt $listener 1 }} 
               {{ fail "listener more than one failed when the standalone mode."}}
               {{- end}}
-            {{- end}}
-            {{- if lt $listener 2}}
-              {{- $listener = 2}}
+              {{- $listener = 1 }}
+            {{- else }} 
+              {{- if lt $listener 2 }}
+                {{- $listener = 2 }}
+              {{- end}}
             {{- end}}
             {{- $tmpItem := printf "%v:%v" $queueName $listener }}
             {{- $queueList = append $queueList $tmpItem }}
