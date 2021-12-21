@@ -47,7 +47,7 @@ workers: []
 #     requests:
 #       cpu: "1"
 #       memory: "4Gi"
-## - name: worker2
+# - name: worker2
 #   standAlone: true
 #   enableHPA: false # set enableHPA required when standAlone mode
 #   queue:
@@ -59,7 +59,7 @@ workers: []
 #     requests:
 #       cpu: "1"
 #       memory: "4Gi"
-## - name: worker3
+# - name: worker3
 #   queue:
 #     - queueName: user-import-notification4
 #       listener: 4
