@@ -10,10 +10,14 @@ metadata:
     app: {{ $.Values.name }}-{{ $resourceName }}
 spec:
   strategy:
+  {{- if (default .standAlone false ) }}
+    type: Recreate
+  {{- else}}
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
     type: RollingUpdate
+  {{- end}}
   selector:
     matchLabels:
       app: {{ $.Values.name }}-{{ $resourceName }}

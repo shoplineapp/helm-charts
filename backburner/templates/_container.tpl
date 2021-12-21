@@ -11,7 +11,37 @@
         args: {{ toYaml .args | nindent 8 }}
         {{- else }}
         args:
-          - bundle exec backburner -e $RAILS_ENV -q {{ .queue }}
+          {{- $standAlone := .standAlone }}
+          {{- $queueLen := len .queue | int }}
+          {{- if (default $standAlone false ) }}
+            {{- if gt $queueLen 1}} 
+              {{ fail "queue more than one failed when the standalone mode."}}
+            {{- end}}
+            
+            {{- if ne "false" (.enableHPA | toString)}} 
+              {{ fail "enableHPA failed when the standalone mode."}}
+            {{- end}}
+          {{- end}}
+
+          {{- $queueList := list}}
+          {{- range $i, $items := .queue }}
+            {{- $queueName := get $items "queueName" }}
+            {{- $listener := get $items "listener" | int }}
+            {{- if (default $standAlone false ) }}
+              {{- if gt $listener 1 }} 
+              {{ fail "listener more than one failed when the standalone mode."}}
+              {{- end}}
+              {{- $listener = 1 }}
+            {{- else }} 
+              {{- if lt $listener 2 }}
+                {{- $listener = 2 }}
+              {{- end}}
+            {{- end}}
+            {{- $tmpItem := printf "%v:%v" $queueName $listener }}
+            {{- $queueList = append $queueList $tmpItem }}
+          {{- end }}
+          {{- $queueName := (join "," $queueList) }}
+          - bundle exec backburner -e $RAILS_ENV -q {{ $queueName }}
         {{- end }}
         image: "{{ .image.repository }}:{{ .image.tag }}"
         imagePullPolicy: "IfNotPresent"
