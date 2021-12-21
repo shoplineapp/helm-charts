@@ -13,8 +13,10 @@ global:
     - name: secret-env
 
 workers: []
-# - queue: custom-jobs
-#   name: custom-jobs
+# - name: custom-jobs
+#   queue:
+#     - queueName: custom-jobs
+#       listener: 2
 #   resources:
 #     limits:
 #       cpu: "300m"
@@ -34,3 +36,39 @@ workers: []
 #     Resource:
 #       - name: cpu
 #         percent: 70
+# - name: worker1
+#   queue:
+#     - queueName: user-import-notification0 # default listener: 2
+#     - queueName: user-import-notification1 # default listener: 2
+#   resources:
+#     limits:
+#       cpu: "2"
+#       memory: "16Gi"
+#     requests:
+#       cpu: "1"
+#       memory: "4Gi"
+# - name: worker2
+#   standAlone: true
+#   enableHPA: false # set enableHPA required when standAlone mode
+#   queue:
+#     - queueName: user-import-notification3
+#   resources:
+#     limits:
+#       cpu: "2"
+#       memory: "16Gi"
+#     requests:
+#       cpu: "1"
+#       memory: "4Gi"
+# - name: worker3
+#   queue:
+#     - queueName: user-import-notification4
+#       listener: 4
+#     - queueName: user-import-notification5
+#       listener: 5
+#   resources:
+#     limits:
+#       cpu: "2"
+#       memory: "16Gi"
+#     requests:
+#       cpu: "1"
+#       memory: "4Gi"
