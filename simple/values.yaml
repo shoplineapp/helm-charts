@@ -165,3 +165,9 @@ pdb:
 #         app: mongodb-observer # which service you want to match
 #     endpoints:
 #       - port: http # port name of the service expose
+
+# Don’t combine ScaledObject with Horizontal Pod Autoscaler (HPA)
+# exmaple yaml please refer to example/example-keda.yaml
+# KEDA:
+#   ScaledObject:
+#     spec: {}
