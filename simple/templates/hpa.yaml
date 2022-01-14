@@ -11,8 +11,8 @@ spec:
   minReplicas: {{ .Values.hpa.minReplicas }}
   maxReplicas: {{ .Values.hpa.maxReplicas }}
   targetCPUUtilizationPercentage: {{ .Values.hpa.targetCPUUtilizationPercentage }}
-
 {{- else if .Values.hpav2 }}
+  {{- if (empty .Values.hpav2.External) }}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -46,5 +46,6 @@ spec:
       target:
         type: {{ .type }}
         value: {{ .value }}
+    {{- end }}
   {{- end }}
 {{- end}}
