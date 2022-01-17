@@ -1,5 +1,5 @@
 customRole:
-  - name: shopline-tmplate1
+  - name: shopline-template1
     rules:
       - apiGroups: [""]
         resources: ["pods", "pods/log"]
@@ -8,7 +8,7 @@ customRole:
         resources: ["pods/exec"]
         verbs: ["create"]
 
-  - name: shopline-tmplate2
+  - name: shopline-template2
     rules:
       - apiGroups: [""]
         resources: ["pods", "pods/log"]
