@@ -1,3 +1,4 @@
+enableDefaultRole: True
 customRole:
   - name: shopline-template1
     rules:
