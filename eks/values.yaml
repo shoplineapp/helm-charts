@@ -1,6 +1,5 @@
 enableDefaultRole: True
-customRole:
-  []
+customRole: []
   # - name: shopline-template1
   #   rules:
   #     - apiGroups: [""]
