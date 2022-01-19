@@ -103,7 +103,7 @@ spec:
       {{- end }}
       restartPolicy: Always
       {{- if .Values.serviceaccount}}
-      serviceAccountName: {{.Values.name }}-pod-service-account
+      serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
       {{- end }}
       {{- if .Values.deployment.dnsConfig }}
       dnsConfig:
