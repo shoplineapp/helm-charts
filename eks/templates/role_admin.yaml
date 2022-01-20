@@ -1,0 +1,25 @@
+{{- if .Values.enableDefaultRole }}
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: role-{{ .Release.Namespace }}-admin
+  namespace: {{ .Release.Namespace }}
+rules:
+  - apiGroups: ["*"] 
+    resources: ["*"]
+    verbs: ["*"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: role-binding-{{ .Release.Namespace }}-admin
+  namespace: {{ .Release.Namespace }}
+subjects:
+  - kind: Group
+    name: group-{{ .Release.Namespace }}-admin
+    apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: role-{{ .Release.Namespace }}-admin
+  apiGroup: rbac.authorization.k8s.io
+{{- end}}
