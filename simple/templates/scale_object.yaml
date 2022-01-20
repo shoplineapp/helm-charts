@@ -1,0 +1,68 @@
+{{- if .Values.KEDA }}
+  {{- if (and .Values.KEDA.ScaledObject (or .Values.hpa .Values.hpav2)) }}
+    {{ fail "Don't create ScaledObject and HPA at same time." }}
+  {{- end }}
+  {{- if .Values.KEDA.ScaledObject }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+spec: {{ toYaml .Values.KEDA.ScaledObject.spec | nindent 2 }}
+  scaleTargetRef:
+    name: {{ .Values.name }}
+  {{- end }}
+{{- end }}
+
+# can remove when all extenral.metrics.aws migrate to KEDA.
+{{- if .Values.hpav2 }}
+  {{- if .Values.hpav2.External }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  scaleTargetRef:
+    name: {{ .Values.name }}
+  minReplicaCount: {{ .Values.hpav2.minReplicas }}
+  maxReplicaCount: {{ .Values.hpav2.maxReplicas }}
+  triggers:
+  {{- range .Values.hpav2.Resource }}
+  - type: {{ .name }}
+    metadata:
+      {{- if .percent }}
+      type: Utilization
+      value: {{ .percent | quote  }}
+      {{- else if .value}}
+      type: AverageValue
+      value: {{ .value | quote }}
+      {{- end }}
+  {{- end }}
+  - type: aws-cloudwatch
+    metadata:
+      {{- range .Values.ExternalMetric.queries }}
+      namespace: {{ .metricNamespace }}
+      metricName: {{ .metricName }}
+      metricStat: {{ .stat }}
+      metricStatPeriod: {{ .period | quote }}
+      metricUnit: {{ .unit }}
+      {{- $dimensionNameList := list}}
+      {{- $dimensionValueList := list}}
+      {{- range .metricsDimensions }}
+        {{- $dimensionName := .name }}
+        {{- $dimensionValue := .value }}
+        {{- $dimensionNameList = append $dimensionNameList $dimensionName }}
+        {{- $dimensionValueList = append $dimensionValueList $dimensionValue }}
+      {{- end }}
+      dimensionName: {{ (join ";" $dimensionNameList) }}
+      dimensionValue: {{ (join ";" $dimensionValueList) }}
+      minMetricValue: "0"
+      awsRegion: "ap-southeast-1"
+      identityOwner: operator
+      {{- end }}
+      {{- range .Values.hpav2.External }}
+      targetMetricValue: {{ .value | quote }}
+      {{- end }}
+  {{- end }}
+{{- end }}

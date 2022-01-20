@@ -1,0 +1,51 @@
+name: example-keda
+
+deployment:
+  containers:
+    nginx:
+      name: nginx
+      image:
+        repository: nginx
+        tag: latest
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "25m"
+        limits:
+          memory: "128Mi"
+          cpu: "50m"
+KEDA:
+  ScaledObject:
+    spec:
+      minReplicaCount: 0
+      maxReplicaCount: 10
+      triggers:
+      - type: cpu
+        metadata:
+          type: Utilization
+          value: "60"
+      - type: aws-cloudwatch
+        metadata:
+          namespace: AWS/EC2
+          dimensionName: InstanceId
+          dimensionValue: i-089078878e79b6104
+          metricName: CPUUtilization
+          targetMetricValue: "60"
+          minMetricValue: "0"
+          awsRegion: "ap-southeast-1"
+          identityOwner: operator
+          metricCollectionTime: "60"
+          metricStat: "Sum"
+          metricStatPeriod: "60"
+      - type: cron
+        metadata:
+          timezone: Asia/Taipei
+          start: 34 17 4 1 *
+          end: 50 17 4 1 *
+          desiredReplicas: "10"
+      - type: prometheus
+        metadata:
+          serverAddress: http://prometheus-operator-kube-p-prometheus.prometheus-operator:9090
+          metricName: machine_cpu_cores
+          threshold: '100'
+          query: sum(machine_cpu_cores)
