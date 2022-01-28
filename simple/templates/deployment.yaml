@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ .Values.name }}
 spec:
-  {{- if not (or .Values.hpa .Values.hpav2) }}
+  {{- if not (or .Values.hpa .Values.hpav2 ((.Values.KEDA).ScaledObject)) }}
   replicas: {{ .Values.replicaCount }}
   {{- end}}
   strategy:
