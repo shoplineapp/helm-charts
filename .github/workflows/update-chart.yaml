@@ -32,6 +32,7 @@ jobs:
           helm package fluentd-cloudwatch -d fluentd-cloudwatch
           helm package cronjob -d cronjob
           helm package backburner -d backburner
+          helm package eks -d eks
           helm repo index . --url https://shoplineapp.github.io/helm-charts
           ls -al simple/
           cat index.yaml

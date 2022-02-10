@@ -55,3 +55,16 @@ git add .
 git commit -m 'update chart'
 ggpush
 ```
+
+## How to add new chart to shopline charts
+
+step1. update .github/workflows/update-chart.yaml
+
+example add new chart: eks
+```shell
+vi .github/workflows/update-chart.yaml
+- name: Package helm chart file and create index.yaml
+...
++ helm package eks -d eks
+...
+```
