@@ -30,3 +30,10 @@ envFrom: {}
 #   secretRef:
 #     - test-1-secret
 #     - test-2-secret
+
+serviceaccount: {}
+# example
+# serviceaccount:
+#   annotations:
+#     eks.amazonaws.com/role-arn: <aws-role-arn>
+#     name: <serviceaccount-name>
