@@ -26,7 +26,9 @@ spec:
             {{ $key | quote }} : {{ $value | quote }}
             {{- end }}
         spec:
-          {{- if .Values.serviceAccount }}
+          {{- if .Values.serviceaccount }}
+          serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
+          {{- else if .Values.serviceAccount }}
           serviceAccountName: {{ .Values.name }}-pod-service-account
           {{- end }}
           restartPolicy: Never
