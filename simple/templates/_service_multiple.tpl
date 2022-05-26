@@ -1,5 +1,5 @@
 {{- define "service.service_multiple" -}}
-{{- if eq .Values.EnableMutilpleService true }}
+{{- if eq .Values.EnableMultipleService true }}
 {{- range $service_name, $ref := .Values.service }}
 ---
 apiVersion: v1

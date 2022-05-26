@@ -1,5 +1,5 @@
 {{- if .Values.service }}
-{{- if hasKey .Values "EnableMutilpleService" }}
+{{- if hasKey .Values "EnableMultipleService" }}
 {{ template "service.service_multiple" . }}
 {{- else }}
 {{ template "service.service_single" . }}
