@@ -103,6 +103,9 @@ spec:
           {{- if hasKey $vol "configMap" }}
           configMap:
             name: {{ $vol.name }}
+            {{- if hasKey $vol.configMap "items" }}
+            items: {{- toYaml $vol.configMap.items | nindent 12}}
+            {{- end }}
           {{- end }}
         {{- end }}
       {{- end }}
