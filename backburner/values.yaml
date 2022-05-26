@@ -11,8 +11,8 @@ global:
     - name: cm-env
   envFromSecret:
     - name: secret-env
-  affinity: []
-    
+  affinity: {}
+
 workers: []
 # - name: custom-jobs
 #   queue:
