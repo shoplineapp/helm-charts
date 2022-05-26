@@ -82,18 +82,26 @@ EnableMutilpleIngress: false
 #              servicePort: 80
 #            path: /health_check
 
-EnableMultipleService: false
-# EnableMultipleService: true
-
+# for single service
 # service:
-#   service-1:
+#   ports:
+#     - name: python-operator
+#       port: 80
+#       target: 5000
+#   type: ClusterIP
+#   selector:
+#     app: python-operator
+
+# for multiple service
+# services:
+#   service-1: # service name
 #     ports:
 #       - name: "svc"
 #         port: 8080
 #     type: ClusterIP
 #     selector:
 #       app: svc
-#   service-2:
+#   service-2: # service name
 #     type: ExternalName
 #     externalName: example.com
 
