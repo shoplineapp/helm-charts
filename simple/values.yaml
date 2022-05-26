@@ -82,6 +82,21 @@ EnableMutilpleIngress: false
 #              servicePort: 80
 #            path: /health_check
 
+EnableMultipleService: false
+# EnableMultipleService: true
+
+# service:
+#   service-1:
+#     ports:
+#       - name: "svc"
+#         port: 8080
+#     type: ClusterIP
+#     selector:
+#       app: svc
+#   service-2:
+#     type: ExternalName
+#     externalName: example.com
+
 pdb:
   # If you just set "enable: true", default will set to "minAvailable: 50%" unless you have set other parameters.
   enable: false
