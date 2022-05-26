@@ -48,6 +48,33 @@ deployment: {}
 #       - name: ndots
 #         value: "2"
 
+# deployment example with configmap volume mount
+# use together with the configmaps example below
+# deployment: 
+#   annotations:
+#     checksum/config.yml: compute_checksum::configmaps/app-config/data/config.yml # compute_checksum will compute the sha256 checksum of the content
+#   containers:
+#     example-app:
+#       name: example-app
+#       image:
+#         repository: example-app
+#         tag: latest
+#       volumes:
+#       - name: app-config-1
+#         subPath: config.yaml
+#         path: /app/config.yaml
+#   volumes:
+#     - name: app-config-1
+#       configMap: {}
+
+# configmaps example
+# configmaps:
+#   app-config:
+#     name: app-config-1
+#     data:
+#       config.yaml: |
+#         test: 1
+
 container:
   image:
     repository: repository_name/image
