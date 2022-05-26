@@ -6,7 +6,7 @@ metadata:
   annotations: {{ toYaml .Values.service.annotations | nindent 4 }}
   labels: {{ toYaml .Values.service.labels | nindent 4 }}
 spec:
-{{- if eq .Values.service.type "ExternalName"}}
+{{- if and (hasKey .Values.service "type") (eq .Values.service.type "ExternalName")}}
   type: {{ .Values.service.type}}
   externalName: {{ .Values.service.externalName }}
 {{- else}}

@@ -9,7 +9,7 @@ metadata:
   annotations: {{ toYaml $ref.annotations | nindent 4 }}
   labels: {{ toYaml $ref.labels | nindent 4 }}
 spec:
-{{- if eq $ref.type "ExternalName"}}
+{{- if and (hasKey $ref "type") (eq $ref.type "ExternalName")}}
   type: {{ $ref.type}}
   externalName: {{ $ref.externalName }}
 {{- else}}
