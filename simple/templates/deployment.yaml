@@ -28,9 +28,9 @@ spec:
         {{- range $key, $value := .Values.deployment.annotations }}
           {{- if hasPrefix "compute_checksum::" $value }}
             {{- $path := replace "compute_checksum::" "" $value}}
-              {{- $key | quote | nindent 8 }} : {{ include "compute_checksum" (dict "path" $path "Values" $.Values) | quote }}
-            {{- else }}
-              {{- $key | quote | nindent 8 }} : {{ $value | quote }}
+            {{- $key | quote | nindent 8 }} : {{ include "compute_checksum" (dict "path" $path "Values" $.Values) | quote }}
+          {{- else }}
+            {{- $key | quote | nindent 8 }} : {{ $value | quote }}
           {{- end }}
         {{- end }}
       {{- end}}
