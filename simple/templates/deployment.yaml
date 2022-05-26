@@ -26,12 +26,12 @@ spec:
       {{- if hasKey .Values.deployment "annotations" }}
       annotations:
         {{- range $key, $value := .Values.deployment.annotations }}
-        {{- if hasPrefix "compute_checksum::" $value }}
-        {{- $path := replace "compute_checksum::" "" $value}}
-        {{ $key | quote }} : {{ include "compute_checksum" (dict "path" $path "Values" $.Values) | quote }}
-        {{- else }}
-        {{ $key | quote }} : {{ $value | quote }}
-        {{- end }}
+          {{- if hasPrefix "compute_checksum::" $value }}
+            {{- $path := replace "compute_checksum::" "" $value}}
+              {{- $key | quote | nindent 8 }} : {{ include "compute_checksum" (dict "path" $path "Values" $.Values) | quote }}
+            {{- else }}
+              {{- $key | quote | nindent 8 }} : {{ $value | quote }}
+          {{- end }}
         {{- end }}
       {{- end}}
       labels:
