@@ -31,6 +31,7 @@ deployment: {}
 # deployment: 
 #   annotations:
 #     checksum/config: checksum
+#     checksum/config.yml: compute_checksum::configmaps/app-config/data/config.yml # `compute_checksum` will compute the sha256 checksum of the content
 #   containers:
 #     example-app:
 #       name: example-app
@@ -43,10 +44,25 @@ deployment: {}
 #         MONGODB_USER:
 #           name: mongodb
 #           key: MONGODB_USER
+#       volumes:
+#       - name: app-config-1
+#         subPath: config.yaml
+#         path: /app/config.yaml
+#   volumes:
+#     - name: app-config-1
+#       configMap: {}
 #   dnsConfig:
 #     options:
 #       - name: ndots
 #         value: "2"
+
+# configmaps example
+# configmaps:
+#   app-config:
+#     name: app-config-1
+#     data:
+#       config.yaml: |
+#         test: 1
 
 container:
   image:
@@ -81,6 +97,29 @@ EnableMutilpleIngress: false
 #              serviceName: example
 #              servicePort: 80
 #            path: /health_check
+
+# for single service
+# service:
+#   ports:
+#     - name: python-operator
+#       port: 80
+#       target: 5000
+#   type: ClusterIP
+#   selector:
+#     app: python-operator
+
+# for multiple service
+# services:
+#   service-1: # service name
+#     ports:
+#       - name: "svc"
+#         port: 8080
+#     type: ClusterIP
+#     selector:
+#       app: svc
+#   service-2: # service name
+#     type: ExternalName
+#     externalName: example.com
 
 pdb:
   # If you just set "enable: true", default will set to "minAvailable: 50%" unless you have set other parameters.

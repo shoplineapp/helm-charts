@@ -1,19 +1,5 @@
-{{- if .Values.service }}
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Values.name }}
-  annotations: {{ toYaml .Values.service.annotations | nindent 4 }}
-  labels: {{ toYaml .Values.service.labels | nindent 4 }}
-spec:
-  ports:
-{{- range .Values.service.ports }}
-  - name: {{ .name | default .port | quote }}
-    port: {{ .port }}
-    targetPort: {{ .target | default .port }}
-    protocol: {{ .protocol | default "TCP" }}
+{{- if .Values.services }}
+{{ template "service.service_multiple" . }}
+{{- else if .Values.service }}
+{{ template "service.service_single" . }}
 {{- end}}
-  type: {{ .Values.service.type | default "ClusterIP" }}
-  selector:
-    app: {{ .Values.name }}
-{{- end }}
