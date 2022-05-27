@@ -26,7 +26,12 @@ spec:
       {{- if hasKey .Values.deployment "annotations" }}
       annotations:
         {{- range $key, $value := .Values.deployment.annotations }}
-        {{ $key | quote }} : {{ $value | quote }}
+          {{- if hasPrefix "compute_checksum::" $value }}
+            {{- $path := replace "compute_checksum::" "" $value}}
+            {{- $key | quote | nindent 8 }} : {{ include "compute_checksum" (dict "path" $path "Values" $.Values) | quote }}
+          {{- else }}
+            {{- $key | quote | nindent 8 }} : {{ $value | quote }}
+          {{- end }}
         {{- end }}
       {{- end}}
       labels:
@@ -98,6 +103,9 @@ spec:
           {{- if hasKey $vol "configMap" }}
           configMap:
             name: {{ $vol.name }}
+            {{- if hasKey $vol.configMap "items" }}
+            items: {{- toYaml $vol.configMap.items | nindent 12}}
+            {{- end }}
           {{- end }}
         {{- end }}
       {{- end }}
