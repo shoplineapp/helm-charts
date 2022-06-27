@@ -30,7 +30,11 @@ spec:
             service:
               name: {{ .backend.serviceName }}
               port: 
+              {{- if regexMatch "^[1-9][0-9]+$" (toString .backend.servicePort) }}
                 number: {{ .backend.servicePort }}
+              {{- else }}
+                name: {{ .backend.servicePort }}
+              {{- end }}
           path: {{ .path | default "/*" }}
           pathType: {{ .pathType | default "ImplementationSpecific" }}
         {{- end }}
