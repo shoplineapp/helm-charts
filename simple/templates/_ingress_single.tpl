@@ -1,5 +1,5 @@
 {{- define "ingress.ingress_single" -}}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.name }}
@@ -24,9 +24,12 @@ spec:
         paths:
         {{- range .http.paths }}
         - backend:
-            serviceName: {{ .backend.serviceName }}
-            servicePort: {{ .backend.servicePort }}
-          path: {{ .path | default "/*"}}
+            service:
+              name: {{ .backend.serviceName }}
+              port: 
+                number: {{ .backend.servicePort }}
+          path: {{ .path | default "/*" }}
+          pathType: {{ .pathType | default "ImplementationSpecific" }}
         {{- end }}
     {{- end }}
 {{- end -}}
