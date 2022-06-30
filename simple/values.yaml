@@ -86,6 +86,7 @@ EnableMutilpleIngress: false
 #              serviceName: example
 #              servicePort: 80
 #            path: /health_check
+#            pathType: ImplementationSpecific
 #  external-ingress:
 #    annotations:
 #      kubernetes.io/ingress.class: alb
@@ -97,6 +98,7 @@ EnableMutilpleIngress: false
 #              serviceName: example
 #              servicePort: 80
 #            path: /health_check
+#            pathType: ImplementationSpecific
 
 # for single service
 # service:
