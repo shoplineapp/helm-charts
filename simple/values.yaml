@@ -87,6 +87,10 @@ EnableMutilpleIngress: false
 #              servicePort: 80
 #            path: /health_check
 #            pathType: ImplementationSpecific
+#          - backend:
+#              serviceName: annotatedAction
+#              useAnnotation: true
+#            path: /annotated_action
 #  external-ingress:
 #    annotations:
 #      kubernetes.io/ingress.class: alb
@@ -99,6 +103,10 @@ EnableMutilpleIngress: false
 #              servicePort: 80
 #            path: /health_check
 #            pathType: ImplementationSpecific
+#          - backend:
+#              serviceName: annotatedAction
+#              useAnnotation: true
+#            path: /annotated_action
 
 # for single service
 # service:

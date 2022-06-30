@@ -26,8 +26,10 @@ spec:
         - backend:
             service:
               name: {{ .backend.serviceName }}
-              port: 
-              {{- if regexMatch "^[1-9][0-9]+$" (toString .backend.servicePort) }}
+              port:
+              {{- if .backend.useAnnotation }}
+                name: use-annotation
+              {{- else if regexMatch "^[1-9][0-9]+$" (toString .backend.servicePort) }}
                 number: {{ .backend.servicePort }}
               {{- else }}
                 name: {{ .backend.servicePort }}
