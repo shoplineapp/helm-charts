@@ -1,6 +1,6 @@
 {{- if .Values.enableDefaultRole }}
 kind: Role
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: role-{{ .Release.Namespace }}-read-only
   namespace: {{ .Release.Namespace }}
@@ -10,7 +10,7 @@ rules:
     verbs: ["get", "watch", "list"]
 ---
 kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: role-binding-{{ .Release.Namespace }}-read-only
   namespace: {{ .Release.Namespace }}
