@@ -182,6 +182,19 @@ pdb:
 #     name: service_account_name
 #     namespace: service_account_namespace
 
+externalSecrets: {}
+# externalSecrets:
+#   example-env-new:
+#     secretStore:
+#       aws:  
+#         region: "ap-southeast-1" # optional, default "ap-southeast-1"
+#         arn: "arn:aws:iam::xxx:role/xxxx" # optional, default use deployment service role
+#     refreshInterval: 1m # optional, default 1h
+#     dataFrom:
+#     - extract:
+#         key: example-secret 
+#         version: "uuid/VersionId" 
+
 # secrets:
 #   example-env:
 #     data: 
