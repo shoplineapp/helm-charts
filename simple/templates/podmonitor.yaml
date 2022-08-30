@@ -21,8 +21,5 @@ spec:
       {{- range $key, $value := $ref.selector.matchLabels }}
       {{ $key }}: {{ $value | quote }}
       {{- end }}
-  podMetricsEndpoints:
-  {{- range $ref.podMetricsEndpoints }}
-    - port: {{ .port | quote }}
-  {{- end }}
+  podMetricsEndpoints: {{- toYaml $ref.podMetricsEndpoints | nindent 4 }}
 {{- end}}
