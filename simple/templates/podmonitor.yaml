@@ -1,0 +1,25 @@
+{{- range $podMonitorName, $ref := .Values.podMonitors }}
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ $podMonitorName }}
+  labels:
+    release: prometheus-operator
+  {{- if hasKey $ref "labels" }}
+    {{- range $key, $value := $ref.labels }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
+spec:
+  namespaceSelector:
+    matchNames:
+    {{- range $namespace := $ref.namespaceSelector }}
+      - {{ $namespace }}
+    {{- end }}
+  selector:
+    matchLabels:
+      {{- range $key, $value := $ref.selector.matchLabels }}
+      {{ $key }}: {{ $value | quote }}
+      {{- end }}
+  podMetricsEndpoints: {{- toYaml $ref.podMetricsEndpoints | nindent 4 }}
+{{- end}}
