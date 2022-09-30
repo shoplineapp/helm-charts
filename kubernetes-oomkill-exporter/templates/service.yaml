@@ -1,0 +1,5 @@
+{{- if .Values.services }}
+{{ template "service.service_multiple" . }}
+{{- else if .Values.service }}
+{{ template "service.service_single" . }}
+{{- end}}

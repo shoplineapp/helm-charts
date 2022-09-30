@@ -1,0 +1,5 @@
+apiVersion: v2
+description: Helm chart for kubernetes-oomkill-exporter DaemonSet
+name: kubernetes-oomkill-exporter
+version: 1.0.0
+appVersion: 0.4.0

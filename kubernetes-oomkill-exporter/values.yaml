@@ -1,0 +1,75 @@
+name: oomkill-exporter
+
+serviceaccount:
+  name: default
+
+tolerations:
+- operator: Exists
+
+daemonset: 
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/port: "9102"
+  maxUnavailable: 1
+  containers:
+    oomkill-exporter:
+      name: oomkill-exporter
+      image:
+        repository: sapcc/kubernetes-oomkill-exporter
+        tag: 0.4.0
+      args:
+      - -logtostderr
+      - -v=5
+      securityContext:
+        privileged: true
+      env:
+        DOCKER_HOST: unix:///var/run/docker.sock
+      resources:
+        limits:
+          cpu: 100m
+          memory: 100Mi
+        requests:
+          cpu: 20m
+          memory: 20Mi
+      ports:
+      - name: metrics
+        port: 9102
+      volumes:
+      - name: kmsg
+        path:  /dev/kmsg
+      - name: docker
+        path: /var/run/docker.sock 
+        readOnly: "false"
+  dnsConfig:
+    options:
+      - name: ndots
+        value: "2"
+  volumes:
+  - name: kmsg
+    hostPath: /dev/kmsg
+  - name: docker
+    hostPath: /var/run/docker.sock
+
+service:
+  labels: 
+    app: oomkill-exporter
+  ports:
+    - name: oomkill-exporter
+      port: 9102
+      target: 9102
+  type: NodePort
+  selector:
+    app: oomkill-exporter
+
+serviceMonitors:
+  oomkill-exporter:
+    labels:
+      app: oomkill-exporter
+    namespaceSelector:
+      namespace:
+        prometheus-operator
+    selector:
+      matchLabels:
+        app: oomkill-exporter
+    endpoints:
+      - port: oomkill-exporter
