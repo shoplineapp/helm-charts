@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.name }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: {{ .Release.Name | quote }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: {{ .Values.daemonset.maxUnavailable | default "1" }}
+    type: RollingUpdate
+  template:
+    metadata:
+      {{- if hasKey .Values.daemonset "annotations" }}
+      annotations:
+        {{- range $key, $value := .Values.daemonset.annotations }}
+          {{- if hasPrefix "compute_checksum::" $value }}
+            {{- $path := replace "compute_checksum::" "" $value}}
+            {{- $key | quote | nindent 8 }} : {{ include "compute_checksum" (dict "path" $path "Values" $.Values) | quote }}
+          {{- else }}
+            {{- $key | quote | nindent 8 }} : {{ $value | quote }}
+          {{- end }}
+        {{- end }}
+      {{- end}}
+      labels:
+        app: {{ .Values.name }}
+    spec:
+      {{- if hasKey .Values "tolerations" }}
+      tolerations:
+        {{- toYaml .Values.tolerations | nindent 6 }}
+      {{- end}}
+      {{- if hasKey .Values "nodeSelector" }}
+      nodeSelector:
+        {{- .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }} 
+      {{- end}}
+      {{- if hasKey .Values "affinity" }}
+      affinity:
+        nodeAffinity: 
+          {{- toYaml .Values.affinity.nodeAffinity | nindent 10 }}
+      {{- end }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName  }}
+      {{- end }}
+      serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
+      terminationGracePeriodSeconds: {{ .Values.daemonset.terminationGracePeriodSeconds | default "30" }}
+      {{- if .Values.daemonset.hostNetworking }}
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      {{- end }}     
+      {{- if .Values.daemonset.dnsConfig }}
+      dnsConfig:
+        {{- toYaml .Values.daemonset.dnsConfig | nindent 8 }}
+      {{- else }}
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "2"
+      {{- end }}
+      {{- if .Values.hostAliases | default .Values.daemonset.hostAliases }}
+      hostAliases: 
+        {{- toYaml ( .Values.hostAliases | default .Values.daemonset.hostAliases ) | nindent 8 }}
+      {{- end }}
+      {{- if .Values.imagePullSecrets }}      
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | indent 8 }}
+      {{- end }}
+      containers:
+    {{- if hasKey .Values.daemonset "containers" }}
+      {{- range .Values.daemonset.containers }}
+      - {{ template "deployment.container" . }}
+      {{- end}}
+    {{- else}}
+      - {{ template "daemonset.container_legacy" .Values }}
+    {{- end}}
+      {{- if hasKey .Values.daemonset  "volumes" }}
+      volumes:
+        {{- range $key, $vol := $.Values.daemonset.volumes }}
+        - name: {{ $vol.name }}
+          {{- if hasKey $vol "hostPath" }}
+          hostPath: 
+            path: {{ $vol.hostPath }}
+          {{- end }}
+          {{- if hasKey $vol "secret" }}
+          secret:
+            {{- toYaml $vol.secret | nindent 12 }}
+          {{- end }}
+          {{- if hasKey $vol "configMap" }}
+          configMap:
+            name: {{ $vol.name }}
+            {{- if hasKey $vol.configMap "items" }}
+            items: {{- toYaml $vol.configMap.items | nindent 12}}
+            {{- end }}
+          {{- end }}
+        {{- end }}
+      {{- end }}
+
