@@ -73,32 +73,32 @@ global:
   imagePullPolicy: IfNotPresent
 
 EnableMutilpleIngress: false
-#EnableMutilpleIngress: true
-#ingress:
-#  internal-ingress:
-#    annotations:
-#      kubernetes.io/ingress.class: alb
-#    rules:
-#      - host:
-#        http:
-#          paths:
-#          - backend:
-#              serviceName: example
-#              servicePort: 80
-#            path: /health_check
-#            pathType: ImplementationSpecific
-#  external-ingress:
-#    annotations:
-#      kubernetes.io/ingress.class: alb
-#    rules:
-#      - host:
-#        http:
-#          paths:
-#          - backend:
-#              serviceName: example
-#              servicePort: 80
-#            path: /health_check
-#            pathType: ImplementationSpecific
+# EnableMutilpleIngress: true
+# ingress:
+#   internal-ingress:
+#     annotations:
+#       kubernetes.io/ingress.class: alb
+#     rules:
+#       - host:
+#         http:
+#           paths:
+#           - backend:
+#               serviceName: example
+#               servicePort: 80
+#             path: /health_check
+#             pathType: ImplementationSpecific
+#   external-ingress:
+#     annotations:
+#       kubernetes.io/ingress.class: alb
+#     rules:
+#       - host:
+#         http:
+#           paths:
+#           - backend:
+#               serviceName: example
+#               servicePort: 80
+#             path: /health_check
+#             pathType: ImplementationSpecific
 
 # for single service
 # service:
@@ -170,9 +170,27 @@ pdb:
 #       stat: Sum
 #       unit: Count
 
+# role:
+#   name: role_name
+#   rules:
+#     - apiGroups: [""]
+#       resources: ["pods"]
+#       verbs: ["watch", "list", "get"]
+# roleBinding:
+#   name: rolebinding_name
+#   roleRef:
+#     name: role_name
+#   subjects:
+#   - kind: ServiceAccount
+#     name: service_account_name
+#     namespace: service_account_namespace
 
-# cluterRole:
+# clusterRole:
 #   name: clusterrole_name
+#   rules:
+#     - apiGroups: [""]
+#       resources: ["pods"]
+#       verbs: ["watch", "list", "get"]
 # clusterRoleBinding:
 #   name: clusterrolebinding_name
 #   roleRef:
