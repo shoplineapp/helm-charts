@@ -56,6 +56,46 @@ deployment: {}
 #       - name: ndots
 #         value: "2"
 
+# daemonset example
+# daemonset: 
+#   annotations:
+#     checksum/config: checksum
+#     checksum/config.yml: compute_checksum::configmaps/app-config/data/config.yml # `compute_checksum` will compute the sha256 checksum of the content
+#   maxUnavailable: 1
+#   containers:
+#     example-app:
+#       name: example-app
+#       image:
+#         repository: example-app
+#         tag: latest
+#       args:
+#       - -logtostderr
+#       - -v=5
+#       securityContext:
+#         privileged: true
+#       env:
+#         RAILS_ENV: staging
+#       resources:
+#         limits:
+#           cpu: 100m
+#           memory: 100Mi
+#         requests:
+#           cpu: 20m
+#           memory: 20Mi
+#       ports:
+#       - name: example-app
+#         port: 8080
+#       volumes:
+#       - name: app-config-1
+#         path: /app/config.yaml
+#   dnsConfig:
+#     options:
+#       - name: ndots
+#         value: "2"
+#   volumes:
+#   - name: app-config-1
+#     configMap: {}
+
 # configmaps example
 # configmaps:
 #   app-config:

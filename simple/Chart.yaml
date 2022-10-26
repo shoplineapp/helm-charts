@@ -4,3 +4,4 @@ name: simple
 version: 0.10.0
 appVersion: 0.0.1
 tillerVersion: ">=2.14.3"
+
