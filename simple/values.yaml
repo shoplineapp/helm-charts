@@ -261,12 +261,12 @@ externalSecrets: {}
 #     notifications.argoproj.io/subscribe.on-rollout-completed.slack_webhook: ""
 #   revisionHistoryLimit: 10
 #   strategy:
-#   # blueGreen and canary can't exist at the same time
+#   # blueGreen and canary CANNOT exist at the same time
 #     blueGreen:
-#       activeService: "app-name"
-#       previewService: "app-name-preview"  
+#       activeService: "app-name" # If uses service, this is an optional value; if uses services, then this is a required value
+#       previewService: "app-name-preview"  # If uses service, this is an optional value; if uses services, then this is a required value
+#       autoPromotionEnabled: false # Required value. if you don't want auto promotion, type false.
 #       extra: 
-#         autoPromotionEnabled: false # remember to add this if you don't want auto promotion
 #         prePromotionAnalysis:
 #           templates:
 #           - templateName: success-rate
@@ -274,8 +274,8 @@ externalSecrets: {}
 #           - name: service-name
 #             value: guestbook-svc.default.svc.cluster.local
 #     canary:
-#       canaryService: "app-name-canary"
-#       stableService: "app-name-stable"
+#       canaryService: "app-name-canary" # If uses service, this is an optional value; if uses services, then this is a required value
+#       stableService: "app-name-stable"# If uses service, this is an optional value; if uses services, then this is a required value
 #       steps:
 #         - setWeight: 10
 #         - pause: { duration: 1h }
@@ -284,7 +284,7 @@ externalSecrets: {}
 #             - templateName: success-rate
 #         - setWeight: 100
 #       trafficRouting: 
-#         alb: # if you choose trafficRouting.alb, remember to modify ingress servicePort: use-annotation
+#         alb: # If choose trafficRouting.alb, remember to modify ingress servicePort: use-annotation
 #           ingress: ingress  
 #           servicePort: 443  
 #           rootService: "app-name" # origin service name

@@ -28,15 +28,34 @@ spec:
   {{ end }}
   {{- if .Values.rollout.strategy.blueGreen }}
     blueGreen:
+    {{- if .Values.services }}
+    {{- if and .Values.rollout.strategy.blueGreen.activeService .Values.rollout.strategy.blueGreen.previewService }}
       activeService: {{ .Values.rollout.strategy.blueGreen.activeService }}
       previewService: {{ .Values.rollout.strategy.blueGreen.previewService }}
+    {{- else }}
+    {{ fail "Because you use \"services\", so you should define .rollout.strategy.blueGreen.activeService and .rollout.strategy.blueGreen.previewService" }}
+    {{- end }}
+    {{- else if .Values.service }}
+      activeService: {{ .Values.rollout.strategy.blueGreen.activeService | default .Values.name }}
+      previewService: {{ .Values.rollout.strategy.blueGreen.previewService| default (printf "%s-preview" .Values.name) }}
+    {{- end }}
+      autoPromotionEnabled: {{ .Values.rollout.strategy.blueGreen.autoPromotionEnabled }}
     {{- if .Values.rollout.strategy.blueGreen.extra }}
     {{- toYaml .Values.rollout.strategy.blueGreen.extra |nindent 6 }}
     {{- end }}
   {{ else if .Values.rollout.strategy.canary }}
     canary:
+    {{- if .Values.services }}
+    {{- if and .Values.rollout.strategy.canary.canaryService .Values.rollout.strategy.canary.stableService }}
       canaryService: {{ .Values.rollout.strategy.canary.canaryService }}
       stableService: {{ .Values.rollout.strategy.canary.stableService }}
+    {{- else }}
+    {{ fail "Because you use \"services\", so you should define .rollout.strategy.canary.canaryService and .rollout.strategy.canary.stableService" }}
+    {{- end }}
+    {{- else if .Values.service}}
+      canaryService: {{ .Values.rollout.strategy.canary.canaryService| default (printf "%s-canary" .Values.name) }}
+      stableService: {{ .Values.rollout.strategy.canary.stableService | default (printf "%s-stable" .Values.name) }}
+    {{- end }}
       steps:
       {{- toYaml .Values.rollout.strategy.canary.steps | nindent 6 }}
       {{ if .Values.rollout.strategy.canary.trafficRouting }}
@@ -53,7 +72,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ .Values.rollout.strategy.canary.canaryService }}
+  name: {{ .Values.rollout.strategy.canary.canaryService | default (printf "%s-canary" .Values.name) }}
 spec:
   {{- if hasKey .Values.service "type" }}
     {{- if eq .Values.service.type "ExternalName" }}
@@ -88,9 +107,9 @@ apiVersion: v1
 kind: Service
 metadata:
 {{- if .Values.rollout.strategy.blueGreen }}
-  name: {{ .Values.rollout.strategy.blueGreen.previewService }}
+  name: {{ .Values.rollout.strategy.blueGreen.previewService | default (printf "%s-preview" .Values.name) }}
 {{- else }}
-  name: {{ .Values.rollout.strategy.canary.stableService }}
+  name: {{ .Values.rollout.strategy.canary.stableService | default (printf "%s-stable" .Values.name) }}
 {{- end }}
 spec:
   {{- if hasKey .Values.service "type" }}
