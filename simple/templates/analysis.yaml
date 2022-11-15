@@ -1,0 +1,14 @@
+{{- range $analysis_name, $ref := .Values.analyses }}
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: {{ $analysis_name }}
+spec:
+  args: 
+  {{- toYaml ($ref.spec).args | nindent 4 }}
+  metrics: 
+  {{- toYaml ($ref.spec).metrics | nindent 4 }}
+  dryRun:
+  {{- toYaml ($ref.spec).dryRun | nindent 4 }}
+---
+{{- end }}
