@@ -10,6 +10,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec: {{ toYaml .Values.KEDA.ScaledObject.spec | nindent 2 }}
   scaleTargetRef:
+    {{- if .Values.rollout }}
+    kind: Rollout
+    apiVersion: argoproj.io/v1alpha1
+    {{- end }}
     name: {{ .Values.name }}
   {{- end }}
 {{- end }}
@@ -24,6 +28,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   scaleTargetRef:
+    {{- if .Values.rollout }}
+    kind: Rollout
+    apiVersion: argoproj.io/v1alpha1
+    {{- end }}
     name: {{ .Values.name }}
   minReplicaCount: {{ .Values.hpav2.minReplicas }}
   maxReplicaCount: {{ .Values.hpav2.maxReplicas }}

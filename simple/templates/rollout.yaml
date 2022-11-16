@@ -1,0 +1,144 @@
+{{ if .Values.rollout }}
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Values.name }}
+  annotations:
+{{- toYaml .Values.rollout.annotations | nindent 4 }}
+spec: 
+  {{- if .Values.hpa }}
+  replicas: {{ .Values.hpa.minReplicas }}
+  {{- else if .Values.hpav2 }}
+  replicas: {{ .Values.hpav2.minReplicas }}
+  {{- else if .Values.KEDA}}
+  replicas: {{ .Values.KEDA.ScaledObject.spec.minReplicaCount | default .Values.replicaCount }}
+  {{- else }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: {{ .Values.name }}
+  workloadRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ .Values.name }}
+  strategy:
+  {{- if and .Values.rollout.strategy.blueGreen .Values.rollout.strategy.canary}}
+  {{ fail "blueGreen and canary can't exist at the same time"}}
+  {{ end }}
+  {{- if .Values.rollout.strategy.blueGreen }}
+    blueGreen:
+    {{- if .Values.services }}
+    {{- if and .Values.rollout.strategy.blueGreen.activeService .Values.rollout.strategy.blueGreen.previewService }}
+      activeService: {{ .Values.rollout.strategy.blueGreen.activeService }}
+      previewService: {{ .Values.rollout.strategy.blueGreen.previewService }}
+    {{- else }}
+    {{ fail "Because you use \"services\", so you should define .rollout.strategy.blueGreen.activeService and .rollout.strategy.blueGreen.previewService" }}
+    {{- end }}
+    {{- else if .Values.service }}
+      activeService: {{ .Values.rollout.strategy.blueGreen.activeService | default .Values.name }}
+      previewService: {{ .Values.rollout.strategy.blueGreen.previewService| default (printf "%s-preview" .Values.name) }}
+    {{- end }}
+      autoPromotionEnabled: {{ .Values.rollout.strategy.blueGreen.autoPromotionEnabled }}
+    {{- if .Values.rollout.strategy.blueGreen.extra }}
+    {{- toYaml .Values.rollout.strategy.blueGreen.extra |nindent 6 }}
+    {{- end }}
+  {{ else if .Values.rollout.strategy.canary }}
+    canary:
+    {{- if .Values.services }}
+    {{- if and .Values.rollout.strategy.canary.canaryService .Values.rollout.strategy.canary.stableService }}
+      canaryService: {{ .Values.rollout.strategy.canary.canaryService }}
+      stableService: {{ .Values.rollout.strategy.canary.stableService }}
+    {{- else }}
+    {{ fail "Because you use \"services\", so you should define .rollout.strategy.canary.canaryService and .rollout.strategy.canary.stableService" }}
+    {{- end }}
+    {{- else if .Values.service}}
+      canaryService: {{ .Values.rollout.strategy.canary.canaryService| default (printf "%s-canary" .Values.name) }}
+      stableService: {{ .Values.rollout.strategy.canary.stableService | default (printf "%s-stable" .Values.name) }}
+    {{- end }}
+      steps:
+      {{- toYaml .Values.rollout.strategy.canary.steps | nindent 6 }}
+      {{ if .Values.rollout.strategy.canary.trafficRouting }}
+      trafficRouting: 
+      {{- toYaml .Values.rollout.strategy.canary.trafficRouting | nindent 8 }}
+      {{- end }}
+      {{ if .Values.rollout.strategy.canary.extra }}
+      {{- toYaml .Values.rollout.strategy.canary.extra | nindent 6 }}
+      {{- end }}
+  {{ end }}
+---
+{{- if .Values.service }}
+{{- if .Values.rollout.strategy.canary }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.rollout.strategy.canary.canaryService | default (printf "%s-canary" .Values.name) }}
+spec:
+  {{- if hasKey .Values.service "type" }}
+    {{- if eq .Values.service.type "ExternalName" }}
+    {{ fail "not support this service type on rollout"}}
+    {{- else }}
+  ports:
+    {{- range .Values.service.ports }}
+  - name: {{ .name | default .port | quote }}
+    port: {{ .port }}
+    targetPort: {{ .target | default .port }}
+    protocol: {{ .protocol | default "TCP" }}
+    {{- end }}
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Values.name }}
+    {{- end }}
+  {{- else}}
+  ports:
+    {{- range .Values.service.ports }}
+  - name: {{ .name | default .port | quote }}
+    port: {{ .port }}
+    targetPort: {{ .target | default .port }}
+    protocol: {{ .protocol | default "TCP" }}
+    {{- end}}
+  type: ClusterIP
+  selector:
+    app: {{ .Values.name }}
+  {{- end }}
+{{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+{{- if .Values.rollout.strategy.blueGreen }}
+  name: {{ .Values.rollout.strategy.blueGreen.previewService | default (printf "%s-preview" .Values.name) }}
+{{- else }}
+  name: {{ .Values.rollout.strategy.canary.stableService | default (printf "%s-stable" .Values.name) }}
+{{- end }}
+spec:
+  {{- if hasKey .Values.service "type" }}
+    {{- if eq .Values.service.type "ExternalName" }}
+    {{ fail "not support this service type on rollout"}}
+    {{- else }}
+  ports:
+    {{- range .Values.service.ports }}
+  - name: {{ .name | default .port | quote }}
+    port: {{ .port }}
+    targetPort: {{ .target | default .port }}
+    protocol: {{ .protocol | default "TCP" }}
+    {{- end }}
+  type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Values.name }}
+    {{- end }}
+  {{- else}}
+  ports:
+    {{- range .Values.service.ports }}
+  - name: {{ .name | default .port | quote }}
+    port: {{ .port }}
+    targetPort: {{ .target | default .port }}
+    protocol: {{ .protocol | default "TCP" }}
+    {{- end}}
+  type: ClusterIP
+  selector:
+    app: {{ .Values.name }}
+  {{- end }}
+{{- end }}
+{{- end }}
+---
