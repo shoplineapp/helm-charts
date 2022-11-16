@@ -21,8 +21,7 @@ spec:
       {{- end}}
   type: {{ $ref.type | default "ClusterIP" }}
   selector:
-    app: {{ $service_name }}
+    app: {{ $ref.selector.app | default $service_name }}
     {{- end }}
   {{- end }}
-
 {{- end -}}
