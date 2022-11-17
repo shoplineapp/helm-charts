@@ -33,6 +33,7 @@ jobs:
           helm package cronjob -d cronjob
           helm package backburner -d backburner
           helm package eks -d eks
+          helm package oomkill-exporter -d oomkill-exporter
           helm repo index . --url https://shoplineapp.github.io/helm-charts
           ls -al simple/
           cat index.yaml
