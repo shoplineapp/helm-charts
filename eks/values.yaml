@@ -1,4 +1,5 @@
 enableDefaultRole: True
+enableArgoWorkflowsDefaultRole: True
 customRole: []
   # - name: shopline-template1
   #   rules:
