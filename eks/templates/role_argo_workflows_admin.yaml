@@ -29,7 +29,6 @@ metadata:
 subjects:
   - kind: ServiceAccount
     name: {{ .Release.Namespace }}-argo-workflows-admin-service-account
-    apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
   name: role-{{ .Release.Namespace }}-argo-workflows-admin
