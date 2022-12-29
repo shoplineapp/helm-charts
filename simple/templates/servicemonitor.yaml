@@ -10,7 +10,6 @@ metadata:
     {{ $key }}: {{ $value | quote }}
     {{- end }}
   {{- end }}
-  namespace: prometheus-operator
 spec:
   namespaceSelector:
     matchNames:
@@ -22,8 +21,5 @@ spec:
       {{- range $key, $value := $ref.selector.matchLabels }}
       {{ $key }}: {{ $value | quote }}
       {{- end }}
-  endpoints:
-  {{- range $ref.endpoints }}
-    - port: {{ .port | quote }}
-  {{- end }}
+  endpoints: {{- toYaml $ref.endpoints | nindent 4 }}
 {{- end}}
