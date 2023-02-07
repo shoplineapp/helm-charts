@@ -20,6 +20,9 @@ spec:
     protocol: {{ .protocol | default "TCP" }}
       {{- end}}
   type: {{ $ref.type | default "ClusterIP" }}
+    {{- if hasKey $ref "clusterIP" }}
+  clusterIP: {{ $ref.clusterIP  }}
+    {{- end }}  
   selector:
     app: {{ $ref.selector.app | default $service_name }}
     {{- end }}

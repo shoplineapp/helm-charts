@@ -19,6 +19,9 @@ spec:
     protocol: {{ .protocol | default "TCP" }}
     {{- end }}
   type: {{ .Values.service.type }}
+    {{- if hasKey .Values.service "clusterIP" }}
+  clusterIP: {{ .Values.service.clusterIP }}
+    {{- end }}   
   selector:
     app: {{ .Values.name }}
     {{- end }}
@@ -31,6 +34,9 @@ spec:
     protocol: {{ .protocol | default "TCP" }}
     {{- end}}
   type: ClusterIP
+    {{- if hasKey .Values.service "clusterIP" }}
+  clusterIP: {{ .Values.service.clusterIP }}
+    {{- end }}  
   selector:
     app: {{ .Values.name }}
   {{- end }}
