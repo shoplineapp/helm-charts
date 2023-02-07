@@ -107,6 +107,7 @@ EnableMutilpleIngress: false
 #       port: 80
 #       target: 5000
 #   type: ClusterIP
+#   clusterIP: 10.100.0.0
 #   selector:
 #     app: python-operator
 
@@ -117,6 +118,7 @@ EnableMutilpleIngress: false
 #       - name: "svc"
 #         port: 8080
 #     type: ClusterIP
+#     clusterIP: 10.100.0.0
 #     selector:
 #       app: svc
 #   service-2: # service name
