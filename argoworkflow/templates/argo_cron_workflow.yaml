@@ -4,6 +4,34 @@ kind: CronWorkflow
 metadata:
   name: {{ $workflow }}
 spec:
-  {{- toYaml ($ref.spec) | nindent 4 }}
+  schedule: '{{ $ref.spec.schedule }}'
+  workflowSpec:
+    workflowMetadata:
+      labels:
+        name: {{ $workflow }}
+    metrics:
+      prometheus:
+        - name: fail_count
+          help: "Count of execution by fail status"
+          labels:
+            - key: name
+              value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
+            - key: namespace
+              value: "{{ "{{" }}workflow.namespace{{ "}}" }}"
+          when: "{{ "{{" }}status{{ "}}" }} == Failed"       # Emit the metric conditionally. Works the same as normal "when"
+          counter:
+            value: "1"                            # This increments the counter by 1
+        - name: success_count
+          help: "Count of execution by success status"
+          labels:
+            - key: name
+              value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
+            - key: namespace
+              value: "{{ "{{" }}workflow.namespace{{ "}}" }}"
+          when: "{{ "{{" }}status{{ "}}" }} == Succeeded"       # Emit the metric conditionally. Works the same as normal "when"
+          counter:
+            value: "1"                  # This increments the counter by 1
+    entrypoint: {{ $ref.spec.workflowSpec.entrypoint }}
+    templates: {{- toYaml ($ref.spec.workflowSpec.templates) | nindent 4 }}
 ---
 {{- end }}
