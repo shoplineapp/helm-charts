@@ -1,9 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
-  name: {{ .Values.name }}
+  name: {{ required "name must be provided" .Values.name }}
 spec:
-  schedule: '{{ .Values.schedule }}'
+  schedule: '{{ required "schedule must be provided" .Values.schedule }}'
   workflowSpec:
     workflowMetadata:
       labels:
@@ -38,9 +38,9 @@ spec:
               template: template
       - name: template
         container:
-          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
           command: [ bundle ]
-          args: [ exec, rake, {{ .Values.rake_command }} ]
+          args: [ exec, rake, {{ required "rake_command must be provided" .Values.rake_command }} ]
           resources: {{- toYaml ( .Values.resources) | nindent 11 }}
           envFrom:
             {{- range .Values.envFrom.configMapRef }}
