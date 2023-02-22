@@ -1,14 +1,13 @@
-{{- range $workflow, $ref := .Values.argoCronWorkflows }}
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
-  name: {{ $workflow }}
+  name: {{ .Values.name }}
 spec:
-  schedule: '{{ $ref.spec.schedule }}'
+  schedule: '{{ .Values.schedule }}'
   workflowSpec:
     workflowMetadata:
       labels:
-        name: {{ $workflow }}
+        name: {{ .Values.name }}
     metrics:
       prometheus:
         - name: fail_count
@@ -31,7 +30,24 @@ spec:
           when: "{{ "{{" }}status{{ "}}" }} == Succeeded"       # Emit the metric conditionally. Works the same as normal "when"
           counter:
             value: "1"                  # This increments the counter by 1
-    entrypoint: {{ $ref.spec.workflowSpec.entrypoint }}
-    templates: {{- toYaml ($ref.spec.workflowSpec.templates) | nindent 4 }}
----
-{{- end }}
+    entrypoint: entry
+    templates:
+      - name: entry
+        steps:
+          - - name: step1
+              template: template
+      - name: template
+        container:
+          image: '{{ .Values.image.repository }}:{{ .Values.image.tag }}'
+          command: [ bundle ]
+          args: [ exec, rake, {{ .Values.rake_command }} ]
+          resources: {{- toYaml ( .Values.resources) | nindent 11 }}
+          envFrom:
+            {{- range .Values.envFrom.configMapRef }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+            {{- range .Values.envFrom.secretRef }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
