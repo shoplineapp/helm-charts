@@ -46,8 +46,8 @@ spec:
       - name: template
         container:
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
-          command: [ bundle ]
-          args: [ exec, rake, {{ required "rake_command must be provided" .Values.rake_command }} ]
+          command:  {{- toYaml ( .Values.command) | nindent 11 }}
+          args: {{- toYaml ( .Values.args) | nindent 11 }}
           resources: {{- toYaml ( .Values.resources) | nindent 11 }}
           envFrom:
             {{- range .Values.envFrom.configMapRef }}
