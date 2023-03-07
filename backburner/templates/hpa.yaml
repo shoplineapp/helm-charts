@@ -1,16 +1,31 @@
-{{ range .Values.workers }}
-{{- if ne "false" (.enableHPA | toString) }}
-{{- $resourceName := (ternary .name .queue (not (empty .name))) }}
+{{- if .Values.hpa }}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ .Values.name }}
+spec:
+  scaleTargetRef:
+    name: {{ .Values.name }}
+    kind: Deployment
+    apiVersion: apps/v1
+  minReplicas: {{ .Values.hpa.minReplicas }}
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
+  targetCPUUtilizationPercentage: {{ .Values.hpa.targetCPUUtilizationPercentage }}
+{{- else if .Values.hpav2 }}
+  {{- if (empty .Values.hpav2.External) }}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ $.Values.name }}-{{ $resourceName }}
+  name: {{ .Values.name }}
 spec:
-  {{- if .hpav2 }}
-  minReplicas: {{ .hpav2.minReplicas }}
-  maxReplicas: {{ .hpav2.maxReplicas }}
+  minReplicas: {{ .Values.hpav2.minReplicas }}
+  maxReplicas: {{ .Values.hpav2.maxReplicas }}
+  scaleTargetRef:
+    kind: Deployment
+    apiVersion: apps/v1
+    name: {{ .Values.name }}
   metrics:
-  {{- range .hpav2.Resource }}
+  {{- range .Values.hpav2.Resource }}
   - type: Resource
     resource:
       name: {{ .name }}
@@ -23,21 +38,14 @@ spec:
         averageValue: {{ .value }}
         {{- end }}
   {{- end }}
-  {{- else }}
-  minReplicas: 1
-  maxReplicas: 1
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
+  {{- range .Values.hpav2.External }}
+  - type: External
+    external:
+      metric:
+        name: {{ .metricName }}
       target:
-        type: Utilization
-        averageUtilization: 70
+        type: {{ .type }}
+        value: {{ .value }}
+    {{- end }}
   {{- end }}
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: {{ $.Values.name }}-{{ $resourceName }}
----
-{{- end }}
-{{- end }}
+{{- end}}

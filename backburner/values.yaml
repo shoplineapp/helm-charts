@@ -73,3 +73,33 @@ workers: []
 #     requests:
 #       cpu: "1"
 #       memory: "4Gi"
+
+# autoscaling/v1 block
+# hpa:
+#   minReplicas: 1
+#   maxReplicas: 2
+#   targetCPUUtilizationPercentage: 60
+
+# autoscaling/v2beta2 block
+# hpav2:
+#   minReplicas: 1
+#   maxReplicas: 2
+#   # k8s hpav2 native only support cpu and memory
+#   Resource:
+#     - name: cpu
+#       # simple chart support percent and value setting
+#       percent: 60
+#     - name: memory
+#       value: 100Mi
+#   # setting external mertics
+#   External:
+#     - metricName: shop-nc-alb-request
+#       # type support Value and AverageValue
+#       type: Value
+#       value: 10
+
+# Don’t combine ScaledObject with Horizontal Pod Autoscaler (HPA)
+# exmaple yaml please refer to example/example-keda.yaml
+# KEDA:
+#   ScaledObject:
+#     spec: {}
