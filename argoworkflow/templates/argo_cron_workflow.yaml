@@ -2,12 +2,42 @@ apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
   name: {{ required "name must be provided" .Values.name }}
+  namespace: {{ .Release.Namespace }}
 spec:
   schedule: '{{ required "schedule must be provided" .Values.schedule }}'
+  {{- if and (.Values.job) (.Values.job.history) (.Values.job.history.success) }}
+  successfulJobsHistoryLimit: {{ .Values.job.history.success }}
+  {{- else }}
+  successfulJobsHistoryLimit: 3
+  {{- end }}
+  {{- if and (.Values.job) (.Values.job.history) (.Values.job.history.failed) }}
+  failedJobsHistoryLimit: {{ .Values.job.history.failed }}
+  {{- else }}
+  failedJobsHistoryLimit: 1
+  {{- end }}
+  {{- if and (.Values.job) (.Values.job.concurrency) }}
+  concurrencyPolicy: {{ .Values.job.concurrency }} # Valid Value:  "Allow" | "Forbid" | "Replace"
+  {{- else }}
+  concurrencyPolicy:  "Allow"
+  {{- end }}
+  {{- if .Values.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
+  {{- end }}
   workflowSpec:
     workflowMetadata:
       labels:
         name: {{ .Values.name }}
+      {{- range $key, $value := .Values.annotations }}
+      {{ $key | quote }} : {{ $value | quote }}
+      {{- end }}  
+    {{- if .Values.serviceaccount }}
+    serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-argo-workflows-admin-service-account" .Release.Namespace) }}
+    {{- else if .Values.serviceAccount }}
+    serviceAccountName: {{ .Release.Namespace  }}-argo-workflows-admin-service-account
+    {{- end }}  
+    {{- if and (.Values.job) (.Values.job.timeout) }}
+    activeDeadlineSeconds	: {{.Values.job.timeouts }}
+    {{- end }}         
     metrics:
       prometheus:
         - name: exec_duration_gauge         # Metric name (will be prepended with "argo_workflows_")
@@ -43,12 +73,47 @@ spec:
         steps:
           - - name: step1
               template: template
+        {{- if and  (.Values.job) (.Values.job.retries)}}      
+        retryStrategy:
+          limit: {{ .Values.job.retries }}
+          {{- if .Values.job.retryPolicy }}
+          retryPolicy: {{ .Values.job.retryPolicy }} # Valid Value:  "Allow" | "Forbid" | "Replace"
+          {{- end }}  
+        {{- end }}        
       - name: template
         container:
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
+          {{- if .Values.command }}
           command:  {{- toYaml ( .Values.command) | nindent 11 }}
+          {{- end }}
+          {{- if .Values.command }}
           args: {{- toYaml ( .Values.args) | nindent 11 }}
+          {{- end }}
+          {{- if .Values.resources }}
           resources: {{- toYaml ( .Values.resources) | nindent 11 }}
+          {{- else }}   # default settings on resources
+          resources:  
+            limits:
+              memory: "4Gi"
+            requests:
+              cpu: "0.5"
+              memory: "3Gi"
+          {{- end }}
+          env:
+            - name: POD_NAME
+              value: {{ .Values.name }}
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{- range $key, $name := .Values.envSecrets }}
+            - name: {{ $key }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $name }}
+                  key: {{ $key | quote }}
+            {{- end }}          
+          {{- if .Values.envFrom }}
           envFrom:
             {{- range .Values.envFrom.configMapRef }}
             - configMapRef:
@@ -58,3 +123,12 @@ spec:
             - secretRef:
                 name: {{ . }}
             {{- end }}
+          {{- end }}
+    {{- if .Values.keepPodAfterFinish }} # Can keep the pod after finish during development
+    ttlStrategy:
+      secondsAfterCompletion: 600    
+    podGC:
+      labelSelector:
+        matchLabels:
+          should-be-deleted: "true"
+    {{- end }}
