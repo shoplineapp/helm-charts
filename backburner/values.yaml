@@ -91,12 +91,7 @@ workers: []
 #       percent: 60
 #     - name: memory
 #       value: 100Mi
-#   # setting external mertics
-#   External:
-#     - metricName: shop-nc-alb-request
-#       # type support Value and AverageValue
-#       type: Value
-#       value: 10
+
 
 # Don’t combine ScaledObject with Horizontal Pod Autoscaler (HPA)
 # exmaple yaml please refer to example/example-keda.yaml
