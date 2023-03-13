@@ -30,7 +30,6 @@ workers: []
 #     - -c
 #   args:
 #     - my custom command;
-#   enableHPA: true
 #   hpav2:
 #     minReplicas: 1
 #     maxReplicas: 1
@@ -49,8 +48,26 @@ workers: []
 #       cpu: "1"
 #       memory: "4Gi"
 # - name: worker2
+#   queue:
+#     - queueName: user-import-notification0 # default listener: 2
+#     - queueName: user-import-notification1 # default listener: 2
+#   resources:
+#     limits:
+#       cpu: "2"
+#       memory: "16Gi"
+#     requests:
+#       cpu: "1"
+#       memory: "4Gi"
+#   KEDA:
+#     ScaledObject:
+#       spec:
+#         maxReplicaCount: 3
+#         minReplicaCount: 1
+#         # available scalers for KEDA https://keda.sh/docs/2.8/scalers/
+#         triggers: []
+# - name: worker3
+#   # Deployment with Recreate update strategy without hpa ,KEDA and etc...
 #   standAlone: true
-#   enableHPA: false # set enableHPA required when standAlone mode
 #   queue:
 #     - queueName: user-import-notification3
 #   resources:
@@ -73,28 +90,3 @@ workers: []
 #     requests:
 #       cpu: "1"
 #       memory: "4Gi"
-
-# autoscaling/v1 block
-# hpa:
-#   minReplicas: 1
-#   maxReplicas: 2
-#   targetCPUUtilizationPercentage: 60
-
-# autoscaling/v2beta2 block
-# hpav2:
-#   minReplicas: 1
-#   maxReplicas: 2
-#   # k8s hpav2 native only support cpu and memory
-#   Resource:
-#     - name: cpu
-#       # simple chart support percent and value setting
-#       percent: 60
-#     - name: memory
-#       value: 100Mi
-
-
-# Don’t combine ScaledObject with Horizontal Pod Autoscaler (HPA)
-# exmaple yaml please refer to example/example-keda.yaml
-# KEDA:
-#   ScaledObject:
-#     spec: {}

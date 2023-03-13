@@ -1,5 +1,5 @@
 {{ range .Values.workers }}
-{{ $resourceName := (ternary .name .queue (not (empty .name))) }}
+{{ $resourceName := .name }}
 {{ $worker := merge . $.Values.global (dict "resourceName" $resourceName) }}
 apiVersion: apps/v1
 kind: Deployment
