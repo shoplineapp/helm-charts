@@ -1,0 +1,21 @@
+{{ range .Values.workers }}
+{{- if .KEDA }}
+  {{- if (and .KEDA.ScaledObject (or .hpa .hpav2)) }}
+    {{ fail "Don't create ScaledObject and HPA at same time." }}
+  {{- end }}
+  {{- if (default .standAlone false ) }}
+    {{ fail "Don't create ScaledObject at standalone mode." }}
+  {{- end }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ $.Values.name }}-{{ .name }}
+  namespace: {{ $.Release.Namespace }}  
+spec: {{ toYaml .KEDA.ScaledObject.spec | nindent 2 }}
+  scaleTargetRef:
+    kind: Deployment
+    apiVersion: apps/v1
+    name: {{ $.Values.name }}-{{ .name }}
+---    
+{{- end }}
+{{- end }}
