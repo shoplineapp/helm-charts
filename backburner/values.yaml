@@ -30,7 +30,6 @@ workers: []
 #     - -c
 #   args:
 #     - my custom command;
-#   enableHPA: true
 #   hpav2:
 #     minReplicas: 1
 #     maxReplicas: 1
@@ -49,8 +48,26 @@ workers: []
 #       cpu: "1"
 #       memory: "4Gi"
 # - name: worker2
+#   queue:
+#     - queueName: user-import-notification0 # default listener: 2
+#     - queueName: user-import-notification1 # default listener: 2
+#   resources:
+#     limits:
+#       cpu: "2"
+#       memory: "16Gi"
+#     requests:
+#       cpu: "1"
+#       memory: "4Gi"
+#   KEDA:
+#     ScaledObject:
+#       spec:
+#         maxReplicaCount: 3
+#         minReplicaCount: 1
+#         # available scalers for KEDA https://keda.sh/docs/2.8/scalers/
+#         triggers: []
+# - name: worker3
+#   # Deployment with Recreate update strategy without hpa ,KEDA and etc...
 #   standAlone: true
-#   enableHPA: false # set enableHPA required when standAlone mode
 #   queue:
 #     - queueName: user-import-notification3
 #   resources:

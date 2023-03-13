@@ -1,12 +1,14 @@
 {{ range .Values.workers }}
-{{- if ne "false" (.enableHPA | toString) }}
-{{- $resourceName := (ternary .name .queue (not (empty .name))) }}
+{{- if .hpav2 }}
+  {{- if (default .standAlone false ) }}
+    {{ fail "Don't create HPA at standalone mode." }}
+  {{- end }}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ $.Values.name }}-{{ $resourceName }}
+  name: {{ $.Values.name }}-{{ .name }}
+  namespace: {{ $.Release.Namespace }}
 spec:
-  {{- if .hpav2 }}
   minReplicas: {{ .hpav2.minReplicas }}
   maxReplicas: {{ .hpav2.maxReplicas }}
   metrics:
@@ -23,21 +25,10 @@ spec:
         averageValue: {{ .value }}
         {{- end }}
   {{- end }}
-  {{- else }}
-  minReplicas: 1
-  maxReplicas: 1
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70
-  {{- end }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ $.Values.name }}-{{ $resourceName }}
----
-{{- end }}
-{{- end }}
+    name: {{ $.Values.name }}-{{ .name }}
+---      
+{{- end}}
+{{- end}}

@@ -17,10 +17,6 @@
             {{- if gt $queueLen 1}} 
               {{ fail "queue more than one failed when the standalone mode."}}
             {{- end}}
-            
-            {{- if ne "false" (.enableHPA | toString)}} 
-              {{ fail "enableHPA failed when the standalone mode."}}
-            {{- end}}
           {{- end}}
 
           {{- $queueList := list}}
