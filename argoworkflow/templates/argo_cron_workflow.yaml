@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 metadata:
-  name: {{ required "name must be provided" .Values.name }}
+  name: {{ required "name must be provided"  .Values.name }} 
   namespace: {{ .Release.Namespace }}
 spec:
   schedule: '{{ required "schedule must be provided" .Values.schedule }}'
@@ -44,27 +44,33 @@ spec:
           labels: # Labels are optional. Avoid cardinality explosion.
             - key: name
               value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
+            - key: kind
+              value: "cron-workflow"
           help: "Duration gauge by name"    # A help doc describing your metric. This is required.
           gauge: # The metric type. Available are "gauge", "histogram", and "counter".
             value: "{{ "{{" }}workflow.duration{{ "}}" }}"  # The value of your metric. It could be an Argo variable (see variables doc) or a literal value
-        - name: fail_count
-          help: "Count of execution by fail status"
+        - name: cron_workflow_fail_count
           labels:
             - key: name
               value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
             - key: namespace
               value: "{{ "{{" }}workflow.namespace{{ "}}" }}"
-          when: "{{ "{{" }}status{{ "}}" }} == Failed"       # Emit the metric conditionally. Works the same as normal "when"
+            - key: kind
+              value: "cron-workflow"
+          help: "Count of execution by fail status"                  
+          when: "{{ "{{" }}status{{ "}}" }} != Succeeded"       # Emit the metric conditionally. Works the same as normal "when"
           counter:
             value: "1"                            # This increments the counter by 1
-        - name: success_count
-          help: "Count of execution by success status"
+        - name: cron_workflow_success_count
           labels:
             - key: name
               value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
             - key: namespace
               value: "{{ "{{" }}workflow.namespace{{ "}}" }}"
-          when: "{{ "{{" }}status{{ "}}" }} == Succeeded"       # Emit the metric conditionally. Works the same as normal "when"
+            - key: kind
+              value: "cron-workflow"
+          help: "Count of execution by success status"                            
+          when: "{{ "{{" }}status{{ "}}" }} == Succeeded"     # Emit the metric conditionally. Works the same as normal "when"
           counter:
             value: "1"                  # This increments the counter by 1
     entrypoint: entry
@@ -74,13 +80,16 @@ spec:
           - - name: step1
               template: template
         {{- if and  (.Values.job) (.Values.job.retries)}}      
-        retryStrategy:
+        retryStrategy: # will cause a container to retry until completion if it is empty 
           limit: {{ .Values.job.retries }}
-          {{- if .Values.job.retryPolicy }}
-          retryPolicy: {{ .Values.job.retryPolicy }} # Valid Value:  "Allow" | "Forbid" | "Replace"
+          {{- if .Values.job.retryPolicy }} 
+          retryPolicy: {{ .Values.job.retryPolicy }} # Valid Value:  "Allow" | "Forbid" | "Replace" 
           {{- end }}  
         {{- end }}        
       - name: template
+        metadata:
+          namespace: {{ .Release.Namespace }}
+          kind: "cron-workflow"    
         container:
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
           {{- if .Values.command }}
