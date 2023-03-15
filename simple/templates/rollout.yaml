@@ -6,7 +6,9 @@ metadata:
   annotations:
 {{- toYaml .Values.rollout.annotations | nindent 4 }}
 spec: 
-  {{- if .Values.hpa }}
+  {{- if .Values.rollout.replicas }}
+  replicas: {{ .Values.rollout.replicas }}
+  {{- else if .Values.hpa }}
   replicas: {{ .Values.hpa.minReplicas }}
   {{- else if .Values.hpav2 }}
   replicas: {{ .Values.hpav2.minReplicas }}

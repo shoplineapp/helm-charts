@@ -262,6 +262,7 @@ externalSecrets: {}
 #   annotations:
 #     notifications.argoproj.io/subscribe.on-rollout-completed.slack_webhook: ""
 #   revisionHistoryLimit: 10
+#   replicas: 10
 #   strategy:
 #   # blueGreen and canary CANNOT exist at the same time
 #     blueGreen:
