@@ -5,18 +5,8 @@ metadata:
   name: {{ .Values.name }}
   annotations:
 {{- toYaml .Values.rollout.annotations | nindent 4 }}
-spec: 
-  {{- if .Values.rollout.replicas }}
+spec:
   replicas: {{ .Values.rollout.replicas }}
-  {{- else if .Values.hpa }}
-  replicas: {{ .Values.hpa.minReplicas }}
-  {{- else if .Values.hpav2 }}
-  replicas: {{ .Values.hpav2.minReplicas }}
-  {{- else if .Values.KEDA}}
-  replicas: {{ .Values.KEDA.ScaledObject.spec.minReplicaCount | default .Values.replicaCount }}
-  {{- else }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
   selector:
     matchLabels:
       app: {{ .Values.name }}
