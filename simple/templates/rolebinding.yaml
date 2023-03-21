@@ -6,7 +6,7 @@ metadata:
   namespace: {{ .Release.Namespace }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
+  kind: {{ .Values.roleBinding.roleRef.kind | default "Role" }}
   name: {{ .Values.roleBinding.roleRef.name }}
 subjects:
 {{- range .Values.roleBinding.subjects }}
