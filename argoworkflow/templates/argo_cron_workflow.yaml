@@ -37,7 +37,7 @@ spec:
     serviceAccountName: {{ .Release.Namespace  }}-argo-workflows-admin-service-account
     {{- end }}  
     {{- if and (.Values.job) (.Values.job.timeout) }}
-    activeDeadlineSeconds	: {{.Values.job.timeouts }}
+    activeDeadlineSeconds	: {{.Values.job.timeout }}
     {{- end }}         
     metrics:
       prometheus:
