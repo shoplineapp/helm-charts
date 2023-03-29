@@ -1,3 +1,5 @@
+## Sample usage
+```yaml
 name: simple-cron-workflow
 schedule: '*/3 * * * *'
 image:
@@ -15,3 +17,4 @@ envFrom:
     - some-env
   secretRef:
     - some-env
+```
