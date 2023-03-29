@@ -94,13 +94,8 @@ spec:
           kind: "cron-workflow"    
         container:
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
-          {{- if .Values.command }}
-          command:  {{- toYaml ( .Values.command) | nindent 11 }}
-          {{- end }}
-          {{- if .Values.command }}
-          args: {{- toYaml ( .Values.args) | nindent 11 }}
-          {{- end }}
-          {{- if .Values.resources }}
+          command: [ bundle ]
+          args: [ exec, rake, {{ required "rake_command must be provided" .Values.rake_command }} ]
           resources: {{- toYaml ( .Values.resources) | nindent 11 }}
           {{- else }}   # default settings on resources
           resources:  
@@ -269,4 +264,63 @@ spec:
                 {{- end }}
               {{- end }}
 {{- end }}
-    
+    apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: {{ required "name must be provided" .Values.name }}
+spec:
+  schedule: '{{ required "schedule must be provided" .Values.schedule }}'
+  workflowSpec:
+    workflowMetadata:
+      labels:
+        name: {{ .Values.name }}
+    metrics:
+      prometheus:
+        - name: exec_duration_gauge         # Metric name (will be prepended with "argo_workflows_")
+          labels: # Labels are optional. Avoid cardinality explosion.
+            - key: name
+              value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
+          help: "Duration gauge by name"    # A help doc describing your metric. This is required.
+          gauge: # The metric type. Available are "gauge", "histogram", and "counter".
+            value: "{{ "{{" }}workflow.duration{{ "}}" }}"  # The value of your metric. It could be an Argo variable (see variables doc) or a literal value
+        - name: fail_count
+          help: "Count of execution by fail status"
+          labels:
+            - key: name
+              value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
+            - key: namespace
+              value: "{{ "{{" }}workflow.namespace{{ "}}" }}"
+          when: "{{ "{{" }}status{{ "}}" }} == Failed"       # Emit the metric conditionally. Works the same as normal "when"
+          counter:
+            value: "1"                            # This increments the counter by 1
+        - name: success_count
+          help: "Count of execution by success status"
+          labels:
+            - key: name
+              value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
+            - key: namespace
+              value: "{{ "{{" }}workflow.namespace{{ "}}" }}"
+          when: "{{ "{{" }}status{{ "}}" }} == Succeeded"       # Emit the metric conditionally. Works the same as normal "when"
+          counter:
+            value: "1"                  # This increments the counter by 1
+    entrypoint: entry
+    templates:
+      - name: entry
+        steps:
+          - - name: step1
+              template: template
+      - name: template
+        container:
+          image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
+          command:  {{- toYaml ( .Values.command) | nindent 11 }}
+          args: {{- toYaml ( .Values.args) | nindent 11 }}
+          resources: {{- toYaml ( .Values.resources) | nindent 11 }}
+          envFrom:
+            {{- range .Values.envFrom.configMapRef }}
+            - configMapRef:
+                name: {{ . }}
+            {{- end }}
+            {{- range .Values.envFrom.secretRef }}
+            - secretRef:
+                name: {{ . }}
+            {{- end }}
