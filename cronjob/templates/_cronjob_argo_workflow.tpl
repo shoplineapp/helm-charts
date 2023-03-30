@@ -50,6 +50,7 @@
           counter:
             value: "1"                                                # This increments the counter by 1
     entrypoint: entry
+    onExit: exit-handler
     templates:
       - name: entry
         steps:
@@ -109,6 +110,34 @@
                 name: {{ . }}
             {{- end }}
           {{- end }}
+      - name: exit-handler
+        steps:
+        - - name: Failed
+            template: failed-handler
+            when: "{{ "{{" }}workflow.status{{ "}}" }} != Succeeded"        
+      - name: failed-handler                                                  # template for the failed case
+        steps: 
+         {{- if and (.Values.newRelic)  (.Values.newRelic.enabled) }}          
+          - name: Notice-NewRelic-Failed
+            template: notice-newrelic-failed            
+          {{- end }}    
+      {{- if and (.Values.newRelic)  (.Values.newRelic.enabled) }}                                        
+      - name: notice-newrelic-failed
+        container:
+          image: johnku001/newrelic-notice-error-agent
+          env:
+            - name: NEWRELIC_APP_NAME
+              value: "Argo Workflow Cronjob (Staging)"        
+            - name: FUNCTION_NAME
+              value: "{{ required "newRelic.functionName must be provided" .Values.newRelic.functionName }}"        
+            - name: NEWRELIC_LICENSE_KEY
+              value: "{{ required "newRelic.licenseKey must be provided" .Values.newRelic.licenseKey }}"                                      
+          args:
+            - error={{ "{{" }}workflow.failures{{ "}}" }} 
+            - workflow_name="{{ "{{" }}workflow.name{{ "}}" }}" 
+            - workflow_status="{{ "{{" }}workflow.status{{ "}}" }}" 
+            - workflow_duration="{{ "{{" }}workflow.duration{{ "}}" }}"
+      {{- end }}            
     {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }}                               # Can keep the pod after finish during development
     ttlStrategy:
       secondsAfterCompletion: {{.Values.ttlStrategy.secondsAfterCompletion}}
