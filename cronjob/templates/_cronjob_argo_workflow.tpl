@@ -1,4 +1,5 @@
 {{- define "cronjob.cronjob_argo_workflow" -}}
+{{- $healthCheck := .Values.healthCheck | default dict -}}
     workflowSpec:
     workflowMetadata:
       labels:
@@ -112,15 +113,36 @@
           {{- end }}
       - name: exit-handler
         steps:
-        - - name: Failed
+        - - name: Success
+            template: success-handler
+            when: "{{ "{{" }}workflow.status{{ "}}" }} == Succeeded" 
+          - name: Failed
             template: failed-handler
-            when: "{{ "{{" }}workflow.status{{ "}}" }} != Succeeded"        
+            when: "{{ "{{" }}workflow.status{{ "}}" }} != Succeeded"
+      - name: success-handler                                                 # template for the success case
+        steps: 
+        - - name: Notice-Health-Check-Succeed
+            template: notice-health-check-succeed            
       - name: failed-handler                                                  # template for the failed case
         steps: 
+        - - name: Notice-Health-Check-Failed
+            template: notice-health-check-failed 
          {{- if and (.Values.newRelic)  (.Values.newRelic.enabled) }}          
           - name: Notice-NewRelic-Failed
             template: notice-newrelic-failed            
           {{- end }}    
+      - name: notice-health-check-succeed                                    # For cronjob health check, as the schedule may different therefore each cronjob will have different uuid
+        container:
+          image: curlimages/curl
+          command: [ "sh", "-c" ]
+          args:
+            - curl https://hc-ping.com/{{ required "healthCheck.successUUID must be provided" $healthCheck.SuccessUUID }}
+      - name: notice-health-check-failed
+        container:
+          image: curlimages/curl
+          command: [ "sh", "-c" ]
+          args:
+            - curl https://hc-ping.com/{{ required "healthCheck.failUUID must be provided" $healthCheck.FailUUID }}
       {{- if and (.Values.newRelic)  (.Values.newRelic.enabled) }}                                        
       - name: notice-newrelic-failed
         container:
@@ -137,7 +159,7 @@
             - workflow_name="{{ "{{" }}workflow.name{{ "}}" }}" 
             - workflow_status="{{ "{{" }}workflow.status{{ "}}" }}" 
             - workflow_duration="{{ "{{" }}workflow.duration{{ "}}" }}"
-      {{- end }}            
+      {{- end }}                           
     {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }}                               # Can keep the pod after finish during development
     ttlStrategy:
       secondsAfterCompletion: {{.Values.ttlStrategy.secondsAfterCompletion}}
