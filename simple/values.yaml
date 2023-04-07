@@ -19,6 +19,20 @@ replicaCount: 1
 #   runAsGroup: 1000
 #   fsGroup: 1000
 
+# topologySpreadConstraints: 
+#   - labelSelector:
+#       matchLabels:
+#         app: app-name
+#     maxSkew: 1
+#     topologyKey: topology.kubernetes.io/zone
+#     whenUnsatisfiable: DoNotSchedule
+#   - labelSelector:
+#       matchLabels:
+#         app: app-name
+#     maxSkew: 1
+#     topologyKey: kubernetes.io/hostname
+#     whenUnsatisfiable: ScheduleAnyway
+
 affinity:
   nodeAffinity: {}
   podAffinity: {}
@@ -262,6 +276,7 @@ externalSecrets: {}
 #   annotations:
 #     notifications.argoproj.io/subscribe.on-rollout-completed.slack_webhook: ""
 #   revisionHistoryLimit: 10
+#   replicas: 10 # Required, recommend this value should be greater/equal than HPA minimum capacity to prevent performance downgrade when project upgrade.
 #   strategy:
 #   # blueGreen and canary CANNOT exist at the same time
 #     blueGreen:
