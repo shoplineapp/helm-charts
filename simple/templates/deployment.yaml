@@ -41,6 +41,25 @@ spec:
       tolerations:
         {{- toYaml .Values.tolerations | nindent 8 }}
       {{- end}}
+      {{- if hasKey .Values "topologySpreadConstraints" }}
+      topologySpreadConstraints:
+        {{- toYaml .Values.topologySpreadConstraints | nindent 8 }}
+      {{- end}}
+      {{- if not .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              app: {{ .Values.name }}
+          maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+        - labelSelector:
+            matchLabels:
+              app: {{ .Values.name }}
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      {{- end}}
       {{- if hasKey .Values "nodeSelector" }}
       nodeSelector:
         {{ .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }} 
@@ -68,7 +87,7 @@ spec:
                     operator: In
                     values:
                     - {{ .Values.name }}
-                topologyKey: failure-domain.beta.kubernetes.io/zone
+                topologyKey: topology.kubernetes.io/zone
               weight: 100
             - podAffinityTerm:
                 labelSelector:
