@@ -100,8 +100,7 @@ spec:
               weight: 99
       {{- end }}
       {{- if hasKey .Values "securityContextForPod" }}
-      securityContext: 
-        {{ toYaml .Values.securityContextForPod | nindent 8 }}        
+      securityContext: {{ toYaml .Values.securityContextForPod | nindent 8 }}
       {{- end}}
       containers:
 {{- if hasKey .Values.deployment "containers" }}
