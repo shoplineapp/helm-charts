@@ -6,7 +6,7 @@ metadata:
   annotations:
 {{- toYaml .Values.rollout.annotations | nindent 4 }}
 spec:
-  replicas: {{ .Values.rollout.replicas }}
+  replicas: {{ required "A valid .Values.rollout.replicas entry required!" .Values.rollout.replicas }}
   selector:
     matchLabels:
       app: {{ .Values.name }}
