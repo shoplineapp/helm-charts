@@ -1,5 +1,6 @@
 {{- define "cronjob.cronjob_argo_workflow" -}}
 {{- $healthCheck := .Values.healthCheck | default dict -}}
+{{- $podGC := .Values.podGC | default dict -}}
     workflowSpec:
     workflowMetadata:
       labels:
@@ -163,9 +164,7 @@
     {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }}                               # Can keep the pod after finish during development
     ttlStrategy:
       secondsAfterCompletion: {{.Values.ttlStrategy.secondsAfterCompletion}}
-    podGC:
-      labelSelector:
-        matchLabels:
-          should-be-deleted: "true"
     {{- end }}
+    podGC:
+      strategy: {{ $podGC.strategy | default "OnPodCompletion"}}
 {{- end -}}
