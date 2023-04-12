@@ -145,7 +145,7 @@
           image: curlimages/curl
           command: [ "sh", "-c" ]
           args:
-            - curl https://hc-ping.com/{{ required "healthCheck.failUUID must be provided" $healthCheck.FailUUID }}
+            - curl https://hc-ping.com/{{ required "healthCheck.failUUID must be provided" $healthCheck.FailUUID }}/fail
       {{- if and (.Values.newRelic)  (.Values.newRelic.enabled) }}                                        
       - name: notice-newrelic-failed
         container:
