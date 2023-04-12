@@ -12,8 +12,10 @@
     {{- else if .Values.serviceAccount }}
     serviceAccountName: {{ .Release.Namespace  }}-argo-workflows-admin-service-account
     {{- end }}  
-    {{- if and (.Values.job) (.Values.job.timeout) }}
-    activeDeadlineSeconds	: {{.Values.job.timeout }}
+    {{- if and (.Values.job) (.Values.job.timeout) (ne (.Values.job.timeout | int) -1) }}
+    activeDeadlineSeconds: {{.Values.job.timeout }}
+    {{- else if and (.Values.job) (.Values.job.timeout) (eq (.Values.job.timeout | int) -1) }} 
+    activeDeadlineSeconds: null # if timeout equal to -1, the pod will not dead until the task is completed
     {{- end }}         
     metrics:
       prometheus:
@@ -25,7 +27,7 @@
               value: "cron-workflow"
           help: "Duration gauge by name"                              # A help doc describing your metric. This is required.
           gauge:                                                      # The metric type. Available are "gauge", "histogram", and "counter".
-            value: "{{ "{{" }}workflow.duration{{ "}}" }}"            # The value of your metric. It could be an Argo variable (see variables doc) or a literal value
+            value: "{{ "{{" }}workflow.duration{{ "}}" }}"  # The value of your metric. It could be an Argo variable (see variables doc) or a literal value
         - name: cron_workflow_fail_count
           labels:
             - key: name
@@ -35,9 +37,9 @@
             - key: kind
               value: "cron-workflow"
           help: "Count of execution by fail status"                  
-          when: "{{ "{{" }}status{{ "}}" }} != Succeeded"             # Emit the metric conditionally. Works the same as normal "when"
+          when: "{{ "{{" }}status{{ "}}" }} != Succeeded" # Emit the metric conditionally. Works the same as normal "when"
           counter:
-            value: "1"                                                # This increments the counter by 1
+            value: "1"  # This increments the counter by 1
         - name: cron_workflow_success_count
           labels:
             - key: name
@@ -78,7 +80,7 @@
           {{- end }}
           {{- if .Values.resources }}
           resources: {{- toYaml ( .Values.resources) | nindent 11 }}
-          {{- else }}   # default settings on resources
+          {{- else }} # default settings on resources
           resources:  
             limits:
               memory: "4Gi"
@@ -139,7 +141,7 @@
             - workflow_status="{{ "{{" }}workflow.status{{ "}}" }}" 
             - workflow_duration="{{ "{{" }}workflow.duration{{ "}}" }}"
       {{- end }}            
-    {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }}                               # Can keep the pod after finish during development
+    {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }}  # Can keep the pod after finish during development
     ttlStrategy:
       secondsAfterCompletion: {{.Values.ttlStrategy.secondsAfterCompletion}}
     {{- end }}
