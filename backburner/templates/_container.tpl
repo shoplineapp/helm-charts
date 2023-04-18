@@ -23,6 +23,7 @@
           {{- range $i, $items := .queue }}
             {{- $queueName := get $items "queueName" }}
             {{- $listener := get $items "listener" | int }}
+            {{- $shards := get $items "shards" | default 0 | int }}
             {{- if (default $standAlone false ) }}
               {{- if gt $listener 1 }} 
               {{ fail "listener more than one failed when the standalone mode."}}
@@ -35,6 +36,14 @@
             {{- end}}
             {{- $tmpItem := printf "%v:%v" $queueName $listener }}
             {{- $queueList = append $queueList $tmpItem }}
+            {{- if gt $shards 0 }}
+              {{- range $j := until $shards }}
+                {{- $tmpItem := printf "%v-%v:%v" $queueName $j $listener }}
+                {{- $queueList = append $queueList $tmpItem }}
+              {{- end }}
+              {{- $tmpItem := printf "%v-degraded:%v" $queueName $listener }}
+              {{- $queueList = append $queueList $tmpItem }}
+            {{- end }}
           {{- end }}
           {{- $queueName := (join "," $queueList) }}
           - bundle exec backburner -e $RAILS_ENV -q {{ $queueName }}
