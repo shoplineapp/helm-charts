@@ -19,14 +19,14 @@
     {{- end }}         
     metrics:
       prometheus:
-        - name: exec_duration_gauge                                   # Metric name (will be prepended with "argo_workflows_")
-          labels:                                                     # Labels are optional. Avoid cardinality explosion.
+        - name: exec_duration_gauge # Metric name (will be prepended with "argo_workflows_")
+          labels: # Labels are optional. Avoid cardinality explosion.
             - key: name
               value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
             - key: kind
               value: "cron-workflow"
-          help: "Duration gauge by name"                              # A help doc describing your metric. This is required.
-          gauge:                                                      # The metric type. Available are "gauge", "histogram", and "counter".
+          help: "Duration gauge by name" # A help doc describing your metric. This is required.
+          gauge:  # The metric type. Available are "gauge", "histogram", and "counter".
             value: "{{ "{{" }}workflow.duration{{ "}}" }}"  # The value of your metric. It could be an Argo variable (see variables doc) or a literal value
         - name: cron_workflow_fail_count
           labels:
@@ -37,7 +37,7 @@
             - key: kind
               value: "cron-workflow"
           help: "Count of execution by fail status"                  
-          when: "{{ "{{" }}status{{ "}}" }} != Succeeded" # Emit the metric conditionally. Works the same as normal "when"
+          when: "{{ "{{" }}status{{ "}}" }} != Succeededed" # Emit the metric conditionally. Works the same as normal "when"
           counter:
             value: "1"  # This increments the counter by 1
         - name: cron_workflow_success_count
@@ -49,21 +49,23 @@
             - key: kind
               value: "cron-workflow"
           help: "Count of execution by success status"                            
-          when: "{{ "{{" }}status{{ "}}" }} == Succeeded"             # Emit the metric conditionally. Works the same as normal "when"
+          when: "{{ "{{" }}status{{ "}}" }} == Succeededed" # Emit the metric conditionally. Works the same as normal "when"
           counter:
-            value: "1"                                                # This increments the counter by 1
+            value: "1"  # This increments the counter by 1
     entrypoint: entry
+    {{- if or (.Values.slack) (.Values.newRelic) }}  
     onExit: exit-handler
+    {{- end }}  
     templates:
       - name: entry
         steps:
           - - name: step1
               template: template
         {{- if and  (.Values.job) (.Values.job.retries)}}      
-        retryStrategy:                                                # will cause a container to retry until completion if it is empty 
+        retryStrategy:  # will cause a container to retry until completion if it is empty 
           limit: {{ .Values.job.retries }}
           {{- if .Values.job.retryPolicy }} 
-          retryPolicy: {{ .Values.job.retryPolicy }}                  # Valid Value:  "Allow" | "Forbid" | "Replace" 
+          retryPolicy: {{ .Values.job.retryPolicy }}  # Valid Value:  "Allow" | "Forbid" | "Replace" 
           {{- end }}  
         {{- end }}        
       - name: template
@@ -113,36 +115,42 @@
                 name: {{ . }}
             {{- end }}
           {{- end }}
+      {{- if or (.Values.slack) (.Values.newRelic) }}    
       - name: exit-handler
         steps:
-        - - name: Failed
+        - - name: Success
+            template: success-handler
+            when: "{{ "{{" }}workflow.status{{ "}}" }} == Succeeded" 
+          - name: Failed
             template: failed-handler
-            when: "{{ "{{" }}workflow.status{{ "}}" }} != Succeeded"        
-      - name: failed-handler                                                  # template for the failed case
+            when: "{{ "{{" }}workflow.status{{ "}}" }} != Succeeded"
+      - name: success-handler # template for the success case
+        steps:
+        -
+          {{- if .Values.slack }}  
+          - name: Notice-Slack-Succeeded
+            template: notice-slack-succeeded 
+          {{- end }}                          
+      - name: failed-handler  # template for the failed case
         steps: 
-         {{- if and (.Values.newRelic)  (.Values.newRelic.enabled) }}          
+        -
+         {{- if .Values.newRelic }}          
           - name: Notice-NewRelic-Failed
             template: notice-newrelic-failed            
-          {{- end }}    
-      {{- if and (.Values.newRelic)  (.Values.newRelic.enabled) }}                                        
-      - name: notice-newrelic-failed
-        container:
-          image: johnku001/newrelic-notice-error-agent
-          env:
-            - name: NEWRELIC_APP_NAME
-              value: "Argo Workflow Cronjob (Staging)"        
-            - name: FUNCTION_NAME
-              value: "{{ required "newRelic.functionName must be provided" .Values.newRelic.functionName }}"        
-            - name: NEWRELIC_LICENSE_KEY
-              value: "{{ required "newRelic.licenseKey must be provided" .Values.newRelic.licenseKey }}"                                      
-          args:
-            - error={{ "{{" }}workflow.failures{{ "}}" }} 
-            - workflow_name="{{ "{{" }}workflow.name{{ "}}" }}" 
-            - workflow_status="{{ "{{" }}workflow.status{{ "}}" }}" 
-            - workflow_duration="{{ "{{" }}workflow.duration{{ "}}" }}"
-      {{- end }}            
-    {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }}  # Can keep the pod after finish during development
-    ttlStrategy:
+         {{- end }}
+          {{- if .Values.slack }}  
+          - name: Notice-Slack-Failed
+            template: notice-slack-failed 
+          {{- end }}                      
+      {{- if .Values.newRelic }}                                        
+      {{ template "cronjob._exit_handler_newrelic" . }}
+      {{- end }}
+      {{- if .Values.slack }}                                        
+      {{ template "cronjob._exit_handler_slack" . }}
+      {{- end }}                           
+      {{- end }}                           
+    {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }} 
+    ttlStrategy:  # Can keep the pod after finish during development
       secondsAfterCompletion: {{.Values.ttlStrategy.secondsAfterCompletion}}
     {{- end }}
     podGC:
