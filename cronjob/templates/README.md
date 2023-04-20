@@ -4,12 +4,12 @@ name: simple-cron-workflow  # required
 kind: CronWorkflow          # required, use to define which template to use
 schedule: '*/3 * * * *'     # required
 image:
-  repository: xxxxx         # required
-  tag: latest               # required
+  repository: xxxxx         # required, 
+  tag: latest               # required, recommend pass through the updated tag by pipeline
 command:                    # optional
-  - bundle
+  - bundle                  # e.g ONLY
 args:                       # optional
-  - exec 
+  - exec                    # e.g ONLY
   - rails
   - routes
 resources:                  # optional, having default value
@@ -29,15 +29,18 @@ job:
 startingDeadlineSeconds: 6  # optional
 annotations:                # optional, a map for storing self-define variable
   TEST_VARIABLE: TESTVALUE
+# if "healthCheck", "newRelic", and "slack" is not exist, then the workflow will apply default exit handle made in Infra.
 healthCheck:                
-  SuccessUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"  # required
-  FailUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"     # required
-newRelic:                                     # optional
-  enabled: true                               # optional
-  functionName: "Test Cron Job"               # required if "enabled" is true
-  licenseKey: "xxxxxxxxxxx"                   # required if "enabled" is true
+  SuccessUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"  # required if "healthCheck" is exist
+  FailUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"     # required if "healthCheck" is exist
+newRelic:                                     # optional, recommend pass through by pipeline
+  licenseKey: "xxxxxxxxxxx"                   # required if "newRelic" is exist
+slack: # optional, recommend pass through by pipeline
+  ChannelURL: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"   # required if "slack" is exist
 ttlStrategy:
   secondsAfterCompletion: 600                 # optional
+podGC:
+  strategy: "OnPodCompletion"               # optional, having default value OnPodCompletion
 env:                                          # optional
   TEST_VARIABLE: TESTVALUE
 envSecrets:
