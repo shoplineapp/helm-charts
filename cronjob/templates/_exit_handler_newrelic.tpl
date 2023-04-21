@@ -1,10 +1,11 @@
 {{- define "cronjob._exit_handler_newrelic" -}}
+{{- $image := .Values.newRelic.image | default dict -}}
       - name: notice-newrelic-failed
         container:
-          image: johnku001/newrelic-notice-error-agent
-          env:
+          image:  '{{ required "newRelic.image.repository must be provided" $image.repository }}:{{ required "newRelic.image.tag must be provided" $image.tag }}'
+          env: 
             - name: NEWRELIC_APP_NAME
-              value: "Argo Workflow Cronjob (Staging)"        
+              value: "{{ required "newRelic.appName must be provided" .Values.newRelic.appName }}"        
             - name: FUNCTION_NAME
               value: "{{ .Values.name }}"        
             - name: NEWRELIC_LICENSE_KEY
