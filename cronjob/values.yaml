@@ -11,6 +11,15 @@ annotations: {}
 image:
   tag: latest
 
+newRelic:
+  image:
+    repository: {}
+    tag: {}
+    appName: {}
+    licenseKey: {}
+  
+
+
 env: {}
 # example
 # env:
