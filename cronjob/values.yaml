@@ -14,7 +14,7 @@ image:
 newRelic:
   image:
     repository: {}
-    tag: {}
+    tag: latest
     appName: {}
     licenseKey: {}
   
