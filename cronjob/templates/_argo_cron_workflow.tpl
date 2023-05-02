@@ -86,10 +86,11 @@
           {{- else }} # default settings on resources
           resources:  
             limits:
-              memory: "4Gi"
+              memory: "2Gi"
+              cpu: "1"
             requests:
-              cpu: "0.5"
-              memory: "3Gi"
+              cpu: "300M"
+              memory: "1Gi"
           {{- end }}
           env:
             - name: POD_NAME
@@ -122,8 +123,8 @@
         - - name: Success
             template: success-handler
             when: "{{ "{{" }}workflow.status{{ "}}" }} == Succeeded" 
-          - name: Failed
-            template: failed-handler
+          - name: Failure
+            template: failure-handler
             when: "{{ "{{" }}workflow.status{{ "}}" }} != Succeeded"
       - name: success-handler # template for the success case
         steps:
@@ -131,12 +132,8 @@
           {{- if .Values.exitNotifications.slackApp }}  
           - name: Notice-SlackApp-Succeeded
             template: notice-slack-app-succeeded 
-          {{- end }}
-         {{- if .Values.exitNotifications.newRelic }}          
-          - name: Notice-NewRelic-Failed
-            template: notice-newrelic-failed            
-         {{- end }}                          
-      - name: failed-handler  # template for the failed case
+          {{- end }}                        
+      - name: failure-handler  # template for the failed case
         steps: 
         -
           {{- if .Values.exitNotifications.slackApp }}  

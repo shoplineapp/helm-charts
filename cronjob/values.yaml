@@ -12,6 +12,9 @@ image:
   tag: latest
 
 exitNotifications:
+  slackApp:
+    portalDomain: ""
+    webhookUrl: ""   
   newRelic:
     image:
       repository: ""
