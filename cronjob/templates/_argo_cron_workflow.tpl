@@ -1,4 +1,4 @@
-{{- define "cronjob.cronjob_argo_workflow" -}}
+{{- define "cronjob.argo_cron_workflow" -}}
 {{- $podGC := .Values.podGC | default dict -}}
     workflowSpec:
     workflowMetadata:
@@ -8,9 +8,9 @@
       {{ $key | quote }} : {{ $value | quote }}
       {{- end }}  
     {{- if .Values.serviceaccount }}
-    serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-argo-workflows-admin-service-account" .Release.Namespace) }}
+    serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-executor-service-account" .Release.Namespace) }}
     {{- else if .Values.serviceAccount }}
-    serviceAccountName: {{ .Release.Namespace  }}-argo-workflows-admin-service-account
+    serviceAccountName: {{ .Values.name  }}-executor-service-account
     {{- end }}  
     {{- if and (.Values.job) (.Values.job.timeout) (ne (.Values.job.timeout | int) -1) }}
     activeDeadlineSeconds: {{.Values.job.timeout }}
@@ -19,10 +19,12 @@
     {{- end }}         
     metrics:
       prometheus:
-        - name: exec_duration_gauge # Metric name (will be prepended with "argo_workflows_")
+        - name: cron_workflow_exec_duration_gauge # Metric name (will be prepended with "argo_workflows_")
           labels: # Labels are optional. Avoid cardinality explosion.
             - key: name
               value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
+            - key: namespace
+              value: "{{ "{{" }}workflow.namespace{{ "}}" }}"              
             - key: kind
               value: "cron-workflow"
           help: "Duration gauge by name" # A help doc describing your metric. This is required.
@@ -53,7 +55,7 @@
           counter:
             value: "1"  # This increments the counter by 1
     entrypoint: entry
-    {{- if or (.Values.slack) (.Values.newRelic) }}  
+    {{- if .Values.exitNotifications }}    
     onExit: exit-handler
     {{- end }}  
     templates:
@@ -65,19 +67,18 @@
         retryStrategy:  # will cause a container to retry until completion if it is empty 
           limit: {{ .Values.job.retries }}
           {{- if .Values.job.retryPolicy }} 
-          retryPolicy: {{ .Values.job.retryPolicy }}  # Valid Value:  "Allow" | "Forbid" | "Replace" 
+          retryPolicy: {{ .Values.job.retryPolicy }}  # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
           {{- end }}  
         {{- end }}        
       - name: template
         metadata:
           namespace: {{ .Release.Namespace }}
-          kind: "cron-workflow"    
         container:
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
           {{- if .Values.command }}
           command:  {{- toYaml ( .Values.command) | nindent 11 }}
           {{- end }}
-          {{- if .Values.command }}
+          {{- if .Values.args }}
           args: {{- toYaml ( .Values.args) | nindent 11 }}
           {{- end }}
           {{- if .Values.resources }}
@@ -115,7 +116,7 @@
                 name: {{ . }}
             {{- end }}
           {{- end }}
-      {{- if or (.Values.slack) (.Values.newRelic) }}    
+      {{- if .Values.exitNotifications }}    
       - name: exit-handler
         steps:
         - - name: Success
@@ -127,26 +128,30 @@
       - name: success-handler # template for the success case
         steps:
         -
-          {{- if .Values.slack }}  
-          - name: Notice-Slack-Succeeded
-            template: notice-slack-succeeded 
-          {{- end }}                          
+          {{- if .Values.exitNotifications.slackApp }}  
+          - name: Notice-SlackApp-Succeeded
+            template: notice-slack-app-succeeded 
+          {{- end }}
+         {{- if .Values.exitNotifications.newRelic }}          
+          - name: Notice-NewRelic-Failed
+            template: notice-newrelic-failed            
+         {{- end }}                          
       - name: failed-handler  # template for the failed case
         steps: 
         -
-         {{- if .Values.newRelic }}          
+          {{- if .Values.exitNotifications.slackApp }}  
+          - name: Notice-SlackApp-Failed
+            template: notice-slack-app-failed 
+          {{- end }}
+         {{- if .Values.exitNotifications.newRelic }}          
           - name: Notice-NewRelic-Failed
             template: notice-newrelic-failed            
-         {{- end }}
-          {{- if .Values.slack }}  
-          - name: Notice-Slack-Failed
-            template: notice-slack-failed 
-          {{- end }}                      
-      {{- if .Values.newRelic }}                                        
-      {{ template "cronjob._exit_handler_newrelic" . }}
+         {{- end }}                      
+      {{- if .Values.exitNotifications.slackApp }}                                        
+      {{ template "cronjob._exit_handler_slack_app" . }}
       {{- end }}
-      {{- if .Values.slack }}                                        
-      {{ template "cronjob._exit_handler_slack" . }}
+      {{- if .Values.exitNotifications.newRelic }}                                        
+      {{ template "cronjob._exit_handler_newrelic" . }}
       {{- end }}                           
       {{- end }}                           
     {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }} 

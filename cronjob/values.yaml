@@ -11,12 +11,13 @@ annotations: {}
 image:
   tag: latest
 
-newRelic:
-  image:
-    repository: {}
-    tag: {}
-    appName: {}
-    licenseKey: {}
+exitNotifications:
+  newRelic:
+    image:
+      repository: ""
+      tag: ""
+    appName: ""
+    licenseKey: ""
   
 
 

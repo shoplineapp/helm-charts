@@ -1,4 +1,4 @@
-{{- define "cronjob.cronjob_k8s" -}}
+{{- define "cronjob.k8s_cronjob" -}}
   jobTemplate:
     metadata:
       annotations:
