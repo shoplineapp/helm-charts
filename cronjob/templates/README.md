@@ -3,6 +3,11 @@
 name: simple-cron-workflow  # required
 kind: CronWorkflow          # required, use to define which template to use
 schedule: '*/3 * * * *'     # required
+# For the details logic of fields "serviceaccount" and "serviceAccount", please have a look on ./cronjob/templates/serviceaccount.yaml
+serviceaccount:             # optional
+  name: "xxxxxxxx"          # optional
+serviceAccount:
+  annotations: "xxxxxxxx"   # optional 
 image:
   repository: xxxxx         # required, 
   tag: latest               # required, recommend pass through the updated tag by pipeline
@@ -13,8 +18,6 @@ args:                       # optional
   - rails
   - routes
 resources:                  # optional, having default value
-  limits:
-    memory: "3Gi"
   requests:
     cpu: "300m"
     memory: "2Gi"
@@ -22,25 +25,28 @@ job:
   history:
     success: 1              # optional, having default value 3
     failed: 1               # optional, having default value 1
-  concurrency: "Forbid"     # optional, having default value Allow
-  retries: 5                # optional
-  retryPolicy: "Forbid"     # optional
+  concurrency: "Forbid"     # optional, having default value "Allow"
+  retries: 5                # optional, having default value 1
+  retryPolicy: "OnFailure"  # optional, having default value "OnFailure"
   timeout: 0                # optional
 startingDeadlineSeconds: 6  # optional
 annotations:                # optional, a map for storing self-define variable
   TEST_VARIABLE: TESTVALUE
-# if "healthcheckIo", "newRelic", and "slack" is not exist, then the workflow will apply default exit handle made in Infra.
-healthcheckIo:                
-  successUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"  # required if "healthcheckIo" is exist
-  failUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"     # required if "healthcheckIo" is exist
-newRelic:                                     # optional, recommend pass through by pipeline
-  licenseKey: "xxxxxxxxxxx"                   # required if "newRelic" is exist
-slack: # optional, recommend pass through by pipeline
-  ChannelURL: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"   # required if "slack" is exist
+# if "exitNotifications" is not exist, then the workflow will apply default exit handle made in Infra.
+exitNotifications:
+  slackApp:
+    portalDomain: "xxxxxxxxxxxxxxxxxxxxxxxxxxx" # required if "slackApp" is exist
+    webhookUrl: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"   # required if "slackApp" is exist
+  newRelic:                                     # optional, recommend pass through all the variable of "newRelic" section by pipeline
+    licenseKey: "xxxxxxxxxxx"                   # required if "newRelic" is exist
+    appName: "xxxxxxxxxxx"                      # required if "newRelic" is exist 
+  healthcheckIo:
+    successUUID: "2a3dbf43-d9b6-4992-8ac1-751dd69001cb"
+    failUUID: "618fe3ee-c4b5-443a-a746-cb70e27e4cb9"
 ttlStrategy:
   secondsAfterCompletion: 600                 # optional
 podGC:
-  strategy: "OnPodCompletion"               # optional, having default value OnPodCompletion
+  strategy: "OnPodCompletion"                 # optional, having default value OnPodCompletion
 env:                                          # optional
   TEST_VARIABLE: TESTVALUE
 envSecrets:
