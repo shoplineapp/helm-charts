@@ -11,6 +11,11 @@ annotations: {}
 image:
   tag: latest
 
+exitNotifications:
+  slackApp:
+    portalDomain: ""
+    webhookUrl: ""
+    
 env: {}
 # example
 # env:
