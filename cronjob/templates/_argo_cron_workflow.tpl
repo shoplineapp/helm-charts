@@ -8,10 +8,10 @@
       {{ $key | quote }} : {{ $value | quote }}
       {{- end }}  
     {{- if .Values.serviceaccount }}
-    serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-executor-service-account" .Release.Namespace) }}
+    serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
     {{- else if .Values.serviceAccount }}
-    serviceAccountName: {{ .Values.name  }}-executor-service-account
-    {{- end }}  
+    serviceAccountName: {{ .Values.name }}-pod-service-account
+    {{- end }}
     {{- if and (.Values.job) (.Values.job.timeout) (ne (.Values.job.timeout | int) -1) }}
     activeDeadlineSeconds: {{.Values.job.timeout }}
     {{- else if and (.Values.job) (.Values.job.timeout) (eq (.Values.job.timeout | int) -1) }} 
