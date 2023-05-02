@@ -29,10 +29,10 @@ job:
 startingDeadlineSeconds: 6  # optional
 annotations:                # optional, a map for storing self-define variable
   TEST_VARIABLE: TESTVALUE
-# if "healthCheck", "newRelic", and "slack" is not exist, then the workflow will apply default exit handle made in Infra.
-healthCheck:                
-  SuccessUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"  # required if "healthCheck" is exist
-  FailUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"     # required if "healthCheck" is exist
+# if "healthcheckIo", "newRelic", and "slack" is not exist, then the workflow will apply default exit handle made in Infra.
+healthcheckIo:                
+  successUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"  # required if "healthcheckIo" is exist
+  failUUID: "xxxxxxxxxxxxxxxxxxxxxxxxxxx"     # required if "healthcheckIo" is exist
 newRelic:                                     # optional, recommend pass through by pipeline
   licenseKey: "xxxxxxxxxxx"                   # required if "newRelic" is exist
 slack: # optional, recommend pass through by pipeline

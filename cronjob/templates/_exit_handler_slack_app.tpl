@@ -1,5 +1,6 @@
-{{- define "cronjob._exit_handler_slack" -}}
-      - name: notice-slack-succeeded
+{{- define "cronjob._exit_handler_slack_app" -}}
+{{- $slackApp := .Values.exitNotifications.slackApp | default dict -}}
+      - name: notice-slack-app-succeeded
         container:
           image: curlimages/curl
           command: [sh, -c]
@@ -36,16 +37,16 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Link*\\n<https://argo-workflows.shoplinestg.com/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
                     ]
                   }
                 ]
               }
             ]}'
-           {{ required "slack.ChannelURL must be provided" .Values.slack.ChannelURL }}"
+           {{ required "exitNotifications.slackApp.webhookUrl must be provided" $slackApp.webhookUrl }}"
           ]
-      - name: notice-slack-failed
+      - name: notice-slack-app-failed
         container:
           image: curlimages/curl
           command: [sh, -c]
@@ -82,13 +83,13 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Link*\\n<https://argo-workflows.shoplinestg.com/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
                     ]
                   }
                 ]
               }
             ]}'
-            {{ required "slack.ChannelURL must be provided" .Values.slack.ChannelURL }}"
+            {{ required "exitNotifications.slackApp.webhookUrl must be provided" $slackApp.webhookUrl }}"
           ]
 {{- end -}}
