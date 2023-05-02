@@ -17,8 +17,8 @@ spec:
   startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
   {{- end }}
   {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
-  {{ template "cronjob.cronjob_argo_workflow" . }}
+  {{ template "cronjob.argo_cron_workflow" . }}
   {{- else }}
-  {{ template "cronjob.cronjob_k8s" . }}
+  {{ template "cronjob.k8s_cronjob" . }}
   {{- end}}
   
