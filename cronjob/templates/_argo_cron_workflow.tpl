@@ -89,7 +89,7 @@
               memory: "2Gi"
               cpu: "1"
             requests:
-              cpu: "300M"
+              cpu: "300m"
               memory: "1Gi"
           {{- end }}
           env:
