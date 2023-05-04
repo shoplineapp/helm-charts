@@ -12,10 +12,12 @@ image:
   tag: latest
 
 exitNotifications:
-  slackApp:
-    portalDomain: ""
-    webhookUrl: ""
-    
+  slackApp: {}
+  newRelic: {}
+  healthcheckIo: {}
+  
+
+
 env: {}
 # example
 # env:
