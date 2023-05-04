@@ -132,7 +132,11 @@
           {{- if .Values.exitNotifications.slackApp }}  
           - name: Notice-SlackApp-Succeeded
             template: notice-slack-app-succeeded 
-          {{- end }}                        
+          {{- end }}     
+          {{- if .Values.exitNotifications.healthcheckIo }}  
+          - name: Notice-HealthcheckIo-Succeeded
+            template: notice-healthcheck-io-succeeded 
+          {{- end }}                             
       - name: failure-handler  # template for the failed case
         steps: 
         -
@@ -143,13 +147,20 @@
          {{- if .Values.exitNotifications.newRelic }}          
           - name: Notice-NewRelic-Failed
             template: notice-newrelic-failed            
-         {{- end }}                      
+         {{- end }}
+         {{- if  .Values.exitNotifications.healthcheckIo }}  
+          - name: Notice-HealthcheckIo-Failed
+            template: notice-healthcheck-io-failed
+         {{- end }}                                
       {{- if .Values.exitNotifications.slackApp }}                                        
       {{ template "cronjob._exit_handler_slack_app" . }}
       {{- end }}
       {{- if .Values.exitNotifications.newRelic }}                                        
       {{ template "cronjob._exit_handler_newrelic" . }}
-      {{- end }}                           
+      {{- end }}
+      {{- if .Values.exitNotifications.healthcheckIo }}                                        
+      {{ template "cronjob._exit_handler_healthcheck_io" . }}
+      {{- end }}                                     
       {{- end }}                           
     {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }} 
     ttlStrategy:  # Can keep the pod after finish during development
