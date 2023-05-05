@@ -25,8 +25,6 @@
               value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
             - key: namespace
               value: "{{ "{{" }}workflow.namespace{{ "}}" }}"              
-            - key: kind
-              value: "cron-workflow"
           help: "Duration gauge by name" # A help doc describing your metric. This is required.
           gauge:  # The metric type. Available are "gauge", "histogram", and "counter".
             value: "{{ "{{" }}workflow.duration{{ "}}" }}"  # The value of your metric. It could be an Argo variable (see variables doc) or a literal value
@@ -36,8 +34,6 @@
               value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
             - key: namespace
               value: "{{ "{{" }}workflow.namespace{{ "}}" }}"
-            - key: kind
-              value: "cron-workflow"
           help: "Count of execution by fail status"                  
           when: "{{ "{{" }}status{{ "}}" }} != Succeeded" # Emit the metric conditionally. Works the same as normal "when"
           counter:
@@ -48,8 +44,6 @@
               value: "{{ "{{" }}workflow.labels.name{{ "}}" }}"
             - key: namespace
               value: "{{ "{{" }}workflow.namespace{{ "}}" }}"
-            - key: kind
-              value: "cron-workflow"
           help: "Count of execution by success status"                            
           when: "{{ "{{" }}status{{ "}}" }} == Succeeded" # Emit the metric conditionally. Works the same as normal "when"
           counter:
