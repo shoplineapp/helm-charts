@@ -39,7 +39,7 @@
             - key: kind
               value: "cron-workflow"
           help: "Count of execution by fail status"                  
-          when: "{{ "{{" }}status{{ "}}" }} != Succeededed" # Emit the metric conditionally. Works the same as normal "when"
+          when: "{{ "{{" }}status{{ "}}" }} != Succeeded" # Emit the metric conditionally. Works the same as normal "when"
           counter:
             value: "1"  # This increments the counter by 1
         - name: cron_workflow_success_count
@@ -51,7 +51,7 @@
             - key: kind
               value: "cron-workflow"
           help: "Count of execution by success status"                            
-          when: "{{ "{{" }}status{{ "}}" }} == Succeededed" # Emit the metric conditionally. Works the same as normal "when"
+          when: "{{ "{{" }}status{{ "}}" }} == Succeeded" # Emit the metric conditionally. Works the same as normal "when"
           counter:
             value: "1"  # This increments the counter by 1
     entrypoint: entry
