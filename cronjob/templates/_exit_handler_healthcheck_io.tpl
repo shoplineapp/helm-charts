@@ -5,11 +5,11 @@
           image: curlimages/curl
           command: [ "sh", "-c" ]
           args:
-            - curl https://hc-ping.com/{{ required "exitNotifications.healthcheckIo.successUUID must be provided" $healthcheckIo.successUUID }}
+            - curl https://hc-ping.com/{{ required "exitNotifications.healthcheckIo.uuid must be provided" $healthcheckIo.uuid }}
       - name: notice-healthcheck-io-failed
         container:
           image: curlimages/curl
           command: [ "sh", "-c" ]
           args:
-            - curl https://hc-ping.com/{{ required "exitNotifications.healthcheckIo.failUUID must be provided" $healthcheckIo.failUUID }}/fail
+            - curl https://hc-ping.com/{{ required "exitNotifications.healthcheckIo.uuid must be provided" $healthcheckIo.uuid }}/fail
 {{- end -}}

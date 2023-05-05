@@ -41,8 +41,8 @@ exitNotifications:
     licenseKey: "xxxxxxxxxxx"                   # required if "newRelic" is exist
     appName: "xxxxxxxxxxx"                      # required if "newRelic" is exist 
   healthcheckIo:
-    successUUID: "2a3dbf43-d9b6-4992-8ac1-751dd69001cb"
-    failUUID: "618fe3ee-c4b5-443a-a746-cb70e27e4cb9"
+    uuid: "xxxxxxxxxxxxx"                       # required if "healthcheckIo" is exist 
+
 ttlStrategy:
   secondsAfterCompletion: 600                 # optional
 podGC:
