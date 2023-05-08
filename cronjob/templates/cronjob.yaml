@@ -12,7 +12,7 @@ spec:
   schedule: {{ .Values.schedule | quote }}
   {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
   timezone: {{ .Values.timezone | default "Asia/Taipei" }}
-  {{- else }}
+  {{- end }}
   successfulJobsHistoryLimit: {{ .Values.job.history.success | default 3 }}
   failedJobsHistoryLimit: {{ .Values.job.history.failed | default 1 }}
   concurrencyPolicy: {{ .Values.job.concurrency | default "Allow" }}
