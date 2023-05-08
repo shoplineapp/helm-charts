@@ -1,6 +1,6 @@
 {{- define "cronjob._exit_handler_healthcheck_io" -}}
 {{- $healthcheckIo := .Values.exitNotifications.healthcheckIo | default dict -}}
-      - name: notice-healthcheck-io-succeeded                                    # For cronjob health check, as the schedule may different therefore each cronjob will have different uuid
+      - name: notice-healthcheck-io-succeeded # For cronjob health check, as the schedule may different therefore each cronjob will have different uuid
         container:
           image: curlimages/curl
           command: [ "sh", "-c" ]
