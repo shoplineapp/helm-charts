@@ -1,7 +1,9 @@
 {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
+# The "apiVersion" and "kind" for "Argo cron workflow"
 apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 {{- else }}
+# The "apiVersion" and "kind" for "k8s cron job"
 apiVersion: batch/v1beta1
 kind: CronJob
 {{- end }}
@@ -10,15 +12,18 @@ metadata:
   namespace: {{ .Release.Namespace }}
 spec:
   schedule: {{ .Values.schedule | quote }}
+  # If "kind" eq to "CronWorkflow", timezone can be set. If "kind" eq to "CronWorkflow" and timezone are not set, "Asia/Taipei" will be used
   {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
   timezone: {{ .Values.timezone | default "Asia/Taipei" }}
   {{- end }}
   successfulJobsHistoryLimit: {{ .Values.job.history.success | default 3 }}
   failedJobsHistoryLimit: {{ .Values.job.history.failed | default 1 }}
   concurrencyPolicy: {{ .Values.job.concurrency | default "Allow" }}
+  # If "startingDeadlineSeconds" is set, the pod will dead after the second is set. Otherwise, the pod will dead ONLY the job is done
   {{- if .Values.startingDeadlineSeconds }}
   startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
   {{- end }}
+  # If "kind" eq to "CronWorkflow", argo cron workflow template will be loaded, otherwise, k8s cronjob template will be loaded
   {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
   {{ template "cronjob.argo_cron_workflow" . }}
   {{- else }}
