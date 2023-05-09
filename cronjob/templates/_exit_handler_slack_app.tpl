@@ -25,7 +25,7 @@
                     \"fields\": [
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Cluster*\\nec-eks-staging\"
+                        \"text\": \"*Cluster*\\n{{ .Values.clusterName | default "unknown"}}\"
                       },
                       {
                         \"type\": \"mrkdwn\",
@@ -71,7 +71,7 @@
                     \"fields\": [
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Cluster*\\nec-eks-staging\"
+                        \"text\": \"*Cluster*\\n{{ .Values.clusterName | default "unknown"}}\"
                       },
                       {
                         \"type\": \"mrkdwn\",

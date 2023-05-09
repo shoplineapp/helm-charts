@@ -12,13 +12,9 @@
     {{- else if .Values.serviceAccount }}
     serviceAccountName: {{ .Values.name }}-pod-service-account
     {{- end }}
-    # Reason why use "-1" to unset "activeDeadlineSeconds" instead of the checking the existance of ".Values.job.timeout" is because there is default value "1800" for ".Values.job.timeout" and we would like to kind this behavour
-    {{- if and (.Values.job) (.Values.job.timeout) (ne (.Values.job.timeout | int) -1) }}
-    # if timeout not equal to -1, the pod will be kill after certain seconds
+    # If .Values.job.timeout equal to null, the pod will be kill ONLY the job is done. Otherwise, the pod will kill after the value you set
+    {{- if and (.Values.job) (.Values.job.timeout) }}
     activeDeadlineSeconds: {{.Values.job.timeout }}
-    {{- else if and (.Values.job) (.Values.job.timeout) (eq (.Values.job.timeout | int) -1) }}
-    # if timeout equal to -1, the pod will not dead until the task is completed
-    activeDeadlineSeconds: null 
     {{- end }}
     metrics:
       prometheus:
