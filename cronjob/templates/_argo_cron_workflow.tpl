@@ -1,5 +1,4 @@
 {{- define "cronjob.argo_cron_workflow" -}}
-{{- $podGC := .Values.podGC | default dict -}}
     workflowSpec:
     workflowMetadata:
       labels:
@@ -82,15 +81,15 @@
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
           {{- if .Values.command }}
           # The command to call the function of the image
-          command:  {{- toYaml ( .Values.command) | nindent 11 }}
+          command:  {{- toYaml ( .Values.command) | nindent 12 }}
           {{- end }}
           {{- if .Values.args }}
           # The args need to pass for the function
-          args: {{- toYaml ( .Values.args) | nindent 11 }}
+          args: {{- toYaml ( .Values.args) | nindent 12 }}
           {{- end }}
           {{- if .Values.resources }}
           # The resource will be apply if "resource is set" 
-          resources: {{- toYaml ( .Values.resources) | nindent 11 }}
+          resources: {{- toYaml ( .Values.resources) | nindent 12 }}
           {{- else }}
           # default settings on resources
           resources:
@@ -188,6 +187,9 @@
       # The second of the pod can be alive after the job is done
       secondsAfterCompletion: {{.Values.ttlStrategy.secondsAfterCompletion}}
     {{- end }}
+    {{- if and (.Values.podGC) (.Values.podGC.strategy) }}
+    # The mechanism for garbage collecting completed pods. There is default value "OnPodCompletion"
     podGC:
-      strategy: {{ $podGC.strategy | default "OnPodCompletion"}}
+      strategy: {{ .Values.podGC.strategy }}
+    {{- end }}  
 {{- end -}}
