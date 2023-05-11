@@ -90,15 +90,6 @@
           {{- if .Values.resources }}
           # The resource will be apply if "resource is set" 
           resources: {{- toYaml ( .Values.resources) | nindent 12 }}
-          {{- else }}
-          # default settings on resources
-          resources:
-            limits:
-              memory: "2Gi"
-              cpu: "1"
-            requests:
-              cpu: "300m"
-              memory: "1Gi"
           {{- end }}
           env:
             - name: POD_NAME
