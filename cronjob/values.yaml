@@ -1,15 +1,103 @@
+# Name of cron job, required
+# example
+# name: simple-cron-workflow 
+
+# Schedule of the cronjob ,required
 schedule: "0 * * * *"
 
+# Kind of cron job. It define which template is using. If it equals to "CronWorkflow", argo cron workflow template will be used. Otherwise, cronjob of k8s template will be used.
+# example
+# kind: CronWorkflow
+
+# Starting Deadline Seconds of cron job. Will be assign to spec.startingDeadlineSeconds.
 startingDeadlineSeconds: {}
 
 job:
+  # Number of retries if error occurred
   retries: 1
+
+  # Active Deadline Seconds of the pod. If you you are using argo cron workflow, you can use -1 to disable active Deadline Seconds
   timeout: 1800
 
+  # Jobs History Limit of cron job. For "success", it will assign to spec.successfulJobsHistoryLimit. It is optional and having default value 3. For "failed", it will assign to spec.failedJobsHistoryLimit. It is optional and having default value 1
+  # example
+  # history:
+  #   success: 1
+  #   failed: 1
+  
+  # Concurrency Policy of cron job. It will assign to spec.concurrencyPolicy. Optional and having default value "Allow"
+  # example
+  # concurrency: "Forbid"
+
+  # Retry Policy of the cronjob. Only useful in argo cron workflow template. It is optional and having default value "OnFailure"
+  # retryPolicy: "OnFailure"
+
+# Time-to-live setting of the pod. The field secondsAfterCompletion is for setting the time of the pod alive about the job is done
+# Example
+# ttlStrategy:
+#   secondsAfterCompletion: 600
+
+# The mechanism for garbage collecting completed pods. There is default value "OnPodCompletion"
+# Example
+# podGC:
+#   strategy: "OnPodCompletion"
+
+# A map for storing self-define variable
 annotations: {}
 
+# Image of the pod, both fields "repository" and "tag" are required. 
 image:
+  # The repo of the image. 
+  # example
+  # repository: test/testImage
   tag: latest
+
+# Command to trigger the function
+# example
+# command:                    
+#   - bundle
+#   - exec
+#   - rails
+#   - test
+
+# Arguments required to pass in function
+# example
+# args:
+#   - "abc"
+
+# Resource required for the job
+# example
+# resources:
+#   requests:
+#     cpu: "300m"
+#     memory: "2Gi"
+
+
+# The exit handler setting for argo cron workflow template ONLY
+exitNotifications:
+  # The config of the slack. For the field "portalDomain" is the url to the argo server GUI. And for the field "webhookUrl" is the webhook for the slack argo apps 
+  slackApp: {}
+  # example
+  # slackApp:
+  #   portalDomain: "https://argo.com" 
+  #   webhookUrl: "https://webhook/service/test"  
+
+  # The config of the New Relic. For the field "licenseKey", it is the licenseKey of New Relic. For the field "appName" is the name display in New Relic. For the field "repository" and "tag" is the image repo and tag New Relic agent image
+  newRelic: {}
+  # example
+  # newRelic:
+  #   image:
+  #     repository: test/test-newrelic-agent
+  #     tag: latest
+  #   licenseKey: "12345testtest1234test"
+  #   appName: "Test App"
+
+  # The config of the Healthcheck IO. For the field "uuid" is the uuid of Healthcheck IO check
+  healthcheckIo: {}
+  # example
+  # healthcheckIo:
+  #   uuid: "arf21-323s-232d-23dasd"  
+
 
 env: {}
 # example
@@ -31,6 +119,7 @@ envFrom: {}
 #     - test-1-secret
 #     - test-2-secret
 
+# Service account is used by pod. For more details on fields "serviceaccount" and "serviceAccount", please have a look on ./cronjob/templates/serviceaccount.yaml 
 serviceaccount: {}
 # example
 # serviceaccount:
