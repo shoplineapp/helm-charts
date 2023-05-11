@@ -187,9 +187,11 @@
       # The second of the pod can be alive after the job is done
       secondsAfterCompletion: {{.Values.ttlStrategy.secondsAfterCompletion}}
     {{- end }}
-    {{- if and (.Values.podGC) (.Values.podGC.strategy) }}
     # The mechanism for garbage collecting completed pods. There is default value "OnPodCompletion"
     podGC:
+      {{- if and (.Values.podGC) (.Values.podGC.strategy) }}
       strategy: {{ .Values.podGC.strategy }}
-    {{- end }}  
+      {{- else}}
+      strategy: OnPodCompletion
+      {{- end }}  
 {{- end -}}
