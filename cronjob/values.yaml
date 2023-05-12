@@ -6,6 +6,7 @@
 schedule: "0 * * * *"
 
 # Kind of cron job. It define which template is using. If it equals to "CronWorkflow", argo cron workflow template will be used. Otherwise, cronjob of k8s template will be used.
+kind: "CronJob"
 # example
 # kind: CronWorkflow
 
@@ -38,6 +39,7 @@ job:
 #   secondsAfterCompletion: 600
 
 # The mechanism for garbage collecting completed pods. There is default value "OnPodCompletion"
+podGC: {}
 # Example
 # podGC:
 #   strategy: "OnPodCompletion"
@@ -67,6 +69,7 @@ image:
 
 # Resource required for the job
 # example
+resources: {}
 # resources:
 #   requests:
 #     cpu: "300m"
