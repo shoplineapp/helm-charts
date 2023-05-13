@@ -1,69 +1,32 @@
+{{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
+# The "apiVersion" and "kind" for "Argo cron workflow"
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+{{- else }}
+# The "apiVersion" and "kind" for "k8s cron job"
 apiVersion: batch/v1beta1
 kind: CronJob
+{{- end }}
 metadata:
   name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
 spec:
   schedule: {{ .Values.schedule | quote }}
+  # If "kind" eq to "CronWorkflow", timezone can be set. If "kind" eq to "CronWorkflow" and timezone are not set, "Asia/Taipei" will be used
+  {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
+  timezone: {{ .Values.timezone | default "Asia/Taipei" }}
+  {{- end }}
   successfulJobsHistoryLimit: {{ .Values.job.history.success | default 3 }}
   failedJobsHistoryLimit: {{ .Values.job.history.failed | default 1 }}
   concurrencyPolicy: {{ .Values.job.concurrency | default "Allow" }}
+  # If "startingDeadlineSeconds" is set, the pod will dead after the second is set. Otherwise, the pod will dead ONLY the job is done
   {{- if .Values.startingDeadlineSeconds }}
   startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
   {{- end }}
-  jobTemplate:
-    metadata:
-      annotations:
-        cronjob_name: {{ .Values.name }}
-    spec:
-      backoffLimit: {{ .Values.job.retries }}
-      activeDeadlineSeconds: {{ .Values.job.timeout }}
-      template:
-        metadata:
-          annotations:
-            cronjob_name: {{ .Values.name }}
-            {{- range $key, $value := .Values.annotations }}
-            {{ $key | quote }} : {{ $value | quote }}
-            {{- end }}
-        spec:
-          {{- if .Values.serviceaccount }}
-          serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
-          {{- else if .Values.serviceAccount }}
-          serviceAccountName: {{ .Values.name }}-pod-service-account
-          {{- end }}
-          restartPolicy: Never
-          containers:
-            -
-              name: app
-              image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-              {{- if .Values.command }}
-              command: {{- toYaml .Values.command | nindent 16 }}
-              {{- end }}
-              {{- if hasKey .Values "resources" }}
-              resources: {{ toYaml .Values.resources | nindent 16 }}
-              {{- end }}
-              env:
-                - name: POD_NAME
-                  value: {{ .Values.name }}
-                {{- range $key, $value := .Values.env }}
-                - name: {{ $key }}
-                  value: {{ $value | quote }}
-                {{- end }}
-                {{- range $key, $name := .Values.envSecrets }}
-                - name: {{ $key }}
-                  valueFrom:
-                    secretKeyRef:
-                      name: {{ $name }}
-                      key: {{ $key | quote }}
-                {{- end }}
-              {{- if .Values.envFrom }}
-              envFrom:
-                {{- range .Values.envFrom.configMapRef }}
-                - configMapRef:
-                    name: {{ . }}
-                {{- end }}
-                {{- range .Values.envFrom.secretRef }}
-                - secretRef:
-                    name: {{ . }}
-                {{- end }}
-              {{- end }}
+  # If "kind" eq to "CronWorkflow", argo cron workflow template will be loaded, otherwise, k8s cronjob template will be loaded
+  {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
+  {{ template "cronjob.argo_cron_workflow" . }}
+  {{- else }}
+  {{ template "cronjob.k8s_cronjob" . }}
+  {{- end}}
+  
