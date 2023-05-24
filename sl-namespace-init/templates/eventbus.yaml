@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: default
+spec:
+  jetstream:
+    auth: token
+    version: "2.9.11"
+    replicas: 3
+    streamConfig: |
+      maxAge: 24h
+    settings: |
+      max_file_store: 1GB
