@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: ns-event
+spec:
+  template:
+    serviceAccountName: kube-argo
+  resource:
+    ns-event:
+      group: ""
+      version: v1
+      resource: namespaces
+      eventTypes:
+        - ADD
+        - DELETE
+      filter:
+        afterStart: true
