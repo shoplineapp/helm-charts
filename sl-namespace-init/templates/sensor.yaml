@@ -1,0 +1,124 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: ns-event
+spec:
+  template:
+    serviceAccountName: kube-argo
+  dependencies:
+    - name: ns
+      eventSourceName: ns-event
+      eventName: ns-event
+  triggers:
+    - template:
+        name: ns-workflow
+        k8s:
+          operation: create
+          source:
+            resource:
+              apiVersion: argoproj.io/v1alpha1
+              kind: Workflow
+              metadata:
+                generateName: namespace-events
+                labels:
+                  app: namespace-events
+              spec:
+                serviceAccountName: kube-argo
+                entrypoint: namespace-events
+                arguments:
+                  parameters:
+                  - name: message
+                templates:
+                - name: namespace-events
+                  inputs:
+                    parameters:
+                    - name: message
+                  steps:
+                    - - name: namespace-init
+                        template: namespace-init
+                        arguments:
+                          parameters:
+                          - name: message
+                            value: '{{"{{"}}inputs.parameters.message{{"}}"}}'
+                    - - name: send-slack-noti
+                        template: send-slack-noti
+                        arguments:
+                          parameters:
+                          - name: namespace
+                            value: '{{"{{"}}steps.namespace-init.outputs.parameters.namespace{{"}}"}}'
+                          - name: phase
+                            value: '{{"{{"}}steps.namespace-init.outputs.parameters.phase{{"}}"}}'
+                - name: namespace-init
+                  inputs:
+                    parameters:
+                    - name: message
+                  container:
+                    image: 332947256684.dkr.ecr.ap-southeast-1.amazonaws.com/kube-argo:0.1.0
+                    command: [bash, -c]
+                    args:
+                    - |
+                      ns=$(echo '{{"{{"}}inputs.parameters.message{{"}}"}}' | jq -r '."metadata"."labels"."kubernetes.io/metadata.name"')
+                      phase=$(echo '{{"{{"}}inputs.parameters.message{{"}}"}}' | jq -r '."status"."phase"')
+                      echo -n ${ns} > /tmp/namespace.txt
+                      if [[ ${phase} == "Active" ]]; then
+                        echo "Namespace ${ns} created, trigger namespace-init"
+                        helm repo update
+                        helm install namespace-init shopline-charts/eks -n ${ns} --version 0.2.1
+                        echo -n 'Created' > /tmp/phase.txt
+                      else
+                        echo "Namespace ${ns} was deleted"
+                        echo -n 'Deleted' > /tmp/phase.txt
+                      fi
+                  outputs:
+                    parameters:
+                    - name: phase
+                      valueFrom:
+                        path: /tmp/phase.txt
+                    - name: namespace
+                      valueFrom:
+                        path: /tmp/namespace.txt
+                - name: send-slack-noti
+                  inputs:
+                    parameters:
+                    - name: namespace
+                    - name: phase
+                    - name: slack_url
+                      value: "{{ .Values.slack_url }}"
+                    - name: cluster_name
+                      value: "{{ .Values.cluster_name }}"
+                  container:
+                    image: curlimages/curl
+                    command:
+                      - sh
+                      - '-c'
+                    args:
+                      - >-
+                        curl -s -X POST --data-urlencode "payload={\"text\": \"Cluster: \`{{"{{"}}inputs.parameters.cluster_name{{"}}"}}\` Namespace: \`{{"{{"}}inputs.parameters.namespace{{"}}"}}\` was \`{{"{{"}}inputs.parameters.phase}}\`\"}" {{"{{"}}inputs.parameters.slack_url{{"}}"}}
+                - name: exit-handler
+                  steps:
+                    - - name: Failed
+                        template: failed
+                        when: '{{"{{"}}workflow.status{{"}}"}} != Succeeded'
+                - name: failed
+                  inputs:
+                    parameters:
+                    - name: argo_slack_url
+                      value: "{{ .Values.argo_slack_url }}"
+                    - name: argo_url
+                      value: "{{ .Values.argo_url }}"
+                    - name: cluster_name
+                      value: "{{ .Values.cluster_name }}"
+                  container:
+                    image: curlimages/curl
+                    command:
+                      - sh
+                      - '-c'
+                    args:
+                      - >-
+                        curl -X POST -H 'Content-type: application/json' --data '{"attachments": [ { "color": "#E01E5A", "blocks": [ { "type":"header", "text": { "type": "plain_text", "text": "Workflow Failed -{{"{{"}}workflow.name{{"}}"}}", "emoji": true } }, { "type": "divider" }, {"type": "section", "fields": [ { "type": "mrkdwn", "text": "*Cluster*\n{{"{{"}}inputs.parameters.cluster_name{{"}}"}}" }, { "type": "mrkdwn", "text": "*Namespace*\n{{"{{"}}workflow.namespace{{"}}"}}" }, { "type": "mrkdwn", "text": "*Duration*\n{{"{{"}}workflow.duration{{"}}"}} sec" }, { "type": "mrkdwn", "text": "*Link*\n<{{"{{"}}inputs.parameters.argo_url{{"}}"}}/workflows/{{"{{"}}workflow.namespace{{"}}"}}/{{"{{"}}workflow.name{{"}}"}}?tab=workflow|View>" } ] } ] } ]}' {{"{{"}}inputs.parameters.argo_slack_url{{"}}"}}
+                        
+          parameters:
+            - src:
+                dependencyName: ns
+                dataKey: body
+              dest: spec.arguments.parameters.0.value

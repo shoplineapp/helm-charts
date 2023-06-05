@@ -1,0 +1,11 @@
+cluster_name: ""
+
+slack_noti_channel: ""
+
+slack_url: ""
+
+namespace: ""
+
+argo_slack_url: ""
+
+argo_url: ""
