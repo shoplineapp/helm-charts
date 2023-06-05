@@ -63,7 +63,7 @@ spec:
                       if [[ ${phase} == "Active" ]]; then
                         echo "Namespace ${ns} created, trigger namespace-init"
                         helm repo update
-                        helm install namespace-init shopline-charts/eks -n ${ns} --version 0.2.1
+                        helm install namespace-init shopline-charts/eks -n ${ns} --version 0.3.0
                         echo -n 'Created' > /tmp/phase.txt
                       else
                         echo "Namespace ${ns} was deleted"
