@@ -1,0 +1,14 @@
+{{- if .Values.enableOpenTelemetry }}
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: {{ .Release.Namespace }}-instrumentation
+  namespace: {{ .Release.Namespace }}
+spec:
+  exporter:
+    endpoint: http://opentelemetry-collector-collector.opentelemetry-operator:4318
+  propagators:
+    - tracecontext 
+    - baggage 
+    - b3 
+{{- end}}
