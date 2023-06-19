@@ -21,6 +21,7 @@ job:
   timeout: 1800
 
   # Jobs History Limit of cron job. For "success", it will assign to spec.successfulJobsHistoryLimit. It is optional and having default value 3. For "failed", it will assign to spec.failedJobsHistoryLimit. It is optional and having default value 1
+  history: {}
   # example
   # history:
   #   success: 1
@@ -34,6 +35,7 @@ job:
   # retryPolicy: "OnFailure"
 
 # Time-to-live setting of the pod. The field secondsAfterCompletion is for setting the time of the pod alive about the job is done
+ttlStrategy: {}
 # Example
 # ttlStrategy:
 #   secondsAfterCompletion: 600

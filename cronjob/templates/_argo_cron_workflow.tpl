@@ -182,10 +182,20 @@
       {{ template "cronjob._exit_handler_healthcheck_io" . }}
       {{- end }}
       {{- end }}
-    {{- if and (.Values.ttlStrategy) (.Values.ttlStrategy.secondsAfterCompletion) }}
+    {{- if .Values.ttlStrategy}}
     ttlStrategy:
+      {{- if .Values.ttlStrategy.secondsAfterCompletion }}
       # The second of the pod can be alive after the job is done
       secondsAfterCompletion: {{.Values.ttlStrategy.secondsAfterCompletion}}
+      {{- end }}
+      {{- if .Values.ttlStrategy.secondsAfterFailure }}
+      # The second of the pod can be alive after the job is failed
+      secondsAfterFailure: {{.Values.ttlStrategy.secondsAfterFailure}}
+      {{- end }}
+      # The second of the pod can be alive after the job is succeeded
+      {{- if .Values.ttlStrategy.secondsAfterSuccess }}
+      secondsAfterSuccess: {{.Values.ttlStrategy.secondsAfterSuccess}}
+      {{- end }}      
     {{- end }}
     # The mechanism for garbage collecting completed pods. There is default value "OnPodCompletion"
     podGC:
