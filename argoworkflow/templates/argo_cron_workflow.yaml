@@ -1,9 +1,0 @@
-{{- range $workflow, $ref := .Values.argoCronWorkflows }}
-apiVersion: argoproj.io/v1alpha1
-kind: CronWorkflow
-metadata:
-  name: {{ $workflow }}
-spec:
-  {{- toYaml ($ref.spec) | nindent 4 }}
----
-{{- end }}
