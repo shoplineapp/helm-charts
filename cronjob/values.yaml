@@ -5,10 +5,6 @@
 # Schedule of the cronjob ,required
 schedule: "0 * * * *"
 
-# Timezone of the cronjob, in IANA timezone standard, optional, and having default value Etc/UTC
-# example
-# timezone: Asia/Taipei
-
 # Kind of cron job. It define which template is using. If it equals to "CronWorkflow", argo cron workflow template will be used. Otherwise, cronjob of k8s template will be used.
 kind: "CronJob"
 # example
