@@ -39,6 +39,12 @@
                         \"type\": \"mrkdwn\",
                         \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
+                      {{- if $slackApp.workflowPIC }}
+                      ,{
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*PIC*\\n<@{{$slackApp.workflowPIC}}>\"
+                      }                      
+                      {{- end }}
                     ]
                   }
                 ]
@@ -85,6 +91,12 @@
                         \"type\": \"mrkdwn\",
                         \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
+                      {{- if $slackApp.workflowPIC }}
+                      ,{
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*PIC*\\n<@{{$slackApp.workflowPIC}}>\"
+                      }                      
+                      {{- end }}
                     ]
                   }
                 ]

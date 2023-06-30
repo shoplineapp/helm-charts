@@ -79,11 +79,14 @@ resources: {}
 # The exit handler setting for argo cron workflow template ONLY
 exitNotifications:
   # The config of the slack. For the field "portalDomain" is the url to the argo server GUI. And for the field "webhookUrl" is the webhook for the slack argo apps 
+  # And for workflowPIC, you need to fill in the memberID of the user that you want to tag in Slack
+  # You can refer to the following link to know how to get the memberID of a slack user: https://api.slack.com/reference/surfaces/formatting#mentioning-users
   slackApp: {}
   # example
   # slackApp:
   #   portalDomain: "https://argo.com" 
-  #   webhookUrl: "https://webhook/service/test"  
+  #   webhookUrl: "https://webhook/service/test"
+  #   workflowPIC: UxxxxxxxxD
 
   # The config of the New Relic. For the field "licenseKey", it is the licenseKey of New Relic. For the field "appName" is the name display in New Relic. For the field "repository" and "tag" is the image repo and tag New Relic agent image
   newRelic: {}
