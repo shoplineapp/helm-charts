@@ -135,4 +135,4 @@ serviceaccount: {}
 #     name: <serviceaccount-name>
 
 # This is for setting is the cron workflow are suspended by default. There is default value "true"
-suspend: true
+suspend: false

@@ -19,7 +19,7 @@ spec:
   successfulJobsHistoryLimit: {{ .Values.job.history.success | default 3 }}
   failedJobsHistoryLimit: {{ .Values.job.history.failed | default 1 }}
   concurrencyPolicy: {{ .Values.job.concurrency | default "Allow" }}
-  suspend: {{ .Values.suspend | default "true" }} # Set to "true" to suspend scheduling
+  suspend: {{ .Values.suspend | default "false" }} # Set to "true" to suspend scheduling
   # If "startingDeadlineSeconds" is set, the pod will dead after the second is set. Otherwise, the pod will dead ONLY the job is done
   {{- if .Values.startingDeadlineSeconds }}
   startingDeadlineSeconds: {{ .Values.startingDeadlineSeconds }}
