@@ -23,6 +23,10 @@ spec:
       app: {{ $.Values.name }}-{{ $resourceName }}
   template:
     metadata:
+      {{- if .annotations }}
+      annotations:
+        {{- toYaml .annotations | nindent 8 }}
+      {{- end }}
       labels:
         app: {{ $.Values.name }}-{{ $resourceName }}
     spec:
