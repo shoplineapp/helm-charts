@@ -4,7 +4,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: CronWorkflow
 {{- else }}
 # The "apiVersion" and "kind" for "k8s cron job"
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 {{- end }}
 metadata:
