@@ -3,7 +3,7 @@
   {{- if (default .standAlone false ) }}
     {{ fail "Don't create HPA at standalone mode." }}
   {{- end }}
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ $.Values.name }}-{{ .name }}
