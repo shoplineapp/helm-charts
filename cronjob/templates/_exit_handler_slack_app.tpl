@@ -13,7 +13,7 @@
                     \"type\": \"header\",
                     \"text\": {
                       \"type\": \"plain_text\",
-                      \"text\": \"Workflow Succeededed - {{ "{{" }}workflow.name{{ "}}" }}\",
+                      \"text\": \"Workflow Succeeded - {{ "{{" }}workflow.name{{ "}}" }}\",
                       \"emoji\": true
                     }
                   },
