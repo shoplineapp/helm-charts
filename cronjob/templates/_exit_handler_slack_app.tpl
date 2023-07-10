@@ -40,7 +40,16 @@
                         \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
                     ]
+                  },
+                  {{- if and $slackApp.mention.users (not $slackApp.mention.onlyOnFailure) }}
+                  {
+                    \"type\": \"section\",
+                    \"text\": {
+                      \"type\": \"mrkdwn\",
+                      \"text\": \"{{ range $slackApp.mention.users -}}<@{{.}}> {{ end }}\"
+                    }
                   }
+                  {{- end }} 
                 ]
               }
             ]}'
@@ -86,7 +95,16 @@
                         \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
                     ]
+                  },
+                  {{- if $slackApp.mention.users }}
+                  {
+                    \"type\": \"section\",
+                    \"text\": {
+                      \"type\": \"mrkdwn\",
+                      \"text\": \"{{ range $slackApp.mention.users -}}<@{{.}}> {{ end }}\"
+                    }
                   }
+                  {{- end }}
                 ]
               }
             ]}'
