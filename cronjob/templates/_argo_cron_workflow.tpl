@@ -184,22 +184,24 @@
       {{- end }}
 
     {{- $ttl := .Values.ttlStrategy }}
-    {{- if or $ttl.secondsAfterCompletion $ttl.secondsAfterFailure $ttl.secondsAfterSuccess }}
+    {{- if $ttl }}
+    {{- if and (not $ttl.secondsAfterCompletion) (not $ttl.secondsAfterFailure) (not $ttl.secondsAfterSuccess) }}
+      {{- fail "Invalid ttlStrategy value specified." }}
+    {{- else }}
     ttlStrategy:
-      {{- if $ttl.secondsAfterCompletion }}
+    {{- if $ttl.secondsAfterCompletion }}
       # The second of the pod can be alive after the job is done
       secondsAfterCompletion: {{ $ttl.secondsAfterCompletion }}
-      {{- end }}
-      {{- if $ttl.secondsAfterFailure }}
+    {{- end }}
+    {{- if $ttl.secondsAfterFailure }}
       # The second of the pod can be alive after the job is failed
       secondsAfterFailure: {{ $ttl.secondsAfterFailure }}
-      {{- end }}
-      {{- if $ttl.secondsAfterSuccess }}
+    {{- end }}
+    {{- if $ttl.secondsAfterSuccess }}
       # The second of the pod can be alive after the job is succeeded
       secondsAfterSuccess: {{ $ttl.secondsAfterSuccess }}
-      {{- end }}
-    {{- else }}
-    ttlStrategy: {}
+    {{- end }}
+    {{- end }}
     {{- end }}
 
     # The mechanism for garbage collecting completed pods. There is default value "OnPodCompletion"
