@@ -146,3 +146,6 @@ serviceaccount: {}
 #   annotations:
 #     eks.amazonaws.com/role-arn: <aws-role-arn>
 #     name: <serviceaccount-name>
+
+# This can be used to suspend the cron workflow by default, set this to true to suspend the cron workflow by default
+suspend: false
