@@ -41,12 +41,12 @@
                       }
                     ]
                   },
-                  {{- if and $slackApp.mention.users $slackApp.mention.onSuccess }}
+                  {{- if and $slackApp.mention $slackApp.mention.onSuccess }}
                   {
                     \"type\": \"section\",
                     \"text\": {
                       \"type\": \"mrkdwn\",
-                      \"text\": \"{{ range $slackApp.mention.users -}}<@{{.}}> {{ end }}\"
+                      \"text\": \"{{ range $slackApp.mention.onSuccess -}}<@{{.}}> {{ end }}\"
                     }
                   }
                   {{- end }} 
@@ -96,12 +96,12 @@
                       }
                     ]
                   },
-                  {{- if $slackApp.mention.users }}
+                  {{- if and $slackApp.mention $slackApp.mention.onFailure }}
                   {
                     \"type\": \"section\",
                     \"text\": {
                       \"type\": \"mrkdwn\",
-                      \"text\": \"{{ range $slackApp.mention.users -}}<@{{.}}> {{ end }}\"
+                      \"text\": \"{{ range $slackApp.mention.onFailure -}}<@{{.}}> {{ end }}\"
                     }
                   }
                   {{- end }}
