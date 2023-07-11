@@ -185,9 +185,6 @@
 
     {{- $ttl := .Values.ttlStrategy }}
     {{- if $ttl }}
-    {{- if and (not $ttl.secondsAfterCompletion) (not $ttl.secondsAfterFailure) (not $ttl.secondsAfterSuccess) }}
-      {{- fail "Invalid ttlStrategy value specified." }}
-    {{- else }}
     ttlStrategy:
     {{- if $ttl.secondsAfterCompletion }}
       # The second of the pod can be alive after the job is done
@@ -200,7 +197,6 @@
     {{- if $ttl.secondsAfterSuccess }}
       # The second of the pod can be alive after the job is succeeded
       secondsAfterSuccess: {{ $ttl.secondsAfterSuccess }}
-    {{- end }}
     {{- end }}
     {{- end }}
 
