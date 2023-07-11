@@ -41,7 +41,7 @@
                       }
                     ]
                   },
-                  {{- if and $slackApp.mention.users (not $slackApp.mention.onlyOnFailure) }}
+                  {{- if and $slackApp.mention.users $slackApp.mention.onSuccess }}
                   {
                     \"type\": \"section\",
                     \"text\": {

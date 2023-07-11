@@ -87,11 +87,8 @@ exitNotifications:
   # The config of the slack. For the field "portalDomain" is the url to the argo server GUI. And for the field "webhookUrl" is the webhook for the slack argo apps 
   # To mention someone in slack, you need to add the user id in the field "users"
   # To get the slack user id, go to the user's profile -> click on the three dots -> click "Copy member ID"
-  # And if you want to mention someone only when the job fails, you can set the field "onlyOnFailure" to true.
-  slackApp: 
-    mention:
-      users: []
-      onlyOnFailure: true
+  # By default, the notification is sent when a job failed, if you also want to send notification when a job success, set the field "onSuccess" to true
+  slackApp: {}
   # example
   # slackApp:
   #   portalDomain: "https://argo.com" 
@@ -100,7 +97,7 @@ exitNotifications:
   #     users:
   #       - U0123ABC123
   #       - U0345DEF345
-  #     onlyOnFailure: false
+  #     onSuccess: true
 
   # The config of the New Relic. For the field "licenseKey", it is the licenseKey of New Relic. For the field "appName" is the name display in New Relic. For the field "repository" and "tag" is the image repo and tag New Relic agent image
   newRelic: {}
