@@ -85,8 +85,9 @@ resources: {}
 # The exit handler setting for argo cron workflow template ONLY
 exitNotifications:
   # The config of the slack. For the field "portalDomain" is the url to the argo server GUI. And for the field "webhookUrl" is the webhook for the slack argo apps 
-  # To mention someone in slack, you need to add the user id in the field "onFailure" or "onSuccess"
+  # To mention someone in slack, you need to add the user id or group id in the field "onFailure" or "onSuccess"
   # To get the slack user id, go to the user's profile -> click on the three dots -> click "Copy member ID"
+  # To get the slack group id, go to the slack web app -> click on the group -> view the url, the last part of the url is the group id, e.g. https://xxxxx/groups/S024JSFJH, the group id is S024JSFJH
   slackApp: {}
   # example
   # slackApp:
