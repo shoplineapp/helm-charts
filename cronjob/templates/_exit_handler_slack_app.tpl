@@ -41,7 +41,8 @@
                       }
                     ]
                   },
-                  {{- if and $slackApp.mention $slackApp.mention.onSuccess }}
+                  {{- if $slackApp.mention }}
+                  {{- if $slackApp.mention.onSuccess }}
                   {
                     \"type\": \"section\",
                     \"text\": {
@@ -50,6 +51,7 @@
                     }
                   }
                   {{- end }} 
+                  {{- end }}
                 ]
               }
             ]}'
@@ -96,7 +98,8 @@
                       }
                     ]
                   },
-                  {{- if and $slackApp.mention $slackApp.mention.onFailure }}
+                  {{- if $slackApp.mention }}
+                  {{- if $slackApp.mention.onFailure }}
                   {
                     \"type\": \"section\",
                     \"text\": {
@@ -104,6 +107,7 @@
                       \"text\": \"{{ range $slackApp.mention.onFailure -}}{{ if (hasPrefix "S" .) }}<!subteam^{{.}}>{{ else }}<@{{.}}> {{ end }}{{ end }}\"
                     }
                   }
+                  {{- end }}
                   {{- end }}
                 ]
               }
