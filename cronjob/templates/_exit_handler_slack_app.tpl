@@ -101,7 +101,7 @@
                     \"type\": \"section\",
                     \"text\": {
                       \"type\": \"mrkdwn\",
-                      \"text\": \"{{ range $slackApp.mention.onSuccess -}}{{ if (hasPrefix "S" .) }}<!subteam^{{.}}>{{ else }}<@{{.}}> {{ end }}{{ end }}\"
+                      \"text\": \"{{ range $slackApp.mention.onFailure -}}{{ if (hasPrefix "S" .) }}<!subteam^{{.}}>{{ else }}<@{{.}}> {{ end }}{{ end }}\"
                     }
                   }
                   {{- end }}
