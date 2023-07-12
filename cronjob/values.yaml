@@ -25,6 +25,7 @@ job:
   timeout: 1800
 
   # Jobs History Limit of cron job. For "success", it will assign to spec.successfulJobsHistoryLimit. It is optional and having default value 3. For "failed", it will assign to spec.failedJobsHistoryLimit. It is optional and having default value 1
+  history: {}
   # example
   # history:
   #   success: 1
@@ -38,6 +39,7 @@ job:
   # retryPolicy: "OnFailure"
 
 # Time-to-live setting of the pod. The field secondsAfterCompletion is for setting the time of the pod alive about the job is done
+ttlStrategy: {}
 # Example
 # ttlStrategy:
 #   secondsAfterCompletion: 600
@@ -83,11 +85,20 @@ resources: {}
 # The exit handler setting for argo cron workflow template ONLY
 exitNotifications:
   # The config of the slack. For the field "portalDomain" is the url to the argo server GUI. And for the field "webhookUrl" is the webhook for the slack argo apps 
+  # To mention someone in slack, you need to add the user id in the field "onFailure" or "onSuccess"
+  # To get the slack user id, go to the user's profile -> click on the three dots -> click "Copy member ID"
   slackApp: {}
   # example
   # slackApp:
   #   portalDomain: "https://argo.com" 
   #   webhookUrl: "https://webhook/service/test"  
+  #   mention:
+  #     onFailure:
+  #       - U0123ABC123
+  #       - U0345DEF345
+  #     onSuccess:
+  #       - U0123ABC123
+  #       - U0345DEF345
 
   # The config of the New Relic. For the field "licenseKey", it is the licenseKey of New Relic. For the field "appName" is the name display in New Relic. For the field "repository" and "tag" is the image repo and tag New Relic agent image
   newRelic: {}
@@ -133,3 +144,6 @@ serviceaccount: {}
 #   annotations:
 #     eks.amazonaws.com/role-arn: <aws-role-arn>
 #     name: <serviceaccount-name>
+
+# This can be used to suspend the cron workflow by default, set this to true to suspend the cron workflow by default
+suspend: false

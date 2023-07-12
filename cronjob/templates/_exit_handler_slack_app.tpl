@@ -13,7 +13,7 @@
                     \"type\": \"header\",
                     \"text\": {
                       \"type\": \"plain_text\",
-                      \"text\": \"Workflow Succeededed - {{ "{{" }}workflow.name{{ "}}" }}\",
+                      \"text\": \"Workflow Succeeded - {{ "{{" }}workflow.name{{ "}}" }}\",
                       \"emoji\": true
                     }
                   },
@@ -40,7 +40,16 @@
                         \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
                     ]
+                  },
+                  {{- if and $slackApp.mention $slackApp.mention.onSuccess }}
+                  {
+                    \"type\": \"section\",
+                    \"text\": {
+                      \"type\": \"mrkdwn\",
+                      \"text\": \"{{ range $slackApp.mention.onSuccess -}}<@{{.}}> {{ end }}\"
+                    }
                   }
+                  {{- end }} 
                 ]
               }
             ]}'
@@ -86,7 +95,16 @@
                         \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
                     ]
+                  },
+                  {{- if and $slackApp.mention $slackApp.mention.onFailure }}
+                  {
+                    \"type\": \"section\",
+                    \"text\": {
+                      \"type\": \"mrkdwn\",
+                      \"text\": \"{{ range $slackApp.mention.onFailure -}}<@{{.}}> {{ end }}\"
+                    }
                   }
+                  {{- end }}
                 ]
               }
             ]}'
