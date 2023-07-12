@@ -46,7 +46,7 @@
                     \"type\": \"section\",
                     \"text\": {
                       \"type\": \"mrkdwn\",
-                      \"text\": \"{{ range $slackApp.mention.onSuccess -}}<@{{.}}> {{ end }}\"
+                      \"text\": \"{{ range $slackApp.mention.onSuccess -}}{{ if (hasPrefix "S" .) }}<!subteam^{{.}}>{{ else }}<@{{.}}> {{ end }}{{ end }}\"
                     }
                   }
                   {{- end }} 
@@ -101,7 +101,7 @@
                     \"type\": \"section\",
                     \"text\": {
                       \"type\": \"mrkdwn\",
-                      \"text\": \"{{ range $slackApp.mention.onFailure -}}<@{{.}}> {{ end }}\"
+                      \"text\": \"{{ range $slackApp.mention.onSuccess -}}{{ if (hasPrefix "S" .) }}<!subteam^{{.}}>{{ else }}<@{{.}}> {{ end }}{{ end }}\"
                     }
                   }
                   {{- end }}
