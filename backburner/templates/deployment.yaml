@@ -40,7 +40,7 @@ spec:
         options:
           - name: ndots
             value: "2"
-      terminationGracePeriodSeconds: 61
+      terminationGracePeriodSeconds: 75
       {{- if $.Values.global.affinity }}
       affinity: {{ toYaml $.Values.global.affinity | nindent 8 }}
       {{- end }}

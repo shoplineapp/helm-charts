@@ -139,4 +139,4 @@ spec:
           - name: ndots
             value: "2"
       {{- end }}
-      terminationGracePeriodSeconds: {{ .Values.deployment.terminationGracePeriodSeconds | default "61" }}
+      terminationGracePeriodSeconds: {{ .Values.deployment.terminationGracePeriodSeconds | default "75" }}
