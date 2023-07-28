@@ -64,6 +64,7 @@ spec:
                         echo "Namespace ${ns} created, trigger namespace-init"
                         helm repo update
                         helm install namespace-init shopline-charts/eks -n ${ns} --version 0.3.0
+                        kubectl label namespace ${ns} elbv2.k8s.aws/pod-readiness-gate-inject=enabled
                         echo -n 'Created' > /tmp/phase.txt
                       else
                         echo "Namespace ${ns} was deleted"
