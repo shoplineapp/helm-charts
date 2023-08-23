@@ -77,6 +77,11 @@
       - name: template
         metadata:
           namespace: {{ .Release.Namespace }}
+          annotations:
+            cronjob_name: {{ .Values.name }}
+            {{- range $key, $value := .Values.annotations }}
+            {{ $key | quote }} : {{ $value | quote }}
+            {{- end }}
         container:
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
           {{- if .Values.command }}
