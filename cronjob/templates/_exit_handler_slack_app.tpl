@@ -7,6 +7,7 @@
           args: [
             "curl -X POST -H 'Content-type: application/json' --data '{\"attachments\": [
               {
+                \"fallback\": \"Workflow Succeeded - {{ "{{" }}workflow.name{{ "}}" }}\",
                 \"color\": \"#18be52\",
                 \"blocks\": [
                   {
@@ -64,6 +65,7 @@
           args: [
             "curl -X POST -H 'Content-type: application/json' --data '{\"attachments\": [
               {
+                \"fallback\": \"Workflow Failed - {{ "{{" }}workflow.name{{ "}}" }}\",
                 \"color\": \"#E01E5A\",
                 \"blocks\": [
                   {
