@@ -42,13 +42,6 @@
                       }
                     ]
                   },
-                  {
-                    \"type\": \"section\",
-                    \"text\": {
-                      \"type\": \"mrkdwn\",
-                      \"text\": \"{{$slackApp.runbook}}\"
-                    }
-                  }
                   {{- if $slackApp.mention }}
                   {{- if $slackApp.mention.onSuccess }}
                   {
@@ -120,21 +113,12 @@
                   {{- end }}
                   {{- if $slackApp.runbook }}
                   {
-                    \"type\": \"header\",
-                    \"text\": {
-                        \"type\": \"plain_text\",
-                        \"text\": \"Runbook\"
-                    }
-                  },
-                  {{- range $line := $slackApp.runbook }}
-                  {
                     \"type\": \"section\",
                     \"text\": {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"{{$line}}\"
-                      }
+                        \"text\": \"*Runbook*{{- range $line := $slackApp.runbook }}\\n{{$line}}{{- end}}\"
+                    }
                   },
-                  {{- end }}
                   {{- end }}
                 ]
               }
