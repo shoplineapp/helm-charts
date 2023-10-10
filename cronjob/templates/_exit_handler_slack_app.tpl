@@ -41,10 +41,10 @@
                         \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
                     ]
-                  },
+                  }
                   {{- if $slackApp.mention }}
                   {{- if $slackApp.mention.onSuccess }}
-                  {
+                  ,{
                     \"type\": \"section\",
                     \"text\": {
                       \"type\": \"mrkdwn\",
@@ -99,26 +99,26 @@
                         \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
                     ]
-                  },
+                  }
                   {{- if $slackApp.mention }}
                   {{- if $slackApp.mention.onFailure }}
-                  {
+                  ,{
                     \"type\": \"section\",
                     \"text\": {
                       \"type\": \"mrkdwn\",
                       \"text\": \"{{ range $slackApp.mention.onFailure -}}{{ if (hasPrefix "S" .) }}<!subteam^{{.}}>{{ else }}<@{{.}}> {{ end }}{{ end }}\"
                     }
-                  },
+                  }
                   {{- end }}
                   {{- end }}
                   {{- if $slackApp.runbook }}
-                  {
+                  ,{
                     \"type\": \"section\",
                     \"text\": {
                         \"type\": \"mrkdwn\",
                         \"text\": \"*Runbook*{{- range $line := $slackApp.runbook }}\\n{{$line}}{{- end}}\"
                     }
-                  },
+                  }
                   {{- end }}
                 ]
               }
