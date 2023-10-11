@@ -43,13 +43,13 @@
                       {{- if $slackApp.appLogUrl }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Loki*\\n<{{$slackApp.appLogUrl}}|View>\"
+                        \"text\": \"*App Logs*\\n<{{$slackApp.appLogUrl}}|View>\"
                       }
                       {{- end }}
                       {{- if $slackApp.k8sEventLogUrl }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*K8S Event*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
+                        \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
                       }
                       {{- end }}
                     ]
@@ -113,13 +113,13 @@
                       {{- if $slackApp.appLogUrl }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Loki*\\n<{{$slackApp.appLogUrl}}|View>\"
+                        \"text\": \"*App Logs*\\n<{{$slackApp.appLogUrl}}|View>\"
                       }
                       {{- end }}
                       {{- if $slackApp.k8sEventLogUrl }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*K8S Event*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
+                        \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
                       }
                       {{- end }}
                     ]
