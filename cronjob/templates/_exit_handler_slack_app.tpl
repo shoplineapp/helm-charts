@@ -38,7 +38,15 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                      },
+                      {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*Loki*\\n<{{required "exitNotifications.slackApp.appLogUrl must be provided" $slackApp.appLogUrl}}|View>\"
+                      },
+                      {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*K8S Event*\\n<{{required "exitNotifications.slackApp.k8sEventLogUrl must be provided" $slackApp.k8sEventLogUrl}}|View>\"
                       }
                     ]
                   }
@@ -96,7 +104,15 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                      },
+                      {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*Loki*\\n<{{required "exitNotifications.slackApp.appLogUrl must be provided" $slackApp.appLogUrl}}|View>\"
+                      },
+                      {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*K8S Event*\\n<{{required "exitNotifications.slackApp.k8sEventLogUrl must be provided" $slackApp.k8sEventLogUrl}}|View>\"
                       }
                     ]
                   }
