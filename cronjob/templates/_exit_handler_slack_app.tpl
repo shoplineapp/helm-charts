@@ -38,8 +38,20 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
+                      {{- if $slackApp.appLogUrl }}
+                      ,{
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*App Logs*\\n<{{$slackApp.appLogUrl}}|View>\"
+                      }
+                      {{- end }}
+                      {{- if $slackApp.k8sEventLogUrl }}
+                      ,{
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
+                      }
+                      {{- end }}
                     ]
                   }
                   {{- if $slackApp.mention }}
@@ -96,8 +108,20 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Link*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
+                      {{- if $slackApp.appLogUrl }}
+                      ,{
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*App Logs*\\n<{{$slackApp.appLogUrl}}|View>\"
+                      }
+                      {{- end }}
+                      {{- if $slackApp.k8sEventLogUrl }}
+                      ,{
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
+                      }
+                      {{- end }}
                     ]
                   }
                   {{- if $slackApp.mention }}
