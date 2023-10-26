@@ -60,6 +60,18 @@
     {{- if .Values.exitNotifications }}
     onExit: exit-handler 
     {{- end }}
+    {{- if .Values.pdb }}
+    {{- if eq .Values.pdb.enable true }}
+    podDisruptionBudget:
+      {{- if .Values.pdb.maxUnavailable }}
+      maxUnavailable: {{ .Values.pdb.maxUnavailable }}
+      {{- else }}
+      # Documentation: https://argoproj.github.io/argo-workflows/fields/#poddisruptionbudgetspec
+      # Provide arbitrary big number if you don't know how many pods workflow creates
+      minAvailable: {{ .Values.pdb.minAvailable | default 9999 }}
+      {{- end }}
+    {{- end }}
+    {{- end }}
     templates:
       - name: entry
         steps:
