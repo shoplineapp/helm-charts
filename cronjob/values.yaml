@@ -151,8 +151,8 @@ serviceaccount: {}
 suspend: false
 
 pdb:
-  # If you just set "enable: true", default will set to "minAvailable: 100%" unless you have set other parameters.
+  # If you just set "enable: true", default will set to "minAvailable: 9999" unless you have set other parameters.
   enable: false
   # Note: You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget, and if you setting both will only set maxUnavailable.
-  # minAvailable: 50%
-  # maxUnavailable: 50%
+  # minAvailable: 9999
+  # maxUnavailable: 0
