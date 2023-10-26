@@ -66,7 +66,7 @@
       {{- if .Values.pdb.maxUnavailable }}
       maxUnavailable: {{ .Values.pdb.maxUnavailable }}
       {{- else }}
-      # According to the documentation:
+      # Documentation: https://argoproj.github.io/argo-workflows/fields/#poddisruptionbudgetspec
       # Provide arbitrary big number if you don't know how many pods workflow creates
       minAvailable: {{ .Values.pdb.minAvailable | default 9999 }}
       {{- end }}
