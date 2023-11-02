@@ -156,3 +156,14 @@ pdb:
   # Note: You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget, and if you setting both will only set maxUnavailable.
   # minAvailable: 9999
   # maxUnavailable: 0
+
+nodeSelector: {}
+# nodeSelector:
+#   nodegroup: ec-eks-db-cpu-node-autoscaling-group
+
+tolerations: []
+# tolerations: 
+# - key: "shop-callback-node"
+#   operator: "Equal"
+#   value: "true"
+#   effect: "NoSchedule"

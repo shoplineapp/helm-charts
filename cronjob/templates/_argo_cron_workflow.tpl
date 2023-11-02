@@ -1,15 +1,31 @@
 {{- define "cronjob.argo_cron_workflow" -}}
     workflowSpec:
+    podMetadata:
+      labels:
+        name: {{ .Values.name }}
+      annotations:
+        {{- range $key, $value := .Values.annotations }}
+        {{ $key | quote }} : {{ $value | quote }}
+        {{- end }}
     workflowMetadata:
       labels:
         name: {{ .Values.name }}
-      {{- range $key, $value := .Values.annotations }}
-      {{ $key | quote }} : {{ $value | quote }}
-      {{- end }}
+      annotations:
+        {{- range $key, $value := .Values.annotations }}
+        {{ $key | quote }} : {{ $value | quote }}
+        {{- end }}
     {{- if .Values.serviceaccount }}
     serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
     {{- else if .Values.serviceAccount }}
     serviceAccountName: {{ .Values.name }}-pod-service-account
+    {{- end }}
+    {{- with .Values.nodeSelector }}
+    nodeSelector:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+    tolerations:
+      {{- toYaml . | nindent 6 }}
     {{- end }}
     # If .Values.job.timeout equal to null, the pod will be kill ONLY the job is done. Otherwise, the pod will kill after the value you set
     {{- if and (.Values.job) (.Values.job.timeout) }}
@@ -89,11 +105,6 @@
       - name: template
         metadata:
           namespace: {{ .Release.Namespace }}
-          annotations:
-            cronjob_name: {{ .Values.name }}
-            {{- range $key, $value := .Values.annotations }}
-            {{ $key | quote }} : {{ $value | quote }}
-            {{- end }}
         container:
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
           {{- if .Values.command }}
