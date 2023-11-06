@@ -5,6 +5,7 @@ metadata:
 spec:
   template:
     serviceAccountName: kube-argo
+  eventBusName: {{ .Values.eventBus | default "default" }}
   resource:
     ns-event:
       group: ""
