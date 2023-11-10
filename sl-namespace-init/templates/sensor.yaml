@@ -9,6 +9,7 @@ spec:
     - name: ns
       eventSourceName: ns-event
       eventName: ns-event
+  eventBusName: {{ .Values.eventBus | default "default" }}
   triggers:
     - template:
         name: ns-workflow
@@ -55,6 +56,11 @@ spec:
                   container:
                     image: 332947256684.dkr.ecr.ap-southeast-1.amazonaws.com/kube-argo:0.1.0
                     command: [bash, -c]
+                    resources:
+                      requests:
+                        memory: "256Mi"
+                      limits:
+                        memory: "512Mi"
                     args:
                     - |
                       ns=$(echo '{{"{{"}}inputs.parameters.message{{"}}"}}' | jq -r '."metadata"."labels"."kubernetes.io/metadata.name"')
