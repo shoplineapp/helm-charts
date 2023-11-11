@@ -2,7 +2,7 @@
 {{- $slackApp := .Values.exitNotifications.slackApp | default dict -}}
       - name: notice-slack-app-succeeded
         container:
-          image: curlimages/curl
+          image: 332947256684.dkr.ecr.ap-southeast-1.amazonaws.com/curlimages/curl:8.4.0
           command: [sh, -c]
           args: [
             "curl -X POST -H 'Content-type: application/json' --data '{\"attachments\": [
@@ -72,7 +72,7 @@
           ]
       - name: notice-slack-app-failed
         container:
-          image: curlimages/curl
+          image: 332947256684.dkr.ecr.ap-southeast-1.amazonaws.com/curlimages/curl:8.4.0
           command: [sh, -c]
           args: [
             "curl -X POST -H 'Content-type: application/json' --data '{\"attachments\": [
