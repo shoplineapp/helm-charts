@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: {{ .Values.name }}
+  {{- with .Values.labels }}
+  labels:
+    {{ toYaml . }}
+  {{- end }}
+spec:
+  eventBusName: {{ .Values.name }}
+  template: 
+  {{- with .Values.annotations }}
+    annotations:
+    {{ toYaml . }}
+  {{- end }}
+  dependencies:
+    {{- range $element := .Values.eventsensor.deplendencies }}
+      - name: {{ $element.dependencyName }}
+        eventSourceName: {{ $.Values.name }}
+        eventName: {{ $element.eventName }}
+        {{- if $element.filter }}
+        filter:
+          {{ toYaml $element.filter }}
+        {{- end }}
+    {{- end }}
+  triggers:
+    {{- range $element := .Values.eventsensor.triggers }}
+      - template:
+          name: {{ $element.name }}
+          {{- if eq $element.type "http" }}
+          {{- template "trigger_http" $element }}
+          {{- end }}
+          log:
+          retryStrategy:
+            steps: 3
+            duration: 3s
+    {{- end }}

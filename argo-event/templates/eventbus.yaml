@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: {{ .Values.name }}
+  {{- with .Values.labels }}
+  labels:
+    {{ toYaml . }}
+  {{- end }}
+spec:
+  jetstream:
+    version: {{ .Values.eventbus.config.version | default "latest" }}
+    {{- with .Values.eventbus.config.affinity }}
+    affinity:
+      {{ toYaml . }}
+    {{- end }}
+    {{- with .Values.eventbus.config.persistence }}
+    persistence:
+      {{ toYaml . | nindent 6 }}
+    {{- end }}
+    replicas: 3
