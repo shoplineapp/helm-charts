@@ -12,9 +12,11 @@ spec:
     ports:
       - port: {{ .Values.eventsource.config.servicePort | default 12051 }}
         targetPort: 12051
+  {{if eq (include "helper.containType" (list .Values.eventsource.source "webhook" )) "yes" }}
   webhook:
     {{- range $index, $element := .Values.eventsource.source }}
     {{- if eq $element.type "webhook" }}
     {{ template "source_webhook" $element }}
     {{- end }}
     {{- end }}
+  {{ end }}
