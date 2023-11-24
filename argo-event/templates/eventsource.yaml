@@ -8,6 +8,9 @@ metadata:
   {{- end }}
 spec:
   eventBusName: {{ .Values.name }}
+  {{- with .Values.eventsensor.config }}
+  replicas: {{ .replicas | default 1 }}
+  {{- end }}
   service:
     ports:
       - port: {{ .Values.eventsource.config.servicePort | default 12051 }}
