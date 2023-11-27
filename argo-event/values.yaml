@@ -1,0 +1,88 @@
+
+# Name, required
+# example
+# name: use-case-1
+
+# Labels for eventbus, event source and sensor, optional
+# example
+labels:
+  app: argo-event-testing
+
+# For event bus
+eventbus:
+  config:
+    # version of jetstream, default "latest"
+    version: 2.9.11
+
+    # persistence, optional
+    persistence: {}
+    
+    # example
+    # persistence:
+    #   storageClassName: storage-1
+    #   accessMode: ReadWriteOnce
+    #   volumeSize: 10Gi
+
+    # affinity, optional
+    affinity: {}
+
+    # example
+    # affinity:
+    #   podAntiAffinity:
+    #     preferredDuringSchedulingIgnoredDuringExecution:
+    #       - podAffinityTerm:
+    #           labelSelector:
+    #             matchLabels:
+    #               controller: eventbus-controller
+    #               eventbus-name: use-case-1
+    #           topologyKey: kubernetes.io/hostname
+    #         weight: 100
+
+eventsource:
+  config:
+    # servicePort, optional, default 12051
+    # define which port exported for eventsource's pod
+    servicePort: 12051
+
+  # source(array), reuqired
+  # only webhook is supported at this moment
+  source: []
+    # common field
+    # eventName(string): the name for this event
+    # type(string): requrird, the type of source
+
+    # webhook:
+    # endpoint(string): requried, the endpoint to trigger this event
+    # method(string): requried, the method to trigger this event
+
+
+eventsensor:
+  # deplendcies(array), the event use in this sensor
+  deplendencies: []
+
+  # triggers(array): required, the trigger for the sensor
+  triggers: []
+    # common field
+    # name(string): name for the trigger
+    # type(string): type for the trigger, only http supported at this moment
+    # payload(object): payload for trigger, for more detail, follow official doc of argo-event
+    #   link: https://github.com/argoproj/argo-events/blob/master/api/sensor.md
+
+    # http:
+    # url(string): required, url to call
+    # method(string): method to call
+
+
+ingress:
+  # Annotations (mapping object)
+  annotations: {}
+  
+  # Allow using TLS for this ingress
+  # Example
+  # tls:
+  #   host:
+  #   secretName:
+
+  # host(string): host domain for this ingress
+  # Example
+  # host: testing.com
