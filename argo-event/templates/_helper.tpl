@@ -3,7 +3,7 @@
   {{- $search := index . 1 -}}
   {{- if eq (first $list).type $search -}}
     yes
-  {{- else if lt 1 (len $list) -}}
+  {{- else if gt 1 (len $list) -}}
     {{- include "helper.containType" (list (rest $list) $search) -}}
   {{- end -}}
 {{- end -}}
