@@ -44,6 +44,10 @@ eventsource:
     # define which port exported for eventsource's pod
     servicePort: 12051
 
+    # replicas: optional, default 1
+    # number of replicas for source pod
+    replicas: 1
+
   # source(array), reuqired
   # only webhook is supported at this moment
   source: []
@@ -55,10 +59,24 @@ eventsource:
     # endpoint(string): requried, the endpoint to trigger this event
     # method(string): requried, the method to trigger this event
 
+    # Example:
+    # - eventName: use-case-eventsource-1
+    #   type: webhook
+    #   endpoint: /webhook
+    #   method: POST
+
 
 eventsensor:
+  config:
+    # replicas: optional, default 1
+    # number of replicas for source pod
+    replicas: 1
+
   # deplendcies(array), the event use in this sensor
   deplendencies: []
+  # Example
+  # - dependencyName: use-case-eventsource-1
+  #   eventName: use-case-eventsource-1
 
   # triggers(array): required, the trigger for the sensor
   triggers: []
@@ -72,16 +90,30 @@ eventsensor:
     # url(string): required, url to call
     # method(string): method to call
 
+    # Example
+    # - name: http-trigger
+    #   type: http
+    #   url: http://testing/com
+    #   method: POST
+    #   payload:
+    #     - src:
+    #         dependencyName: use-case-eventsource-1
+    #         dataKey: body
+    #         useRawData: true
+    #       dest: body
+
 
 ingress:
   # Annotations (mapping object)
   annotations: {}
   
+  tls: {}
   # Allow using TLS for this ingress
   # Example
   # tls:
   #   host:
-  #   secretName:
+  #     - testing.com
+  #   secretName: secretname
 
   # host(string): host domain for this ingress
   # Example
