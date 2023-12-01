@@ -47,6 +47,7 @@
           gauge:
           # The value of your metric. It could be an Argo variable (see variables doc) or a literal value 
             value: "{{ "{{" }}workflow.duration{{ "}}" }}"  
+            realtime: true
         - name: cron_workflow_fail_count
           labels:
             - key: name
