@@ -2,19 +2,68 @@ apiVersion: argoproj.io/v1alpha1
 kind: EventBus
 metadata:
   name: {{ .Values.name }}
-  {{- with .Values.labels }}
   labels:
-    {{ toYaml . }}
-  {{- end }}
+    {{- with .Values.labels }}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+    app: {{ .Values.name }}-eventbus
 spec:
   jetstream:
-    version: {{ .Values.eventbus.config.version | default "latest" }}
-    {{- with .Values.eventbus.config.affinity }}
+    metadata:
+        {{- with .Values.labels }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+        app: {{ .Values.name }}-eventbus
+
+    version: {{ .Values.eventbus.config.version }}
+
     affinity:
-      {{ toYaml . }}
-    {{- end }}
+      {{- with .nodeAffinity }}
+      nodeAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .podAffinity }}
+      podAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      podAntiAffinity:
+        {{- with.podAntiAffinity }}
+        {{- if hasKey . "requiredDuringSchedulingIgnoredDuringExecution" }}
+        requiredDuringSchedulingIgnoredDuringExecution: {{- toYaml .requiredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+        preferredDuringSchedulingIgnoredDuringExecution:
+        {{- with.podAntiAffinity }}
+        {{- if hasKey . "preferredDuringSchedulingIgnoredDuringExecution" }}
+          {{- toYaml .preferredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-eventbus
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-eventbus
+              topologyKey: kubernetes.io/hostname
+            weight: 99
+
     {{- with .Values.eventbus.config.persistence }}
     persistence:
-      {{ toYaml . | nindent 6 }}
+      {{- with .storageClassName }}
+      storageClassName: {{ . }}
+      {{- end }}
+      {{- with .accessMode }}
+      accessMode: {{ . }}
+      {{- end }}
+      volumeSize: {{ .volumeSize | required "Missing volumeSize for jetstream"}}
     {{- end }}
-    replicas: 3
+
+    replicas: {{ .Values.eventbus.config.replicas | min 3 }}

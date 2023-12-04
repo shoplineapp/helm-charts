@@ -2,22 +2,62 @@ apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
   name: {{ .Values.name }}
-  {{- with .Values.labels }}
   labels:
-    {{ toYaml . }}
-  {{- end }}
+    {{- with .Values.labels }}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+    app: {{ .Values.name }}-sensor
 spec:
   eventBusName: {{ .Values.name }}
-  {{- with .Values.eventsensor.config }}
-  replicas: {{ .replicas | default 1 }}
-  {{- end }}
-  template: 
-  {{- with .Values.annotations }}
-    annotations:
-    {{ toYaml . }}
-  {{- end }}
+  replicas: {{ .Values.eventsensor.config.replicas | max 1 }}
+
+  template:
+    metadata:
+      labels:
+        {{- with .Values.labels }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+        app: {{ .Values.name }}-sensor
+    affinity:
+      {{- with .nodeAffinity }}
+      nodeAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .podAffinity }}
+      podAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      podAntiAffinity:
+        {{- with.podAntiAffinity }}
+        {{- if hasKey . "requiredDuringSchedulingIgnoredDuringExecution" }}
+        requiredDuringSchedulingIgnoredDuringExecution: {{- toYaml .requiredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+        preferredDuringSchedulingIgnoredDuringExecution:
+        {{- with.podAntiAffinity }}
+        {{- if hasKey . "preferredDuringSchedulingIgnoredDuringExecution" }}
+          {{- toYaml .preferredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-eventbus
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-eventbus
+              topologyKey: kubernetes.io/hostname
+            weight: 99
+
   dependencies:
-    {{- range $element := .Values.eventsensor.deplendencies }}
+    {{- range $element := .Values.eventsensor.dependencies }}
       - name: {{ $element.dependencyName }}
         eventSourceName: {{ $.Values.name }}
         eventName: {{ $element.eventName }}
@@ -26,15 +66,17 @@ spec:
           {{ toYaml $element.filter }}
         {{- end }}
     {{- end }}
+
   triggers:
     {{- range $element := .Values.eventsensor.triggers }}
       - template:
           name: {{ $element.name }}
           {{- if eq $element.type "http" }}
-          {{- template "trigger_http" $element }}
+          {{- template "trigger.http" $element }}
           {{- end }}
-          log:
+          {{- with .retryStrategy -}}
           retryStrategy:
-            steps: 3
-            duration: 3s
+            steps: {{- .retryStrategy.steps | default 1 -}}
+            duration: {{- .retryStrategy.duration | default "1s" -}}
+          {{- end -}}
     {{- end }}

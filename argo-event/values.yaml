@@ -4,9 +4,7 @@
 # name: use-case-1
 
 # Labels for eventbus, event source and sensor, optional
-# example
-labels:
-  app: argo-event-testing
+labels: {}
 
 # For event bus
 eventbus:
@@ -14,8 +12,10 @@ eventbus:
     # version of jetstream, default "latest"
     version: 2.9.11
 
+    replicas: 3
+
     # persistence, optional
-    persistence: {}
+    # persistence: {}
     
     # example
     # persistence:
@@ -26,23 +26,15 @@ eventbus:
     # affinity, optional
     affinity: {}
 
-    # example
-    # affinity:
-    #   podAntiAffinity:
-    #     preferredDuringSchedulingIgnoredDuringExecution:
-    #       - podAffinityTerm:
-    #           labelSelector:
-    #             matchLabels:
-    #               controller: eventbus-controller
-    #               eventbus-name: use-case-1
-    #           topologyKey: kubernetes.io/hostname
-    #         weight: 100
-
 eventsource:
   config:
     # servicePort, optional, default 12051
     # define which port exported for eventsource's pod
     servicePort: 12051
+
+    # webhookPort, optional, default 12051
+    # define which port that the svc will connect to webhook pod
+    webhookPort: 12051
 
     # replicas: optional, default 1
     # number of replicas for source pod
