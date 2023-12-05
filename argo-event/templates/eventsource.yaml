@@ -43,7 +43,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - {{ $.Values.name }}-eventbus
+                  - {{ $.Values.name }}-eventsource
               topologyKey: topology.kubernetes.io/zone
             weight: 100
           - podAffinityTerm:
@@ -52,7 +52,7 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - {{ $.Values.name }}-eventbus
+                  - {{ $.Values.name }}-eventsource
               topologyKey: kubernetes.io/hostname
             weight: 99
 
