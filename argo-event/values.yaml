@@ -110,3 +110,5 @@ ingress:
   # host(string): host domain for this ingress
   # Example
   # host: testing.com
+
+  # path(string): path for this ingress

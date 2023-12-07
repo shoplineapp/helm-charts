@@ -26,6 +26,6 @@ spec:
               name: {{ .Values.name }}-eventsource-svc
               port: 
                 number: {{ .Values.eventsource.config.servicePort }}
-          path: /*
+          path: {{ .Values.ingress.path }}
           pathType: ImplementationSpecific
 {{- end -}}
