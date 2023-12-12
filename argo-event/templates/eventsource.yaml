@@ -19,20 +19,20 @@ spec:
         {{- end }}
         app: {{ .Values.name }}-eventsource
     affinity:
-      {{- with .nodeAffinity }}
+      {{- with .Values.eventsource.config.affinity.nodeAffinity }}
       nodeAffinity: {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .podAffinity }}
+      {{- with .Values.eventsource.config.affinity.podAffinity }}
       podAffinity: {{- toYaml . | nindent 8 }}
       {{- end }}
       podAntiAffinity:
-        {{- with.podAntiAffinity }}
+        {{- with .Values.eventsource.config.affinity.podAntiAffinity }}
         {{- if hasKey . "requiredDuringSchedulingIgnoredDuringExecution" }}
         requiredDuringSchedulingIgnoredDuringExecution: {{- toYaml .requiredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
         {{- end }}
         {{- end }}
         preferredDuringSchedulingIgnoredDuringExecution:
-        {{- with.podAntiAffinity }}
+        {{- with .Values.eventsource.config.affinity.podAntiAffinity }}
         {{- if hasKey . "preferredDuringSchedulingIgnoredDuringExecution" }}
           {{- toYaml .preferredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
         {{- end }}

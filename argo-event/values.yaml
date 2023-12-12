@@ -24,7 +24,47 @@ eventbus:
     #   volumeSize: 10Gi
 
     # affinity, optional
-    affinity: {}
+    affinity:
+      # nodeAffinity, optional
+      nodeAffinity: {}
+      # example
+      # nodeAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #     nodeSelectorTerms:
+      #     - matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+      
+      # podAffinity, optional
+      podAffinity: {}
+      # example
+      # podAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+      # podAntiAffinity, optional
+      # if you set .podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution,you will combined with default setting.
+      # default: prefer difference az(weight:100) and node(weight:99)
+      podAntiAffinity: {}
+      # example
+      # podAntiAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+    # maxAge, optional, the oldest message store in jetstream
+    maxAge: 168h
 
 eventsource:
   config:
@@ -39,6 +79,46 @@ eventsource:
     # replicas: optional, default 1
     # number of replicas for source pod
     replicas: 1
+
+    # affinity, optional
+    affinity:
+      # nodeAffinity, optional
+      nodeAffinity: {}
+      # example
+      # nodeAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #     nodeSelectorTerms:
+      #     - matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+      
+      # podAffinity, optional
+      podAffinity: {}
+      # example
+      # podAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+      # podAntiAffinity, optional
+      # if you set .podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution,you will combined with default setting.
+      # default: prefer difference az(weight:100) and node(weight:99)
+      podAntiAffinity: {}
+      # example
+      # podAntiAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
 
   # source(array), reuqired
   # only webhook is supported at this moment
@@ -63,6 +143,45 @@ eventsensor:
     # replicas: optional, default 1
     # number of replicas for source pod
     replicas: 1
+
+    affinity:
+      # nodeAffinity, optional
+      nodeAffinity: {}
+      # example
+      # nodeAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #     nodeSelectorTerms:
+      #     - matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+      
+      # podAffinity, optional
+      podAffinity: {}
+      # example
+      # podAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+      # podAntiAffinity, optional
+      # if you set .podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution,you will combined with default setting.
+      # default: prefer difference az(weight:100) and node(weight:99)
+      podAntiAffinity: {}
+      # example
+      # podAntiAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
 
   # deplendcies(array), the event use in this sensor
   deplendencies: []
