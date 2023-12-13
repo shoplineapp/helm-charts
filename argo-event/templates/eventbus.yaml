@@ -68,5 +68,15 @@ spec:
 
     replicas: {{ .Values.eventbus.config.replicas | min 3 }}
 
+    {{- with .Values.eventbus.config }}
     streamConfig: |
-      maxAge: {{ .Values.eventbus.config.maxAge }}
+      {{- with .maxAge }}
+      maxAge: {{ . }}
+      {{- end }}
+      {{- with .duplicates }}
+      duplicates: {{ . }}
+      {{- end }}
+    {{- end }}
+
+    settings: |
+      max_file_store: {{ .Values.eventbus.config.maxFileStore }}

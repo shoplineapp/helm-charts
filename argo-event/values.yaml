@@ -64,7 +64,15 @@ eventbus:
       #         - some-value
 
     # maxAge, optional, the oldest message store in jetstream
-    maxAge: 168h
+    # immutable, need reinstall after change
+    # maxAge: 0
+
+    # duplicates, optional, the deduplication window in jetstream
+    # immutable, need reinstall after change
+    # duplicates: 2m
+
+    # maxFileStore, optional, the maximum file storage used for storing events
+    maxFileStore: 1GB
 
 eventsource:
   config:
