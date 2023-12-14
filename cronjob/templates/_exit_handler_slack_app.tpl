@@ -34,6 +34,10 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
+                        \"text\": \"*Scheduled Time*\\n{{ "{{" }}workflow.scheduledTime{{ "}}" }}\"
+                      },
+                      {
+                        \"type\": \"mrkdwn\",
                         \"text\": \"*Duration*\\n{{ "{{" }}workflow.duration{{ "}}" }} sec\"
                       },
                       {
@@ -101,6 +105,10 @@
                       {
                         \"type\": \"mrkdwn\",
                         \"text\": \"*Namespace*\\n{{ "{{" }}workflow.namespace{{ "}}" }}\"
+                      },
+                      {
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*Scheduled Time*\\n{{ "{{" }}workflow.scheduledTime{{ "}}" }}\"
                       },
                       {
                         \"type\": \"mrkdwn\",
