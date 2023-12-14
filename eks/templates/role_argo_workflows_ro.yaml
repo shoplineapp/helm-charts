@@ -6,10 +6,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
 rules:
   - apiGroups: [""]
-    resources: ["configmaps", "events", "pods", "pods/log", "pods/exec", "serviceaccounts", "secrets"]
+    resources: ["events", "pods", "pods/log"]
     verbs: ["get", "list", "watch"]
   - apiGroups: ["argoproj.io"]
-    resources: ["eventsources", "sensors", "workflows", "workfloweventbindings", "workflowtemplates", "cronworkflows", "clusterworkflowtemplates"]
+    resources: ["eventsources", "sensors", "workflows", "workfloweventbindings", "workflowtemplates", "cronworkflows", "workflowtaskresults"]
     verbs: ["get", "list", "watch"]
 ---
 kind: RoleBinding
