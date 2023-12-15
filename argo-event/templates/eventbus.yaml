@@ -10,6 +10,7 @@ metadata:
 spec:
   jetstream:
     metadata:
+      labels:
         {{- with .Values.labels }}
         {{ toYaml . | nindent 8 }}
         {{- end }}
