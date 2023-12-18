@@ -56,6 +56,12 @@
                         \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
                       }
                       {{- end }}
+                      {{- if $slackApp.cronMemoryUrl }}
+                      ,{
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*Memory Usage*\\n<{{$slackApp.cronMemoryUrl}}|View>\"
+                      }
+                      {{- end }}
                     ]
                   }
                   {{- if $slackApp.mention }}
@@ -128,6 +134,12 @@
                       ,{
                         \"type\": \"mrkdwn\",
                         \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
+                      }
+                      {{- end }}
+                      {{- if $slackApp.cronMemoryUrl }}
+                      ,{
+                        \"type\": \"mrkdwn\",
+                        \"text\": \"*Memory Usage*\\n<{{$slackApp.cronMemoryUrl}}|View>\"
                       }
                       {{- end }}
                     ]
