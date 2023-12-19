@@ -44,23 +44,13 @@
                         \"type\": \"mrkdwn\",
                         \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
-                      {{- if $slackApp.appLogUrl }}
+                      {{- range $slackApp.customUrls }}
+                      {{- with . }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*App Logs*\\n<{{$slackApp.appLogUrl}}|View>\"
+                        \"text\": \"*{{ .title }}*\\n<{{ .url }}|View>\"
                       }
                       {{- end }}
-                      {{- if $slackApp.k8sEventLogUrl }}
-                      ,{
-                        \"type\": \"mrkdwn\",
-                        \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
-                      }
-                      {{- end }}
-                      {{- if $slackApp.cronMemoryUrl }}
-                      ,{
-                        \"type\": \"mrkdwn\",
-                        \"text\": \"*Memory Usage*\\n<{{$slackApp.cronMemoryUrl}}|View>\"
-                      }
                       {{- end }}
                     ]
                   }
@@ -124,23 +114,13 @@
                         \"type\": \"mrkdwn\",
                         \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
-                      {{- if $slackApp.appLogUrl }}
+                      {{- range $slackApp.customUrls }}
+                      {{- with . }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*App Logs*\\n<{{$slackApp.appLogUrl}}|View>\"
+                        \"text\": \"*{{ .title }}*\\n<{{ .url }}|View>\"
                       }
                       {{- end }}
-                      {{- if $slackApp.k8sEventLogUrl }}
-                      ,{
-                        \"type\": \"mrkdwn\",
-                        \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
-                      }
-                      {{- end }}
-                      {{- if $slackApp.cronMemoryUrl }}
-                      ,{
-                        \"type\": \"mrkdwn\",
-                        \"text\": \"*Memory Usage*\\n<{{$slackApp.cronMemoryUrl}}|View>\"
-                      }
                       {{- end }}
                     ]
                   }
