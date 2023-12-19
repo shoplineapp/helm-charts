@@ -42,15 +42,19 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Argo Dashboard*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
-                      {{- range $slackApp.customUrls }}
-                      {{- with . }}
+                      {{- if $slackApp.customUrls }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*{{ .title }}*\\n<{{ .url }}|View>\"
+                        {{ $max := add (len $slackApp.customUrls) -1 }}
+                        \"text\": \"*Extra Links*\\n{{- range $index, $value := $slackApp.customUrls }}
+                        {{- with $value }}
+                            <{{ .url }}|{{ .title }}>
+                            {{- if gt $max $index }},{{- end}}
+                        {{- end }}
+                        {{- end }}\"
                       }
-                      {{- end }}
                       {{- end }}
                     ]
                   }
@@ -112,15 +116,19 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Argo Dashboard*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
-                      {{- range $slackApp.customUrls }}
-                      {{- with . }}
+                      {{- if $slackApp.customUrls }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*{{ .title }}*\\n<{{ .url }}|View>\"
+                        {{ $max := add (len $slackApp.customUrls) -1 }}
+                        \"text\": \"*Extra Links*\\n{{- range $index, $value := $slackApp.customUrls }}
+                        {{- with $value }}
+                            <{{ .url }}|{{ .title }}>
+                            {{- if gt $max $index }},{{- end}}
+                        {{- end }}
+                        {{- end }}\"
                       }
-                      {{- end }}
                       {{- end }}
                     ]
                   }
