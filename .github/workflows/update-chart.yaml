@@ -35,6 +35,7 @@ jobs:
           helm package eks -d eks
           helm package oomkill-exporter -d oomkill-exporter
           helm package sl-namespace-init -d sl-namespace-init
+          helm package argo-event -d argo-event
           helm repo index . --url https://shoplineapp.github.io/helm-charts
           ls -al simple/
           cat index.yaml
