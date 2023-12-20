@@ -34,22 +34,26 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
+                        \"text\": \"*Scheduled Time*\\n{{ "{{" }}workflow.scheduledTime{{ "}}" }}\"
+                      },
+                      {
+                        \"type\": \"mrkdwn\",
                         \"text\": \"*Duration*\\n{{ "{{" }}workflow.duration{{ "}}" }} sec\"
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Argo Dashboard*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
-                      {{- if $slackApp.appLogUrl }}
+                      {{- if $slackApp.customUrls }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*App Logs*\\n<{{$slackApp.appLogUrl}}|View>\"
-                      }
-                      {{- end }}
-                      {{- if $slackApp.k8sEventLogUrl }}
-                      ,{
-                        \"type\": \"mrkdwn\",
-                        \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
+                        {{ $max := add (len $slackApp.customUrls) -1 }}
+                        \"text\": \"*Extra Links*\\n{{- range $index, $value := $slackApp.customUrls }}
+                        {{- with $value }}
+                            <{{ .url }}|{{ .title }}>
+                            {{- if gt $max $index }},{{- end}}
+                        {{- end }}
+                        {{- end }}\"
                       }
                       {{- end }}
                     ]
@@ -104,22 +108,26 @@
                       },
                       {
                         \"type\": \"mrkdwn\",
+                        \"text\": \"*Scheduled Time*\\n{{ "{{" }}workflow.scheduledTime{{ "}}" }}\"
+                      },
+                      {
+                        \"type\": \"mrkdwn\",
                         \"text\": \"*Duration*\\n{{ "{{" }}workflow.duration{{ "}}" }} sec\"
                       },
                       {
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*Argo*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
+                        \"text\": \"*Argo Dashboard*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
-                      {{- if $slackApp.appLogUrl }}
+                      {{- if $slackApp.customUrls }}
                       ,{
                         \"type\": \"mrkdwn\",
-                        \"text\": \"*App Logs*\\n<{{$slackApp.appLogUrl}}|View>\"
-                      }
-                      {{- end }}
-                      {{- if $slackApp.k8sEventLogUrl }}
-                      ,{
-                        \"type\": \"mrkdwn\",
-                        \"text\": \"*K8s Events*\\n<{{$slackApp.k8sEventLogUrl}}|View>\"
+                        {{ $max := add (len $slackApp.customUrls) -1 }}
+                        \"text\": \"*Extra Links*\\n{{- range $index, $value := $slackApp.customUrls }}
+                        {{- with $value }}
+                            <{{ .url }}|{{ .title }}>
+                            {{- if gt $max $index }},{{- end}}
+                        {{- end }}
+                        {{- end }}\"
                       }
                       {{- end }}
                     ]
