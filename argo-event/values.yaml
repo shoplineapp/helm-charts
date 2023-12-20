@@ -1,0 +1,241 @@
+
+# Name, required
+# example
+# name: use-case-1
+
+# Labels for eventbus, event source and sensor, optional
+labels: {}
+
+# For event bus
+eventbus:
+  config:
+    # version of jetstream, default "latest"
+    version: 2.9.11
+
+    replicas: 3
+
+    # persistence, optional
+    # persistence: {}
+    
+    # example
+    # persistence:
+    #   storageClassName: storage-1
+    #   accessMode: ReadWriteOnce
+    #   volumeSize: 10Gi
+
+    # affinity, optional
+    affinity:
+      # nodeAffinity, optional
+      nodeAffinity: {}
+      # example
+      # nodeAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #     nodeSelectorTerms:
+      #     - matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+      
+      # podAffinity, optional
+      podAffinity: {}
+      # example
+      # podAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+      # podAntiAffinity, optional
+      # if you set .podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution,you will combined with default setting.
+      # default: prefer difference az(weight:100) and node(weight:99)
+      podAntiAffinity: {}
+      # example
+      # podAntiAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+    # maxAge, optional, the oldest message store in jetstream
+    # immutable, need reinstall after change
+    # maxAge: 0
+
+    # duplicates, optional, the deduplication window in jetstream
+    # immutable, need reinstall after change
+    # duplicates: 2m
+
+    # maxFileStore, optional, the maximum file storage used for storing events
+    maxFileStore: 1GB
+
+eventsource:
+  config:
+    # servicePort, optional, default 12051
+    # define which port exported for eventsource's pod
+    servicePort: 12051
+
+    # webhookPort, optional, default 12051
+    # define which port that the svc will connect to webhook pod
+    webhookPort: 12051
+
+    # replicas: optional, default 1
+    # number of replicas for source pod
+    replicas: 1
+
+    # affinity, optional
+    affinity:
+      # nodeAffinity, optional
+      nodeAffinity: {}
+      # example
+      # nodeAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #     nodeSelectorTerms:
+      #     - matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+      
+      # podAffinity, optional
+      podAffinity: {}
+      # example
+      # podAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+      # podAntiAffinity, optional
+      # if you set .podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution,you will combined with default setting.
+      # default: prefer difference az(weight:100) and node(weight:99)
+      podAntiAffinity: {}
+      # example
+      # podAntiAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+  # source(array), reuqired
+  # only webhook is supported at this moment
+  source: []
+    # common field
+    # eventName(string): the name for this event
+    # type(string): requrird, the type of source
+
+    # webhook:
+    # endpoint(string): requried, the endpoint to trigger this event
+    # method(string): requried, the method to trigger this event
+
+    # Example:
+    # - eventName: use-case-eventsource-1
+    #   type: webhook
+    #   endpoint: /webhook
+    #   method: POST
+
+
+eventsensor:
+  config:
+    # replicas: optional, default 1
+    # number of replicas for source pod
+    replicas: 1
+
+    affinity:
+      # nodeAffinity, optional
+      nodeAffinity: {}
+      # example
+      # nodeAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #     nodeSelectorTerms:
+      #     - matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+      
+      # podAffinity, optional
+      podAffinity: {}
+      # example
+      # podAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+      # podAntiAffinity, optional
+      # if you set .podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution,you will combined with default setting.
+      # default: prefer difference az(weight:100) and node(weight:99)
+      podAntiAffinity: {}
+      # example
+      # podAntiAffinity:
+      #   requiredDuringSchedulingIgnoredDuringExecution:
+      #   - labelSelector:
+      #       matchExpressions:
+      #       - key: app
+      #         operator: In
+      #         values:
+      #         - some-value
+
+  # deplendcies(array), the event use in this sensor
+  deplendencies: []
+  # Example
+  # - dependencyName: use-case-eventsource-1
+  #   eventName: use-case-eventsource-1
+
+  # triggers(array): required, the trigger for the sensor
+  triggers: []
+    # common field
+    # name(string): name for the trigger
+    # type(string): type for the trigger, only http supported at this moment
+    # payload(object): payload for trigger, for more detail, follow official doc of argo-event
+    #   link: https://github.com/argoproj/argo-events/blob/master/api/sensor.md
+
+    # http:
+    # url(string): required, url to call
+    # method(string): method to call
+
+    # Example
+    # - name: http-trigger
+    #   type: http
+    #   url: http://testing/com
+    #   method: POST
+    #   payload:
+    #     - src:
+    #         dependencyName: use-case-eventsource-1
+    #         dataKey: body
+    #         useRawData: true
+    #       dest: body
+
+
+ingress:
+  # Annotations (mapping object)
+  annotations: {}
+  
+  tls: {}
+  # Allow using TLS for this ingress
+  # Example
+  # tls:
+  #   host:
+  #     - testing.com
+  #   secretName: secretname
+
+  # host(string): host domain for this ingress
+  # Example
+  # host: testing.com
+
+  # path(string): path for this ingress

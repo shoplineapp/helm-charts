@@ -1,0 +1,82 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    {{- with .Values.labels }}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+    app: {{ .Values.name }}-sensor
+spec:
+  eventBusName: {{ .Values.name }}
+  replicas: {{ .Values.eventsensor.config.replicas | max 1 }}
+
+  template:
+    metadata:
+      labels:
+        {{- with .Values.labels }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+        app: {{ .Values.name }}-sensor
+    affinity:
+      {{- with .Values.eventsensor.config.affinity.nodeAffinity }}
+      nodeAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.eventsensor.config.affinity.podAffinity }}
+      podAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      podAntiAffinity:
+        {{- with .Values.eventsensor.config.affinity.podAntiAffinity }}
+        {{- if hasKey . "requiredDuringSchedulingIgnoredDuringExecution" }}
+        requiredDuringSchedulingIgnoredDuringExecution: {{- toYaml .requiredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+        preferredDuringSchedulingIgnoredDuringExecution:
+        {{- with .Values.eventsensor.config.affinity.podAntiAffinity }}
+        {{- if hasKey . "preferredDuringSchedulingIgnoredDuringExecution" }}
+          {{- toYaml .preferredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-sensor
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-sensor
+              topologyKey: kubernetes.io/hostname
+            weight: 99
+
+  dependencies:
+    {{- range $element := .Values.eventsensor.dependencies }}
+      - name: {{ $element.dependencyName }}
+        eventSourceName: {{ $.Values.name }}
+        eventName: {{ $element.eventName }}
+        {{- if $element.filter }}
+        filter:
+          {{ toYaml $element.filter }}
+        {{- end }}
+    {{- end }}
+
+  triggers:
+    {{- range $element := .Values.eventsensor.triggers }}
+      - template:
+          name: {{ $element.name }}
+          {{- if eq $element.type "http" }}
+          {{- template "trigger.http" $element }}
+          {{- end }}
+          {{- with .retryStrategy -}}
+          retryStrategy:
+            steps: {{- .retryStrategy.steps | default 1 -}}
+            duration: {{- .retryStrategy.duration | default "1s" -}}
+          {{- end -}}
+    {{- end }}
