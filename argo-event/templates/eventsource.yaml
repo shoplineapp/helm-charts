@@ -1,0 +1,73 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventSource
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    {{- with .Values.labels }}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+    app: {{ .Values.name }}-eventsource
+spec:
+  eventBusName: {{ .Values.name }}
+  replicas: {{ .Values.eventsource.config.replicas | max 1 }}
+
+  template:
+    metadata:
+      labels:
+        {{- with .Values.labels }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+        app: {{ .Values.name }}-eventsource
+    affinity:
+      {{- with .Values.eventsource.config.affinity.nodeAffinity }}
+      nodeAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.eventsource.config.affinity.podAffinity }}
+      podAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      podAntiAffinity:
+        {{- with .Values.eventsource.config.affinity.podAntiAffinity }}
+        {{- if hasKey . "requiredDuringSchedulingIgnoredDuringExecution" }}
+        requiredDuringSchedulingIgnoredDuringExecution: {{- toYaml .requiredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+        preferredDuringSchedulingIgnoredDuringExecution:
+        {{- with .Values.eventsource.config.affinity.podAntiAffinity }}
+        {{- if hasKey . "preferredDuringSchedulingIgnoredDuringExecution" }}
+          {{- toYaml .preferredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-eventsource
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-eventsource
+              topologyKey: kubernetes.io/hostname
+            weight: 99
+
+  service:
+    ports:
+      - port: {{ .Values.eventsource.config.servicePort }}
+        targetPort: {{ .Values.eventsource.config.webhookPort }}
+
+  {{- with .Values.eventsource.source -}}
+  {{if eq (include "helper.containType" (list . "webhook" )) "yes" }}
+  webhook:
+    {{- range $index, $element := . }}
+    {{- if eq $element.type "webhook" }}
+    {{ template "source.webhook" (list $element $.Values) }}
+    {{- end }}
+    {{- end }}
+  {{- end -}}
+  {{ end }}

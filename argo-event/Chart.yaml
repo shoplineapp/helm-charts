@@ -1,0 +1,5 @@
+apiVersion: v2
+name: argo-event
+description: A Helm chart for deploying argo event
+type: application
+version: 0.0.1

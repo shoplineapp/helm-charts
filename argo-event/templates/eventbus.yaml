@@ -1,0 +1,83 @@
+apiVersion: argoproj.io/v1alpha1
+kind: EventBus
+metadata:
+  name: {{ .Values.name }}
+  labels:
+    {{- with .Values.labels }}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+    app: {{ .Values.name }}-eventbus
+spec:
+  jetstream:
+    metadata:
+      labels:
+        {{- with .Values.labels }}
+        {{ toYaml . | nindent 8 }}
+        {{- end }}
+        app: {{ .Values.name }}-eventbus
+
+    version: {{ .Values.eventbus.config.version }}
+
+    affinity:
+      {{- with .Values.eventbus.config.affinity.nodeAffinity }}
+      nodeAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.eventbus.config.affinity.podAffinity }}
+      podAffinity: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      podAntiAffinity:
+        {{- with .Values.eventbus.config.affinity.podAntiAffinity }}
+        {{- if hasKey . "requiredDuringSchedulingIgnoredDuringExecution" }}
+        requiredDuringSchedulingIgnoredDuringExecution: {{- toYaml .requiredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+        preferredDuringSchedulingIgnoredDuringExecution:
+        {{- with .Values.eventbus.config.affinity.podAntiAffinity }}
+        {{- if hasKey . "preferredDuringSchedulingIgnoredDuringExecution" }}
+          {{- toYaml .preferredDuringSchedulingIgnoredDuringExecution | nindent 10 }}
+        {{- end }}
+        {{- end }}
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-eventbus
+              topologyKey: topology.kubernetes.io/zone
+            weight: 100
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ $.Values.name }}-eventbus
+              topologyKey: kubernetes.io/hostname
+            weight: 99
+
+    {{- with .Values.eventbus.config.persistence }}
+    persistence:
+      {{- with .storageClassName }}
+      storageClassName: {{ . }}
+      {{- end }}
+      {{- with .accessMode }}
+      accessMode: {{ . }}
+      {{- end }}
+      volumeSize: {{ .volumeSize | required "Missing volumeSize for jetstream"}}
+    {{- end }}
+
+    replicas: {{ .Values.eventbus.config.replicas | min 3 }}
+
+    {{- with .Values.eventbus.config }}
+    streamConfig: |
+      {{- with .maxAge }}
+      maxAge: {{ . }}
+      {{- end }}
+      {{- with .duplicates }}
+      duplicates: {{ . }}
+      {{- end }}
+    {{- end }}
+
+    settings: |
+      max_file_store: {{ .Values.eventbus.config.maxFileStore }}
