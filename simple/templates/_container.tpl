@@ -48,6 +48,9 @@
         {{- if hasKey . "readinessProbe" }}
         readinessProbe: {{- toYaml .readinessProbe | nindent 10 }}
         {{- end }}
+        {{- if hasKey . "startupProbe" }}
+        startupProbe: {{- toYaml .startupProbe | nindent 10 }}
+        {{- end }}
         {{- if hasKey . "volumes" }}
         volumeMounts:
           {{- range $key, $vol := $.volumes }}
