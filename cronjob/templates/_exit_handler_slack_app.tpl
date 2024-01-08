@@ -5,7 +5,7 @@
           image: 332947256684.dkr.ecr.ap-southeast-1.amazonaws.com/curlimages/curl:8.4.0
           command: [sh, -c]
           args: [
-            "curl -X POST -H 'Content-type: application/json' --data '{\"attachments\": [
+            "curl -X POST --tlsv1.2 --retry 3 --retry-all-errors --fail -H 'Content-type: application/json' --data '{\"attachments\": [
               {
                 \"fallback\": \"Workflow Succeeded - {{ "{{" }}workflow.name{{ "}}" }}\",
                 \"color\": \"#18be52\",
@@ -79,7 +79,7 @@
           image: 332947256684.dkr.ecr.ap-southeast-1.amazonaws.com/curlimages/curl:8.4.0
           command: [sh, -c]
           args: [
-            "curl -X POST -H 'Content-type: application/json' --data '{\"attachments\": [
+            "curl -X POST --tlsv1.2 --retry 3 --retry-all-errors --fail -H 'Content-type: application/json' --data '{\"attachments\": [
               {
                 \"fallback\": \"Workflow Failed - {{ "{{" }}workflow.name{{ "}}" }}\",
                 \"color\": \"#E01E5A\",
