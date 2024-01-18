@@ -124,6 +124,10 @@ spec:
             items: {{- toYaml $vol.configMap.items | nindent 12}}
             {{- end }}
           {{- end }}
+          {{- if hasKey $vol "persistentVolumeClaim" }}
+          persistentVolumeClaim:
+            claimName: {{ $vol.persistentVolumeClaim.claimName }}
+          {{- end }}
         {{- end }}
       {{- end }}
       restartPolicy: Always

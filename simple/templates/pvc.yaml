@@ -1,0 +1,18 @@
+{{- range $vol := $.Values.deployment.volumes }}
+{{- if hasKey $vol "persistentVolumeClaim" }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ required "Name" $vol.persistentVolumeClaim.claimName }}
+spec:
+  accessModes:
+    - {{ $vol.accessMode | default "ReadWriteOnce"  }}
+  {{- if $vol.storageClassName }}
+  storageClassName: {{ $vol.storageClassName }}
+  {{- end}}
+  resources:
+    requests:
+      storage: {{ required "storage like 1Gi" $vol.storage }}
+{{- end }}
+{{- end }}
