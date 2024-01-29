@@ -1,0 +1,23 @@
+# Used to 
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  labels:
+    release: prometheus-operator
+  name: {{ .Values.name }}-pod-monitor
+spec:
+  namespaceSelector:
+    matchNames:
+    - {{ .Release.Namespace }}
+  podMetricsEndpoints:
+  - port: metrics
+  selector:
+    matchLabels:
+      owner-name: {{ .Values.name }}
+    matchExpressions:
+    - key: controller
+      operator: In
+      values:
+      - eventsource-controller
+      - eventbus-controller
+      - sensor-controller
