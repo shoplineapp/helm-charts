@@ -337,3 +337,12 @@ analyses: {}
 #               sum(irate(
 #                 istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}"}[5m]
 #               ))
+
+# Service account is used by pod. For more details on fields "serviceaccount", please have a look on ./simple/templates/serviceaccount.yaml 
+serviceaccount: {}
+# example
+# serviceaccount:
+#   annotations:
+#     eks.amazonaws.com/role-arn: <aws-role-arn>
+#   name: <serviceaccount-name>
+#   skipCreation: false
