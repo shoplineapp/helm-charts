@@ -1,11 +1,18 @@
 {{- define "ingress.ingress_multiple" -}}
 {{- if eq .Values.EnableMutilpleIngress true }}
+{{- $businessid := .Values.businessid }}
 {{- range $ingress_name, $ref := .Values.ingress }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $ingress_name }}
+  labels:
+    businessid: {{ $businessid | quote }}
+{{- with $ref.labels }}
+{{- $labelsYaml := toYaml . | quote}}
+{{- $labelsYaml | trim | nindent 4 }}
+{{- end }}
   annotations:
 {{ toYaml $ref.annotations | indent 4 }}
 spec:
