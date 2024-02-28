@@ -1,0 +1,29 @@
+{{- if .Values.podMonitor.eventsensor.enable  }}
+# Used for Promotheous
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: {{ .Values.name }}-sensor
+  labels:
+    release: prometheus-operator
+    {{- with .Values.labels -}}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.podMonitor.eventsensor.labels -}}
+    {{ toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  namespaceSelector:
+    matchNames:
+    {{- if .Values.podMonitor.eventsensor.namespace -}}
+    {{ toYaml .Values.podMonitor.eventsensor.namespace | nindent 6 }}
+    {{- else }}
+      - {{ .Release.Namespace }}
+    {{- end }}
+  podMetricsEndpoints:
+  - port: metrics
+  selector:
+    matchLabels:
+      owner-name: {{ .Values.name }}
+      app: {{ .Values.name }}-sensor
+{{ end }}
