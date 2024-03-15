@@ -4,7 +4,12 @@ kind: Service
 metadata:
   name: {{ .Values.name }}
   annotations: {{ toYaml .Values.service.annotations | nindent 4 }}
-  labels: {{ toYaml .Values.service.labels | nindent 4 }}
+  labels:
+    businessid: {{ .Values.businessid | quote }}
+{{- with .Values.service.labels }}
+{{- $labelsYaml := toYaml . }}
+{{- $labelsYaml | trim | nindent 4 }}
+{{- end }}
 spec:
   {{- if hasKey .Values.service "type" }}
     {{- if eq .Values.service.type "ExternalName" }}
