@@ -1,9 +1,11 @@
+{{ include "resource_tag_checker" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
   labels:
+    businessid: {{ $.Values.businessid | quote}}
     app: {{ .Values.name }}
 spec:
   {{- if not (or .Values.hpa .Values.hpav2 ((.Values.KEDA).ScaledObject)) }}
