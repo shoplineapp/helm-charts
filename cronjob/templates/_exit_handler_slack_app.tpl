@@ -39,23 +39,7 @@
                       {
                         \"type\": \"mrkdwn\",
                         \"text\": \"*Duration*\\n{{ "{{" }}workflow.duration{{ "}}" }} sec\"
-                      },
-                      {
-                        \"type\": \"mrkdwn\",
-                        \"text\": \"*Argo Dashboard*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
-                      {{- if $slackApp.customUrls }}
-                      ,{
-                        \"type\": \"mrkdwn\",
-                        {{ $max := add (len $slackApp.customUrls) -1 }}
-                        \"text\": \"*Extra Links*\\n{{- range $index, $value := $slackApp.customUrls }}
-                        {{- with $value }}
-                            <{{ .url }}|{{ .title }}>
-                            {{- if gt $max $index }},{{- end}}
-                        {{- end }}
-                        {{- end }}\"
-                      }
-                      {{- end }}
                     ]
                   }
                   {{- if $slackApp.mention }}
@@ -69,6 +53,34 @@
                   }
                   {{- end }} 
                   {{- end }}
+                  ,
+                  {
+                    \"type\": \"actions\",
+                    \"elements\": [
+                      {
+                        \"type\": \"button\",
+                        \"text\": {
+                          \"type\": \"plain_text\",
+                          \"text\": \"Argo Dashboard\"
+                        },
+                        \"url\": \"{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow\"
+                      }
+                    {{- if $slackApp.customUrls }}
+                    {{- range $index, $value := $slackApp.customUrls }}
+                    {{- with $value }}
+                      ,{
+                        \"type\": \"button\",
+                        \"text\": {
+                          \"type\": \"plain_text\",
+                          \"text\": \"{{.title}}\"
+                        },
+                        \"url\": \"{{.url}}\"
+                      }
+                    {{- end }}
+                    {{- end }}
+                    {{- end }}
+                    ]
+                  }
                 ]
               }
             ]}'
@@ -113,23 +125,7 @@
                       {
                         \"type\": \"mrkdwn\",
                         \"text\": \"*Duration*\\n{{ "{{" }}workflow.duration{{ "}}" }} sec\"
-                      },
-                      {
-                        \"type\": \"mrkdwn\",
-                        \"text\": \"*Argo Dashboard*\\n<{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow|View>\"
                       }
-                      {{- if $slackApp.customUrls }}
-                      ,{
-                        \"type\": \"mrkdwn\",
-                        {{ $max := add (len $slackApp.customUrls) -1 }}
-                        \"text\": \"*Extra Links*\\n{{- range $index, $value := $slackApp.customUrls }}
-                        {{- with $value }}
-                            <{{ .url }}|{{ .title }}>
-                            {{- if gt $max $index }},{{- end}}
-                        {{- end }}
-                        {{- end }}\"
-                      }
-                      {{- end }}
                     ]
                   }
                   {{- if $slackApp.mention }}
@@ -152,6 +148,33 @@
                     }
                   }
                   {{- end }}
+                  ,{
+                    \"type\": \"actions\",
+                    \"elements\": [
+                      {
+                        \"type\": \"button\",
+                        \"text\": {
+                          \"type\": \"plain_text\",
+                          \"text\": \"Argo Dashboard\"
+                        },
+                        \"url\": \"{{required "exitNotifications.slackApp.portalDomain must be provided" $slackApp.portalDomain}}/workflows/{{ "{{" }}workflow.namespace{{ "}}" }}/{{ "{{" }}workflow.name{{ "}}" }}?tab=workflow\"
+                      }
+                    {{- if $slackApp.customUrls }}
+                    {{- range $index, $value := $slackApp.customUrls }}
+                    {{- with $value }}
+                      ,{
+                        \"type\": \"button\",
+                        \"text\": {
+                          \"type\": \"plain_text\",
+                          \"text\": \"{{.title}}\"
+                        },
+                        \"url\": \"{{.url}}\"
+                      }
+                    {{- end }}
+                    {{- end }}
+                    {{- end }}
+                    ]
+                  }
                 ]
               }
             ]}'
