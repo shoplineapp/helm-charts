@@ -5,10 +5,9 @@ metadata:
   name: {{ .Values.name }}
   labels:
     businessid: {{ .Values.businessid | quote }}
-{{- with .Values.ingress.labels }}
-{{- $labelsYaml := toYaml . | quote }}
-{{- $labelsYaml | trim | nindent 4 }}
-{{- end }}
+    {{- range $key, $value := .Values.ingress.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:
