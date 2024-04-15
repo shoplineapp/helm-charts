@@ -9,10 +9,9 @@ metadata:
   annotations: {{ toYaml $ref.annotations | nindent 4 }}
   labels:
     businessid: {{ $businessid | quote }}
-{{- with $ref.labels }}
-{{- $labelsYaml := toYaml . | quote}}
-{{- $labelsYaml | trim | nindent 4 }}
-{{- end }}
+    {{- range $key, $value := $ref.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
 spec:
     {{- if and (hasKey $ref "type") (eq $ref.type "ExternalName")}}
   type: {{ $ref.type}}
