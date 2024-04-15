@@ -6,10 +6,9 @@ metadata:
   annotations: {{ toYaml .Values.service.annotations | nindent 4 }}
   labels:
     businessid: {{ .Values.businessid | quote }}
-{{- with .Values.service.labels }}
-{{- $labelsYaml := toYaml . }}
-{{- $labelsYaml | trim | nindent 4 }}
-{{- end }}
+    {{- range $key, $value := .Values.service.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
 spec:
   {{- if hasKey .Values.service "type" }}
     {{- if eq .Values.service.type "ExternalName" }}

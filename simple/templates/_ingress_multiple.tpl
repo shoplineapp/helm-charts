@@ -9,10 +9,9 @@ metadata:
   name: {{ $ingress_name }}
   labels:
     businessid: {{ $businessid | quote }}
-{{- with $ref.labels }}
-{{- $labelsYaml := toYaml . | quote}}
-{{- $labelsYaml | trim | nindent 4 }}
-{{- end }}
+    {{- range $key, $value := $ref.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
   annotations:
 {{ toYaml $ref.annotations | indent 4 }}
 spec:
