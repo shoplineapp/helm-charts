@@ -107,6 +107,9 @@
         metadata:
           namespace: {{ .Release.Namespace }}
         container:
+          {{- if hasKey .Values "securityContextForPod" }}
+          securityContext: {{ toYaml .Values.securityContextForPod | nindent 12 }}
+          {{- end}}
           image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
           {{- if .Values.command }}
           # The command to call the function of the image
