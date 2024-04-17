@@ -1,4 +1,5 @@
 {{- if .Values.ingress }}
+{{ include "resource_tag_checker" . }}
 {{- if hasKey .Values "EnableMutilpleIngress" }}
 {{ template "ingress.ingress_multiple" . }}
 {{- else }}

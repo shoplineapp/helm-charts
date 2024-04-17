@@ -1,4 +1,5 @@
 {{- define "service.service_multiple" -}}
+{{- $businessid := .Values.businessid }}
   {{- range $service_name, $ref := .Values.services }}
 ---
 apiVersion: v1
@@ -6,7 +7,11 @@ kind: Service
 metadata:
   name: {{ $service_name }}
   annotations: {{ toYaml $ref.annotations | nindent 4 }}
-  labels: {{ toYaml $ref.labels | nindent 4 }}
+  labels:
+    businessid: {{ $businessid | quote }}
+    {{- range $key, $value := $ref.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
 spec:
     {{- if and (hasKey $ref "type") (eq $ref.type "ExternalName")}}
   type: {{ $ref.type}}
@@ -22,7 +27,7 @@ spec:
   type: {{ $ref.type | default "ClusterIP" }}
     {{- if hasKey $ref "clusterIP" }}
   clusterIP: {{ $ref.clusterIP  }}
-    {{- end }}  
+    {{- end }}
   selector:
     app: {{ $ref.selector.app | default $service_name }}
     {{- end }}

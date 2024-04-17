@@ -1,3 +1,4 @@
+{{ include "resource_tag_checker" . }}
 {{- if .Values.services }}
 {{ template "service.service_multiple" . }}
 {{- else if .Values.service }}

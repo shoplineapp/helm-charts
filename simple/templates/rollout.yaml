@@ -1,8 +1,11 @@
 {{ if .Values.rollout }}
+{{ include "resource_tag_checker" . }}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: {{ .Values.name }}
+  labels:
+    businessid: {{ $.Values.businessid | quote }}
   annotations:
 {{- toYaml .Values.rollout.annotations | nindent 4 }}
 spec:
@@ -65,6 +68,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.rollout.strategy.canary.canaryService | default (printf "%s-canary" .Values.name) }}
+  labels:
+    businessid: {{ $.Values.businessid | quote}}
 spec:
   {{- if hasKey .Values.service "type" }}
     {{- if eq .Values.service.type "ExternalName" }}
@@ -103,6 +108,8 @@ metadata:
 {{- else }}
   name: {{ .Values.rollout.strategy.canary.stableService | default (printf "%s-stable" .Values.name) }}
 {{- end }}
+  labels:
+    businessid: {{ $.Values.businessid | quote}}
 spec:
   {{- if hasKey .Values.service "type" }}
     {{- if eq .Values.service.type "ExternalName" }}

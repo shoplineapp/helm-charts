@@ -239,3 +239,29 @@ ingress:
   # host: testing.com
 
   # path(string): path for this ingress
+
+# podMonitor: optional, used to create podMonitor for argo event
+podMonitor: 
+  eventsource:
+    enable: false
+  # eventsoruce: setting for eventsource pod monitor
+  # field:
+  #   enable(bool): to enable this pod monitor
+  #   labels: extra label for this pod monitor
+  #   namespace: the namespace of this pod monitor to watch
+
+  eventbus:
+    enable: false
+  # eventbus: setting for eventbus pod monitor
+  # field:
+  #   enable(bool): to enable this pod monitor
+  #   labels: extra label for this pod monitor
+  #   namespace: the namespace of this pod monitor to watch
+
+  eventsensor:
+    enable: false
+  # eventsensor: setting for eventsensor pod monitor
+  # field:
+  #   enable(bool): to enable this pod monitor
+  #   labels: extra label for this pod monitor
+  #   namespace: the namespace of this pod monitor to watch

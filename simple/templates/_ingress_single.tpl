@@ -3,6 +3,11 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ .Values.name }}
+  labels:
+    businessid: {{ .Values.businessid | quote }}
+    {{- range $key, $value := .Values.ingress.labels }}
+    {{ $key }}: {{ $value }}
+    {{- end }}
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
 spec:
