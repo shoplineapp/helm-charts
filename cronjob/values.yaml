@@ -17,6 +17,11 @@ kind: "CronJob"
 # Starting Deadline Seconds of cron job. Will be assign to spec.startingDeadlineSeconds.
 startingDeadlineSeconds: {}
 
+# counting cost by team
+businessid: ""
+# example
+# businessid: "000000042462041525"
+
 job:
   # Number of retries if error occurred
   retries: 1

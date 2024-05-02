@@ -1,6 +1,8 @@
 {{- define "cronjob.k8s_cronjob" -}}
   jobTemplate:
     metadata:
+      labels:
+        businessid: {{ .Values.businessid | quote }}
       annotations:
         cronjob_name: {{ .Values.name }}
     spec:
@@ -8,6 +10,8 @@
       activeDeadlineSeconds: {{ .Values.job.timeout }}
       template:
         metadata:
+          labels:
+            businessid: {{ .Values.businessid | quote }}
           annotations:
             cronjob_name: {{ .Values.name }}
             {{- range $key, $value := .Values.annotations }}

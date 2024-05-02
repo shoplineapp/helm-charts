@@ -10,6 +10,8 @@ kind: CronJob
 metadata:
   name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    businessid: {{ $.Values.businessid | quote}}
 spec:
   schedule: {{ .Values.schedule | quote }}
   # If "kind" eq to "CronWorkflow", timezone can be set. If "kind" eq to "CronWorkflow" and timezone are not set, "Asia/Taipei" will be used
