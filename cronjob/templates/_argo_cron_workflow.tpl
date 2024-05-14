@@ -16,7 +16,7 @@
         {{- end }}
     {{- if .Values.serviceaccount }}
     serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
-    {{- else if .Values.serviceAccount }}
+    {{- else }}
     serviceAccountName: {{ .Values.name }}-pod-service-account
     {{- end }}
     {{- with .Values.nodeSelector }}
