@@ -1,0 +1,16 @@
+{{- /* If kind = "CronWorkflow", Role for argo workflow will be created */}}
+{{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
+# Following Role needed for argo workflow 3.5
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: wf-role-{{ .Values.name }}-executor
+rules:
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflowtaskresults
+    verbs:
+      - create
+      - patch
+{{- end }}
