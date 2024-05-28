@@ -180,7 +180,8 @@ tolerations: []
 entrypoint: "entry"
 
 # Defined container template, used for multi-steps, will override the default container template. Only used on Argo cron workflow
-containers: []
+containers:
+  - name: template
 # schema:
 #   - name: Name for this container template, required
 #   - podSpecPatch: Holds strategic merge patch to apply, will override default podSpecPatch
@@ -219,10 +220,15 @@ containers: []
 #       runAsNonRoot: true
 
 # Defined steps template, used for multi-steps, optional, Only used on Argo cron workflow
-steps: []
+steps: 
+  - name: entry
+    steps:
+      - - name: step1
+          template: template
 # schema:
 #   - name: Name for this container template, required
 #   - inputs: Describe what inputs parameters and artifacts are supplied to this template, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#inputs
+#   - outputs: Hold parameters, artifacts, and results, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#outputs
 #   - steps: Define a series of sequential/parallel workflow steps, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#workflowstep
 #   - retryStrategy: Retry strategy for this step, object
 #   - retryStrategy.limit: Maximum number of retries if error occurred
@@ -234,6 +240,11 @@ steps: []
 #     inputs:
 #       parameters:
 #         - name: message
+#     outputs:
+#       parameters:
+#         - name: result
+#           valueFrom:
+#             path: /tmp/result.txt 
 #     steps:
 #       - - name: "step-1-1"
 #           template: "example-container"

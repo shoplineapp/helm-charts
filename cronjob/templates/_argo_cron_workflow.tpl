@@ -97,7 +97,10 @@
         {{- with .inputs }}
         inputs: {{ toYaml . | nindent 10 }}
         {{- end }}
-        steps: {{ toYaml .steps | nindent 8}}
+        {{- with .outputs }}
+        outputs: {{ toYaml . | nindent 10 }}
+        {{- end }}
+        steps: {{ toYaml .steps | nindent 10}}
         {{- if or (and ($.Values.job) ($.Values.job.retries)) (.retryStrategy) }}
         retryStrategy:
           # Limit of retries if the job is fail   
@@ -115,26 +118,14 @@
           {{- end }}
         {{- end }}
       {{- end }}
-      {{- else }}
-      - name: entry
-        steps:
-          - - name: step1
-              template: template
-        {{- if and  (.Values.job) (.Values.job.retries)}}
-        retryStrategy:
-          # Limit of retries if the job is fail   
-          limit: {{ .Values.job.retries }}
-          {{- if .Values.job.retryPolicy }}
-          # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
-          retryPolicy: {{ .Values.job.retryPolicy }}  
-          {{- end }}
-        {{- end }}
       {{- end }}
 
       {{- if .Values.containers }}
       {{- range .Values.containers }}
       - name: {{ .name }}
+        {{- if or ($.Values.podSpecPatch) (.podSpecPatch) }}
         podSpecPatch: {{ (default $.Values.podSpecPatch .podSpecPatch) | quote }}
+        {{- end }}
         {{- with .inputs }}
         inputs: {{ toYaml . | nindent 12 }}
         {{- end }}
@@ -158,8 +149,6 @@
           {{- end }}
           {{- if or ($.Values.securityContext) (.securityContext) }}
           securityContext: {{ toYaml (default $.Values.securityContext .securityContext) | nindent 12 }}
-          {{- end }}
-          {{- if or ($.Values.podSpecPatch) (.podSpecPatch) }}
           {{- end }}
           env:
             - name: POD_NAME
@@ -188,61 +177,8 @@
             {{- end }}
           {{- end }}
       {{- end }}
-      {{- else }}
-      {{- /* if no .Value.containers, use create one container template with default value */}}
-      - name: template
-        metadata:
-          namespace: {{ .Release.Namespace }}
-        {{- with .Values.podSpecPatch }}
-        podSpecPatch: {{ . | quote }}
-        {{- end }}
-        container:
-          image: {{ template "cronjob.argo_cron_workflow.image" .Values.image }}
-          {{- if .Values.command }}
-          # The command to call the function of the image
-          command:  {{- toYaml ( .Values.command) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.args }}
-          # The args need to pass for the function
-          args: {{- toYaml ( .Values.args) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.resources }}
-          # The resource will be apply if "resource is set" 
-          resources: {{- toYaml ( .Values.resources) | nindent 12 }}
-          {{- else }}
-          # default settings on resources
-          resources: {{- include "cronjob.argo_cron_workflow.default_resource" . | nindent 12}}
-          {{- end }}
-          {{- with .Values.securityContext }}
-          securityContext: {{ toYaml . | nindent 12 }}
-          {{- end }}
-          env:
-            - name: POD_NAME
-              value: {{ .Values.name }}
-            {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- range $key, $name := .Values.envSecrets }}
-            - name: {{ $key }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $name }}
-                  key: {{ $key | quote }}
-            {{- end }}
-          # Apply .Values.envFrom if it is set
-          {{- if .Values.envFrom }}
-          envFrom:
-            {{- range .Values.envFrom.configMapRef }}
-            - configMapRef:
-                name: {{ . }}
-            {{- end }}
-            {{- range .Values.envFrom.secretRef }}
-            - secretRef:
-                name: {{ . }}
-            {{- end }}
-          {{- end }}
       {{- end }}
+
       # The template of exist-handler if any .Values.exitNotifications config is set
       {{- if .Values.exitNotifications }}
       - name: exit-handler
