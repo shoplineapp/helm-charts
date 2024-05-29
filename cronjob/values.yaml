@@ -230,9 +230,9 @@ steps:
 #   - inputs: Describe what inputs parameters and artifacts are supplied to this template, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#inputs
 #   - outputs: Hold parameters, artifacts, and results, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#outputs
 #   - steps: Define a series of sequential/parallel workflow steps, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#workflowstep
-#   - retryStrategy: Retry strategy for this step, object
-#   - retryStrategy.limit: Maximum number of retries if error occurred
-#   - retryStrategy.retryPolicy: Retry Policy of the cronjob
+#   - job: Retry strategy for this step, object
+#   - job.limit: Maximum number of retries if error occurred
+#   - job.retryPolicy: Retry Policy of the cronjob
 #
 # example
 # steps:
@@ -248,7 +248,7 @@ steps:
 #     steps:
 #       - - name: "step-1-1"
 #           template: "example-container"
-#     retryStrategy:
+#     job:
 #       limit: 10
 #       retryPolicy: OnFailure
 

@@ -72,7 +72,7 @@
           counter:
             # This increments the counter by 1
             value: "1"
-    entrypoint: {{ .Values.entrypoint | default "entry"}}
+    entrypoint: {{ .Values.entrypoint }}
     # If not exitNotifications config is set, the default exit-handler of the argo server will be used 
     {{- if .Values.exitNotifications }}
     onExit: exit-handler 
@@ -101,17 +101,17 @@
         outputs: {{ toYaml . | nindent 10 }}
         {{- end }}
         steps: {{ toYaml .steps | nindent 10}}
-        {{- if or (and ($.Values.job) ($.Values.job.retries)) (.retryStrategy) }}
+        {{- if or (and ($.Values.job) ($.Values.job.retries)) (.job) }}
         retryStrategy:
           # Limit of retries if the job is fail   
-          {{- if and (.retryStrategy) (.retryStrategy.limit) }}
-          limit: {{ .retryStrategy.limit }}
+          {{- if and (.job) (.job.limit) }}
+          limit: {{ .job.limit }}
           {{- else }}
           limit: {{ $.Values.job.retries }}
           {{- end }}
-          {{- if and (.retryStrategy) (.retryStrategy.retryPolicy) }}
+          {{- if and (.job) (.job.retryPolicy) }}
           # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
-          retryPolicy: {{ .retryStrategy.retryPolicy }} 
+          retryPolicy: {{ .job.retryPolicy }} 
           {{- else if $.Values.job.retryPolicy }}
           # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
           retryPolicy: {{ $.Values.job.retryPolicy }}  
