@@ -10,6 +10,9 @@ metadata:
     {{- end }}
   annotations:
 {{ toYaml .Values.ingress.annotations | indent 4 }}
+    {{- if and (not (index .Values.ingress.annotations "alb.ingress.kubernetes.io/ssl-policy")) (index .Values.ingress.annotations "alb.ingress.kubernetes.io/load-balancer-name") }}
+    alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-2021-06"
+    {{- end }}
 spec:
   {{- if .Values.ingress.tls }}
   tls:
