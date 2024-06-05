@@ -93,92 +93,27 @@
 
       {{- if .Values.steps }}
       {{- range .Values.steps }}
-      - name: {{ .name }}
-        {{- with .inputs }}
-        inputs: {{ toYaml . | nindent 10 }}
-        {{- end }}
-        {{- with .outputs }}
-        outputs: {{ toYaml . | nindent 10 }}
-        {{- end }}
-        steps: {{ toYaml .steps | nindent 10}}
-        {{- if or (and ($.Values.job) ($.Values.job.retries)) (.job) }}
-        retryStrategy:
-          # Limit of retries if the job is fail   
-          {{- if and (.job) (.job.limit) }}
-          limit: {{ .job.limit }}
-          {{- else }}
-          limit: {{ $.Values.job.retries }}
-          {{- end }}
-          {{- if and (.job) (.job.retryPolicy) }}
-          # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
-          retryPolicy: {{ .job.retryPolicy }} 
-          {{- else if $.Values.job.retryPolicy }}
-          # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
-          retryPolicy: {{ $.Values.job.retryPolicy }}  
-          {{- end }}
-        {{- end }}
+      - {{- include "cronjob.argo_cron_workflow.steps_template" . | nindent 8 }}
       {{- end }}
+      {{- else }}
+      {{- /* if no steps, use single step */}}
+      {{- $defaultValue := $.Values }}
+      {{- $defaultValue := unset $defaultValue "name" }}{{- /* Remove workflow name */}}
+      {{- $defaultVaule := merge $defaultValue (fromJson "{\"name\":\"entry\",\"steps\":[[{\"name\":\"step1\",\"template\":\"template\"}]]}") }}
+      - {{- include "cronjob.argo_cron_workflow.steps_template" $defaultVaule | nindent 8 }}
       {{- end }}
 
       {{- if .Values.containers }}
       {{- range .Values.containers }}
-      - name: {{ .name }}
-        metadata:
-          namespace: {{ $.Release.Namespace }}
-        {{- if or ($.Values.podSpecPatch) (.podSpecPatch) }}
-        podSpecPatch: {{ (default $.Values.podSpecPatch .podSpecPatch) | quote }}
-        {{- end }}
-        {{- with .inputs }}
-        inputs: {{ toYaml . | nindent 12 }}
-        {{- end }}
-        {{- with .outputs }}
-        outputs: {{ toYaml . | nindent 12 }}
-        {{- end }}
-        container:
-          image: {{ template "cronjob.argo_cron_workflow.image" (default $.Values.image .image) }}
-          {{- if or ($.Values.command) (.command) }}
-          command: {{- toYaml (default $.Values.command .command) | nindent 12 }}
-          {{- end }}
-          {{- if or ($.Values.args) (.args) }}
-          args: {{- toYaml (default $.Values.args .args) | nindent 12 }}
-          {{- end }}
-          {{- if or ($.Values.resources) (.resources) }}
-          # The resource will be apply if "resource is set" 
-          resources: {{- toYaml (default $.Values.resources .resources) | nindent 12 }}
-          {{- else }}
-          # default settings on resources
-          resources: {{- include "cronjob.argo_cron_workflow.default_resource" . | nindent 12 }}
-          {{- end }}
-          {{- if or ($.Values.securityContext) (.securityContext) }}
-          securityContext: {{ toYaml (default $.Values.securityContext .securityContext) | nindent 12 }}
-          {{- end }}
-          env:
-            - name: POD_NAME
-              value: {{ $.Values.name }}
-            {{- range $key, $value := $.Values.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- range $key, $name := $.Values.envSecrets }}
-            - name: {{ $key }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $name }}
-                  key: {{ $key | quote }}
-            {{- end }}
-          # Apply .Values.envFrom if it is set
-          {{- if $.Values.envFrom }}
-          envFrom:
-            {{- range $.Values.envFrom.configMapRef }}
-            - configMapRef:
-                name: {{ . }}
-            {{- end }}
-            {{- range $.Values.envFrom.secretRef }}
-            - secretRef:
-                name: {{ . }}
-            {{- end }}
-          {{- end }}
+      {{ $value := list . $.Values $.Release }}
+      - {{- include "cronjob.argo_cron_workflow.continers_template" $value | nindent 8}}
       {{- end }}
+      {{- else }}
+      {{- $defaultValue := $.Values }}
+      {{- $defaultValue := unset $defaultValue "name" }}{{- /* Remove workflow name */}}
+      {{- $defaultVaule := merge $defaultValue (fromJson "{\"name\":\"template\"}") }}
+      {{ $value := list $defaultValue $.Values $.Release }}
+      - {{- include "cronjob.argo_cron_workflow.continers_template" $value | nindent 8 }}
       {{- end }}
 
       # The template of exist-handler if any .Values.exitNotifications config is set
@@ -270,17 +205,4 @@
       {{- else}}
       strategy: OnPodCompletion
       {{- end }}  
-{{- end -}}
-
-{{- define "cronjob.argo_cron_workflow.image" -}}
-'{{ required "image.repository must be provided" .repository }}:{{ required "image.tag must be provided" .tag }}'
-{{- end -}}
-
-{{- define "cronjob.argo_cron_workflow.default_resource" -}}
-limits:
-  memory: "2Gi"
-  cpu: "1"
-requests:
-  cpu: "300m"
-  memory: "1Gi"
 {{- end -}}
