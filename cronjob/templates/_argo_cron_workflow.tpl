@@ -123,6 +123,8 @@
       {{- if .Values.containers }}
       {{- range .Values.containers }}
       - name: {{ .name }}
+        metadata:
+          namespace: {{ $.Release.Namespace }}
         {{- if or ($.Values.podSpecPatch) (.podSpecPatch) }}
         podSpecPatch: {{ (default $.Values.podSpecPatch .podSpecPatch) | quote }}
         {{- end }}
