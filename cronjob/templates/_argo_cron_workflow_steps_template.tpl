@@ -10,8 +10,8 @@ steps: {{ toYaml .steps | nindent 2 }}
 {{- with .job }}
 retryStrategy:
   # Limit of retries if the job is fail   
-  {{- if hasKey . "retries" }}
-  limit: {{ .retries }}
+  {{- if .retries }}
+  limit: {{ . }}
   {{- end }}
   {{- with .retryPolicy }}
   # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"

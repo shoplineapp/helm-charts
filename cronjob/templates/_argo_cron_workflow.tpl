@@ -97,22 +97,18 @@
       {{- end }}
       {{- else }}
       {{- /* if no steps, use single step */}}
-      {{- $defaultValue := $.Values }}
-      {{- $defaultValue := unset $defaultValue "name" }}{{- /* Remove workflow name */}}
-      {{- $defaultVaule := merge $defaultValue (fromJson "{\"name\":\"entry\",\"steps\":[[{\"name\":\"step1\",\"template\":\"template\"}]]}") }}
+      {{- $defaultVaule := merge (fromJson "{\"name\":\"entry\",\"steps\":[[{\"name\":\"step1\",\"template\":\"template\"}]]}") $.Values }}
       - {{- include "cronjob.argo_cron_workflow.steps_template" $defaultVaule | nindent 8 }}
       {{- end }}
 
       {{- if .Values.containers }}
       {{- range .Values.containers }}
-      {{ $value := list . $.Values $.Release }}
+      {{ $value := list . $.Release.Namespace $.Values.name }}
       - {{- include "cronjob.argo_cron_workflow.continers_template" $value | nindent 8}}
       {{- end }}
       {{- else }}
-      {{- $defaultValue := $.Values }}
-      {{- $defaultValue := unset $defaultValue "name" }}{{- /* Remove workflow name */}}
-      {{- $defaultVaule := merge $defaultValue (fromJson "{\"name\":\"template\"}") }}
-      {{ $value := list $defaultValue $.Values $.Release }}
+      {{- $defaultValue := merge (fromJson "{\"name\":\"template\"}") $.Values }}
+      {{- $value := list $defaultValue $.Release.Namespace $.Values.name }}
       - {{- include "cronjob.argo_cron_workflow.continers_template" $value | nindent 8 }}
       {{- end }}
 

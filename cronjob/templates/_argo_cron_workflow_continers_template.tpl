@@ -1,10 +1,10 @@
 {{- define "cronjob.argo_cron_workflow.continers_template" -}}
 {{- $input := index . 0 -}}
-{{- $Release := index . 1 -}}
-{{- $Values := index . 2 -}}
+{{- $namespace := index . 1 -}}
+{{- $workflowName := index . 2 -}}
 name: {{ $input.name }}
 metadata:
-  namespace: {{ $Release.Namespace }}
+  namespace: {{ $namespace }}
 {{- with $input.podSpecPatch }}
 podSpecPatch: {{ quote . }}
 {{- end }}
@@ -34,7 +34,7 @@ container:
   {{- end }}
   env:
     - name: POD_NAME
-      value: {{ $Values.name }}
+      value: {{ $workflowName }}
     {{- range $key, $value := $input.env }}
     - name: {{ $key }}
       value: {{ $value | quote }}
