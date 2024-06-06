@@ -2,55 +2,17 @@ suite: CronJob Test
 templates:
   - cronjob.yaml
 tests:
-  - it: should create an Argo Cron Workflow when kind is CronWorkflow
+  - it: should render a argo cron workflow with default values
     values:
       - ./values/cronjob/argo.yaml
     asserts:
+      - hasDocuments:
+          count: 1
       - isKind:
           of: CronWorkflow
       - equal:
-          path: apiVersion
-          value: argoproj.io/v1alpha1
-      - equal:
-          path: spec.schedule
-          value: "0 0 * * *"
-      - equal:
           path: spec.timezone
-          value: Etc/UTC
-      - equal:
-          path: spec.suspend
-          value: true
-      - equal:
-          path: spec.startingDeadlineSeconds
-          value: 2400
-      - equal:
-          path: spec.successfulJobsHistoryLimit
-          value: 2
-      - equal:
-          path: spec.failedJobsHistoryLimit
-          value: 2
-      - equal:
-          path: spec.concurrencyPolicy
-          value: Allow
-
-  - it: should create a K8s CronJob when kind is not CronWorkflow
-    values:
-      - ./values/cronjob/k8s.yaml
-    asserts:
-      - isKind:
-          of: CronJob
-      - equal:
-          path: apiVersion
-          value: batch/v1
-      - equal:
-          path: spec.schedule
-          value: "0 0 * * *"
-      - equal:
-          path: spec.suspend
-          value: false
-      - equal:
-          path: spec.startingDeadlineSeconds
-          value: 3600
+          value: "Etc/UTC"
       - equal:
           path: spec.successfulJobsHistoryLimit
           value: 3
@@ -59,4 +21,88 @@ tests:
           value: 1
       - equal:
           path: spec.concurrencyPolicy
-          value: Allow
+          value: "Allow"
+      - equal:
+          path: spec.suspend
+          value: false
+
+  - it: should render a argo cron workflow with custom values
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      timezone: Asia/Taipei
+      job:
+        history:
+          success: 99
+          failed: 99
+        concurrency: Forbid
+      suspend: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: CronWorkflow
+      - equal:
+          path: spec.timezone
+          value: "Asia/Taipei"
+      - equal:
+          path: spec.successfulJobsHistoryLimit
+          value: 99
+      - equal:
+          path: spec.failedJobsHistoryLimit
+          value: 99
+      - equal:
+          path: spec.concurrencyPolicy
+          value: "Forbid"
+      - equal:
+          path: spec.suspend
+          value: true
+
+  - it: should render a k8s cron job with default values
+    values:
+      - ./values/cronjob/k8s.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.successfulJobsHistoryLimit
+          value: 3
+      - equal:
+          path: spec.failedJobsHistoryLimit
+          value: 1
+      - equal:
+          path: spec.concurrencyPolicy
+          value: "Allow"
+      - equal:
+          path: spec.suspend
+          value: false
+
+  - it: should render a k8s cron job with custom values
+    values:
+      - ./values/cronjob/k8s.yaml
+    set:
+      job:
+        history:
+          success: 99
+          failed: 99
+        concurrency: Forbid
+      suspend: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: CronJob
+      - equal:
+          path: spec.successfulJobsHistoryLimit
+          value: 99
+      - equal:
+          path: spec.failedJobsHistoryLimit
+          value: 99
+      - equal:
+          path: spec.concurrencyPolicy
+          value: "Forbid"
+      - equal:
+          path: spec.suspend
+          value: true

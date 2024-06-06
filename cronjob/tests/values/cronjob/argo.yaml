@@ -1,16 +1,71 @@
+name: simple-cron-workflow
+schedule: 1 * * * *
 kind: CronWorkflow
-name: my-cronjob
-schedule: "0 0 * * *"
-timezone: "Etc/UTC"
-suspend: "true"
-startingDeadlineSeconds: 2400
+startingDeadlineSeconds: {}
+job:
+  retries: 1
+  timeout: 1800
+  retryPolicy: OnFailure
+ttlStrategy:
+  secondsAfterCompletion: 600
+podGC:
+  strategy: OnPodCompletion
+annotations: {}
 image:
   repository: test/testImage
-  tag: "latest"
-job:
-  history:
-    success: 2
-    failed: 2
-concurrency: "Allow"
+  tag: latest
+command:
+  - bundle
+  - exec
+  - rails
+  - test
+args:
+  - abc
+resources:
+  requests:
+    cpu: 300m
+    memory: 2Gi
+exitNotifications:
+  slackApp:
+    portalDomain: https://argo.com
+    webhookUrl: https://webhook/service/test
+    mention:
+      onFailure:
+        - U0123ABC123
+        - S0345DEF345
+      onSuccess:
+        - U0123ABC123
+        - S0345DEF345
+  newRelic:
+    image:
+      repository: test/test-newrelic-agent
+      tag: latest
+    licenseKey: 12345testtest1234test
+    appName: Test App
+  healthcheckIo:
+    uuid: arf21-323s-232d-23dasd
 env:
-  MONGO_QUERY_CACHE: false
+  RAILS_ENV: staging
+envSecrets:
+  MONGODB_USER: mongodb
+envFrom:
+  configMapRef:
+    - test-1-env
+    - test-2-env
+  secretRef:
+    - test-1-secret
+    - test-2-secret
+serviceaccount:
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/my-service-account
+  name: my-service-account
+pdb:
+  enable: true
+  minAvailable: 9999
+nodeSelector:
+  nodegroup: ec-eks-db-cpu-node-autoscaling-group
+tolerations:
+  - key: shop-callback-node
+    operator: Equal
+    value: "true"
+    effect: NoSchedule
