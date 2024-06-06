@@ -1,23 +1,25 @@
+---
 name: Helm Cronjob Chart Tests
 
-# on:
-# push:
-#   paths:
-#     - "cronjob/**"
-# pull_request:
-#   paths:
-#     - "cronjob/**"
-
-# on any push
-on: push
+on:
+  push:
+    paths:
+      - cronjob/**
+      - .github/workflows/**
+  pull_request:
+    paths:
+      - cronjob/**
+      - .github/workflows/**
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        helm-version: [3.2.4, 3.3.4, 3.4.2, 3.5.3, 3.6.2]
-
+        helm-version:
+          - 3.2.3
+          - 3.2.4
+          - latest
     steps:
       - uses: actions/checkout@v2
 
