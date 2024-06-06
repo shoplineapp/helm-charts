@@ -1,12 +1,15 @@
 name: Helm Cronjob Chart Tests
 
-on:
-  push:
-    paths:
-      - "cronjob/**"
-  pull_request:
-    paths:
-      - "cronjob/**"
+# on:
+# push:
+#   paths:
+#     - "cronjob/**"
+# pull_request:
+#   paths:
+#     - "cronjob/**"
+
+# on any push
+on: push
 
 jobs:
   test:
