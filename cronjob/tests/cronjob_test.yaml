@@ -1,0 +1,62 @@
+suite: CronJob Test
+templates:
+  - cronjob.yaml
+tests:
+  - it: should create an Argo Cron Workflow when kind is CronWorkflow
+    values:
+      - ./values/cronjob/argo.yaml
+    asserts:
+      - isKind:
+          of: CronWorkflow
+      - equal:
+          path: apiVersion
+          value: argoproj.io/v1alpha1
+      - equal:
+          path: spec.schedule
+          value: "0 0 * * *"
+      - equal:
+          path: spec.timezone
+          value: Etc/UTC
+      - equal:
+          path: spec.suspend
+          value: true
+      - equal:
+          path: spec.startingDeadlineSeconds
+          value: 2400
+      - equal:
+          path: spec.successfulJobsHistoryLimit
+          value: 2
+      - equal:
+          path: spec.failedJobsHistoryLimit
+          value: 2
+      - equal:
+          path: spec.concurrencyPolicy
+          value: Allow
+
+  - it: should create a K8s CronJob when kind is not CronWorkflow
+    values:
+      - ./values/cronjob/k8s.yaml
+    asserts:
+      - isKind:
+          of: CronJob
+      - equal:
+          path: apiVersion
+          value: batch/v1
+      - equal:
+          path: spec.schedule
+          value: "0 0 * * *"
+      - equal:
+          path: spec.suspend
+          value: false
+      - equal:
+          path: spec.startingDeadlineSeconds
+          value: 3600
+      - equal:
+          path: spec.successfulJobsHistoryLimit
+          value: 3
+      - equal:
+          path: spec.failedJobsHistoryLimit
+          value: 1
+      - equal:
+          path: spec.concurrencyPolicy
+          value: Allow

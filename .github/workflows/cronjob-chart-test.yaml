@@ -1,0 +1,33 @@
+name: Helm Cronjob Chart Tests
+
+on:
+  push:
+    paths:
+      - "cronjob/**"
+  pull_request:
+    paths:
+      - "cronjob/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        helm-version: [3.2.4, 3.3.4, 3.4.2, 3.5.3, 3.6.2]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Helm ${{ matrix.helm-version }}
+        uses: azure/setup-helm@v3
+        with:
+          version: ${{ matrix.helm-version }}
+
+      - name: Install Helm unittest plugin
+        run: |
+          helm plugin install https://github.com/helm-unittest/helm-unittest.git
+
+      - name: Run Helm Cronjob chart tests
+        run: |
+          helm unittest --version
+          helm unittest cronjob

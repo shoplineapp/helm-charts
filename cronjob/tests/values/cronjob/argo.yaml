@@ -1,0 +1,16 @@
+kind: CronWorkflow
+name: my-cronjob
+schedule: "0 0 * * *"
+timezone: "Etc/UTC"
+suspend: "true"
+startingDeadlineSeconds: 2400
+image:
+  repository: test/testImage
+  tag: "latest"
+job:
+  history:
+    success: 2
+    failed: 2
+concurrency: "Allow"
+env:
+  MONGO_QUERY_CACHE: false

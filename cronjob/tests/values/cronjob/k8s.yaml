@@ -1,0 +1,9 @@
+name: my-cronjob
+schedule: "0 0 * * *"
+suspend: "false"
+startingDeadlineSeconds: 3600
+job:
+  history:
+    success: 3
+    failed: 1
+  concurrency: "Allow"
