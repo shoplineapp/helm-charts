@@ -29,5 +29,4 @@ jobs:
 
       - name: Run Helm Cronjob chart tests
         run: |
-          helm unittest --version
           helm unittest cronjob
