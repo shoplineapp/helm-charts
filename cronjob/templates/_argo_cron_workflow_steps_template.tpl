@@ -7,13 +7,11 @@ inputs: {{ toYaml . | nindent 2 }}
 outputs: {{ toYaml . | nindent 2 }}
 {{- end }}
 steps: {{ toYaml .steps | nindent 2 }}
-{{- with .job }}
+{{- if (.job).retries }}
 retryStrategy:
   # Limit of retries if the job is fail   
-  {{- if .retries }}
-  limit: {{ . }}
-  {{- end }}
-  {{- with .retryPolicy }}
+  limit: {{ .job.retries }}
+  {{- with .job.retryPolicy }}
   # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
   retryPolicy: {{ . }} 
   {{- end }}
