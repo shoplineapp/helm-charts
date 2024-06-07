@@ -25,6 +25,19 @@ tests:
       - equal:
           path: spec.suspend
           value: false
+      - equal:
+          path: spec.schedule
+          value: "1 * * * *"
+      - equal:
+          path: spec.workflowSpec.templates[1].container.command
+          value:
+            - bundle
+            - exec
+            - rails
+            - test
+      - equal:
+          path: spec.workflowSpec.templates[1].container.image
+          value: "test/testImage:latest"
 
   - it: should render a argo cron workflow with custom values
     values:
@@ -57,6 +70,19 @@ tests:
       - equal:
           path: spec.suspend
           value: true
+      - equal:
+          path: spec.schedule
+          value: "1 * * * *"
+      - equal:
+          path: spec.workflowSpec.templates[1].container.command
+          value:
+            - bundle
+            - exec
+            - rails
+            - test
+      - equal:
+          path: spec.workflowSpec.templates[1].container.image
+          value: "test/testImage:latest"
 
   - it: should render a k8s cron job with default values
     values:
@@ -78,6 +104,16 @@ tests:
       - equal:
           path: spec.suspend
           value: false
+      - equal:
+          path: spec.schedule
+          value: "0 * * * *"
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].image
+          value: "test/testImage:latest:v1.0.0"
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].command
+          value:
+            - /app/run.sh
 
   - it: should render a k8s cron job with custom values
     values:
@@ -106,3 +142,54 @@ tests:
       - equal:
           path: spec.suspend
           value: true
+      - equal:
+          path: spec.schedule
+          value: "0 * * * *"
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].image
+          value: "test/testImage:latest:v1.0.0"
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.containers[0].command
+          value:
+            - /app/run.sh
+
+  - it: should render a argo cron workflow when exitNotifications.slackApp exists and mention is not set
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      exitNotifications:
+        slackApp:
+          mention: ~
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: CronWorkflow
+
+  - it: should render a argo cron workflow when exitNotifications.slackApp.mention exists and onSuccess is not set
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      exitNotifications:
+        slackApp:
+          mention:
+            onSuccess: ~
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: CronWorkflow
+
+  - it: should render a argo cron workflow when exitNotifications.slackApp.mention exists and onFailure is not set
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      exitNotifications:
+        slackApp:
+          mention:
+            onFailure: ~
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: CronWorkflow

@@ -5,7 +5,7 @@ job:
   retries: 3
   timeout: 300
 image:
-  repository: myregistry.azurecr.io/my-cron-app
+  repository: test/testImage:latest
   tag: v1.0.0
 serviceaccount:
   name: my-cron-job-sa
