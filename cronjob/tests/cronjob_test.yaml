@@ -153,7 +153,7 @@ tests:
           value:
             - /app/run.sh
 
-  - it: should render a argo cron workflow when exitNotifications.slackApp exists and mention is not set
+  - it: should render a argo cron workflow when exitNotifications.slackApp exists and mention is null
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -166,7 +166,7 @@ tests:
       - isKind:
           of: CronWorkflow
 
-  - it: should render a argo cron workflow when exitNotifications.slackApp.mention exists and onSuccess is not set
+  - it: should render a argo cron workflow when exitNotifications.slackApp.mention exists and onSuccess is null
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -180,7 +180,7 @@ tests:
       - isKind:
           of: CronWorkflow
 
-  - it: should render a argo cron workflow when exitNotifications.slackApp.mention exists and onFailure is not set
+  - it: should render a argo cron workflow when exitNotifications.slackApp.mention exists and onFailure is null
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -193,3 +193,23 @@ tests:
           count: 1
       - isKind:
           of: CronWorkflow
+
+  - it: should not render a argo cron workflow when image.repository is null
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      image:
+        repository: ~
+    asserts:
+      - failedTemplate:
+          errorMessage: image.repository must be provided
+
+  - it: should not render a argo cron workflow when image.tag is null
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      image:
+        tag: ~
+    asserts:
+      - failedTemplate:
+          errorMessage: image.tag must be provided
