@@ -1,5 +1,9 @@
 {{- define "cronjob._exit_handler_slack_app" -}}
 {{- $slackApp := .Values.exitNotifications.slackApp | default dict -}}
+{{- $sendOnSuccess := list nil true "true" | has $slackApp.sendOnSuccess -}}
+{{- $sendOnFailure := list nil true "true" | has $slackApp.sendOnFailure -}}
+{{- if or $sendOnSuccess $sendOnFailure }}
+  {{- if eq $sendOnSuccess true }}
       - name: notice-slack-app-succeeded
         container:
           image: 332947256684.dkr.ecr.ap-southeast-1.amazonaws.com/curlimages/curl:8.4.0
@@ -86,6 +90,8 @@
             ]}'
            {{ required "exitNotifications.slackApp.webhookUrl must be provided" $slackApp.webhookUrl }}"
           ]
+  {{- end -}}
+  {{- if eq $sendOnFailure true }}
       - name: notice-slack-app-failed
         container:
           image: 332947256684.dkr.ecr.ap-southeast-1.amazonaws.com/curlimages/curl:8.4.0
@@ -180,4 +186,6 @@
             ]}'
             {{ required "exitNotifications.slackApp.webhookUrl must be provided" $slackApp.webhookUrl }}"
           ]
+  {{- end -}}
+{{- end -}}
 {{- end -}}
