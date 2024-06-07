@@ -93,23 +93,23 @@
 
       {{- if .Values.steps }}
       {{- range .Values.steps }}
-      - {{- include "cronjob.argo_cron_workflow.steps_template" . | nindent 8 }}
+      - {{- include "cronjob.argo_cron_workflow.step_template" . | nindent 8 }}
       {{- end }}
       {{- else }}
       {{- /* if no steps, use single step */}}
-      {{- $defaultVaule := merge (fromJson "{\"name\":\"entry\",\"steps\":[[{\"name\":\"step1\",\"template\":\"template\"}]]}") $.Values }}
-      - {{- include "cronjob.argo_cron_workflow.steps_template" $defaultVaule | nindent 8 }}
+      {{- $defaultValue := merge (fromJson "{\"name\":\"entry\",\"steps\":[[{\"name\":\"step1\",\"template\":\"template\"}]]}") $.Values }}
+      - {{- include "cronjob.argo_cron_workflow.step_template" $defaultValue | nindent 8 }}
       {{- end }}
 
       {{- if .Values.containers }}
       {{- range .Values.containers }}
       {{ $value := list . $.Release.Namespace $.Values.name }}
-      - {{- include "cronjob.argo_cron_workflow.continers_template" $value | nindent 8}}
+      - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8}}
       {{- end }}
       {{- else }}
       {{- $defaultValue := merge (fromJson "{\"name\":\"template\"}") $.Values }}
       {{- $value := list $defaultValue $.Release.Namespace $.Values.name }}
-      - {{- include "cronjob.argo_cron_workflow.continers_template" $value | nindent 8 }}
+      - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8 }}
       {{- end }}
 
       # The template of exist-handler if any .Values.exitNotifications config is set

@@ -1,4 +1,4 @@
-{{- define "cronjob.argo_cron_workflow.continers_template" -}}
+{{- define "cronjob.argo_cron_workflow.container_template" -}}
 {{- $input := index . 0 -}}
 {{- $namespace := index . 1 -}}
 {{- $workflowName := index . 2 -}}

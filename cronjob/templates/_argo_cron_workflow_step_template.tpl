@@ -1,4 +1,4 @@
-{{- define "cronjob.argo_cron_workflow.steps_template" -}}
+{{- define "cronjob.argo_cron_workflow.step_template" -}}
 name: {{ .name }}
 {{- with .inputs }}
 inputs: {{ toYaml . | nindent 2 }}
