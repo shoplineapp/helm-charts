@@ -92,9 +92,8 @@ exitNotifications:
   slackApp: {}
   # example
   # slackApp:
-      # default to true when not set
-  #   sendOnSuccess: true
-  #   sendOnFailure: true
+  #   sendOnSuccess: true // optional, defaults to true
+  #   sendOnFailure: true // optional, defaults to true
 
   #   portalDomain: "https://argo.com" 
   #   webhookUrl: "https://webhook/service/test"  
