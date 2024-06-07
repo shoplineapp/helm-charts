@@ -3,8 +3,6 @@ name: Test cronjob chart
 
 on:
   push:
-    branches:
-      - master
     paths:
       - cronjob/**
       - .github/workflows/**
