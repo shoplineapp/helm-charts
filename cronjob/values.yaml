@@ -180,7 +180,7 @@ tolerations: []
 entrypoint: "entry"
 
 # Defined container template, used for multi-steps, will override the default container template. Only used on Argo cron workflow
-containers: {}
+containers: []
 # schema:
 #   - name: Name for this container template, required
 #   - podSpecPatch: Holds strategic merge patch to apply, will override default podSpecPatch
@@ -219,7 +219,7 @@ containers: {}
 #       runAsNonRoot: true
 
 # Defined steps template, used for multi-steps, optional, Only used on Argo cron workflow
-steps: {}
+steps: []
   # - name: entry
   #   steps:
   #     - - name: step1
@@ -251,9 +251,12 @@ steps: {}
 #       limit: 10
 #       retryPolicy: OnFailure
 
-# Defined suspends template, used for multi-steps
-suspends: {}
+# Defined suspends template, used for multi-steps and create suspend step
+suspends: []
+# schema:
+#  - name: name for this suspends template
+#  - duration: time to suspends
 # example
-# steps:
+# suspends:
 #   - name: "sleep-60s"
 #     duration: "60"
