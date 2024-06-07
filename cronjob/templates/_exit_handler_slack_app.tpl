@@ -2,7 +2,6 @@
 {{- $slackApp := .Values.exitNotifications.slackApp | default dict -}}
 {{- $sendOnSuccess := list nil true "true" | has $slackApp.sendOnSuccess -}}
 {{- $sendOnFailure := list nil true "true" | has $slackApp.sendOnFailure -}}
-{{- if or $sendOnSuccess $sendOnFailure }}
   {{- if eq $sendOnSuccess true }}
       - name: notice-slack-app-succeeded
         container:
@@ -187,5 +186,4 @@
             {{ required "exitNotifications.slackApp.webhookUrl must be provided" $slackApp.webhookUrl }}"
           ]
   {{- end -}}
-{{- end -}}
 {{- end -}}
