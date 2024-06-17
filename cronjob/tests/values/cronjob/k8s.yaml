@@ -1,0 +1,34 @@
+name: my-cron-job
+schedule: "0 * * * *"
+startingDeadlineSeconds: {}
+job:
+  retries: 3
+  timeout: 300
+image:
+  repository: test/testImage:latest
+  tag: v1.0.0
+serviceaccount:
+  name: my-cron-job-sa
+annotations:
+  some.annotation: "value"
+  other.annotation: "another-value"
+command:
+  - /app/run.sh
+env:
+  CRON_VAR1: value1
+  CRON_VAR2: value2
+envSecrets:
+  DB_PASSWORD: my-db-secret
+  API_KEY: my-api-secret
+envFrom:
+  configMapRef:
+    - my-cron-configmap
+  secretRef:
+    - my-cron-secrets
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi

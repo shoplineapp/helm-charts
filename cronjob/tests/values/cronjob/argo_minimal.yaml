@@ -1,0 +1,11 @@
+name: simple-cron-workflow
+schedule: 1 * * * *
+kind: CronWorkflow
+image:
+  repository: test/testImage
+  tag: latest
+command:
+  - bundle
+  - exec
+  - rails
+  - test

@@ -1,0 +1,73 @@
+suite: RoleBinding Test
+templates:
+  - rolebinding.yaml
+tests:
+  - it: should render nothing if kind is not provided
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render nothing if kind is not CronWorkflow
+    set:
+      kind: Job
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render a RoleBinding for CronWorkflow with default serviceaccount
+    set:
+      kind: CronWorkflow
+      name: my-cronjob
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: RoleBinding
+      - equal:
+          path: metadata.name
+          value: wf-role-binding-my-cronjob-executor
+      - equal:
+          path: roleRef.apiGroup
+          value: rbac.authorization.k8s.io
+      - equal:
+          path: roleRef.kind
+          value: Role
+      - equal:
+          path: roleRef.name
+          value: wf-role-my-cronjob-executor
+      - equal:
+          path: subjects[0].kind
+          value: ServiceAccount
+      - equal:
+          path: subjects[0].name
+          value: my-cronjob-pod-service-account
+
+  - it: should render a RoleBinding for CronWorkflow with provided serviceaccount
+    set:
+      kind: CronWorkflow
+      name: my-cronjob
+      serviceaccount:
+        name: my-serviceaccount
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: RoleBinding
+      - equal:
+          path: metadata.name
+          value: wf-role-binding-my-cronjob-executor
+      - equal:
+          path: roleRef.apiGroup
+          value: rbac.authorization.k8s.io
+      - equal:
+          path: roleRef.kind
+          value: Role
+      - equal:
+          path: roleRef.name
+          value: wf-role-my-cronjob-executor
+      - equal:
+          path: subjects[0].kind
+          value: ServiceAccount
+      - equal:
+          path: subjects[0].name
+          value: my-serviceaccount
