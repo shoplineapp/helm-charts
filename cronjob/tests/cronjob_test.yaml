@@ -213,3 +213,12 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: image.tag must be provided
+
+  - it: should render a argo cron workflow with minimal values
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: CronWorkflow

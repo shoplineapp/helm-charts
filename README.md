@@ -45,3 +45,10 @@ vi ./example/subChart/requirements.yaml
 ```bash
 helm dependency update ./helm/preview
 ```
+
+<!-- how to unit test -->
+### How to run unit tests
+
+```bash
+helm unittest <chart-name>
+```
