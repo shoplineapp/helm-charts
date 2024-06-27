@@ -72,7 +72,7 @@
           counter:
             # This increments the counter by 1
             value: "1"
-    entrypoint: entry
+    entrypoint: {{ .Values.entrypoint }}
     # If not exitNotifications config is set, the default exit-handler of the argo server will be used 
     {{- if .Values.exitNotifications }}
     onExit: exit-handler 
@@ -90,71 +90,28 @@
     {{- end }}
     {{- end }}
     templates:
-      - name: entry
-        steps:
-          - - name: step1
-              template: template
-        {{- if and  (.Values.job) (.Values.job.retries)}}
-        retryStrategy:
-          # Limit of retries if the job is fail   
-          limit: {{ .Values.job.retries }}
-          {{- if .Values.job.retryPolicy }}
-          # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
-          retryPolicy: {{ .Values.job.retryPolicy }}  
-          {{- end }}
-        {{- end }}
-      - name: template
-        metadata:
-          namespace: {{ .Release.Namespace }}
-        container:
-          image: '{{ required "image.repository must be provided" .Values.image.repository }}:{{ required "image.tag must be provided" .Values.image.tag }}'
-          {{- if .Values.command }}
-          # The command to call the function of the image
-          command:  {{- toYaml ( .Values.command) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.args }}
-          # The args need to pass for the function
-          args: {{- toYaml ( .Values.args) | nindent 12 }}
-          {{- end }}
-          {{- if .Values.resources }}
-          # The resource will be apply if "resource is set" 
-          resources: {{- toYaml ( .Values.resources) | nindent 12 }}
-          {{- else }}
-          # default settings on resources
-          resources:
-            limits:
-              memory: "2Gi"
-              cpu: "1"
-            requests:
-              cpu: "300m"
-              memory: "1Gi"
-          {{- end }}
-          env:
-            - name: POD_NAME
-              value: {{ .Values.name }}
-            {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-            {{- end }}
-            {{- range $key, $name := .Values.envSecrets }}
-            - name: {{ $key }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ $name }}
-                  key: {{ $key | quote }}
-            {{- end }}
-          # Apply .Values.envFrom if it is set
-          {{- if .Values.envFrom }}
-          envFrom:
-            {{- range .Values.envFrom.configMapRef }}
-            - configMapRef:
-                name: {{ . }}
-            {{- end }}
-            {{- range .Values.envFrom.secretRef }}
-            - secretRef:
-                name: {{ . }}
-            {{- end }}
-          {{- end }}
+
+      {{- if .Values.steps }}
+      {{- range .Values.steps }}
+      - {{- include "cronjob.argo_cron_workflow.step_template" . | nindent 8 }}
+      {{- end }}
+      {{- else }}
+      {{- /* if no steps, use single step */}}
+      {{- $defaultValue := merge (fromJson "{\"name\":\"entry\",\"steps\":[[{\"name\":\"step1\",\"template\":\"template\"}]]}") $.Values }}
+      - {{- include "cronjob.argo_cron_workflow.step_template" $defaultValue | nindent 8 }}
+      {{- end }}
+
+      {{- if .Values.containers }}
+      {{- range .Values.containers }}
+      {{ $value := list . $.Release.Namespace $.Values.name }}
+      - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8}}
+      {{- end }}
+      {{- else }}
+      {{- $defaultValue := merge (fromJson "{\"name\":\"template\"}") $.Values }}
+      {{- $value := list $defaultValue $.Release.Namespace $.Values.name }}
+      - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8 }}
+      {{- end }}
+
       # The template of exist-handler if any .Values.exitNotifications config is set
       {{- if .Values.exitNotifications }}
       - name: exit-handler
@@ -210,6 +167,14 @@
       {{- if .Values.exitNotifications.healthcheckIo }}
       {{ template "cronjob._exit_handler_healthcheck_io" . }}
       {{- end }}
+      {{- end }}
+
+      {{- with .Values.suspends }}
+      {{- range . }}
+      - name: {{ .name }}
+        suspend:
+          duration: {{ .duration }}
+      {{- end}}
       {{- end }}
 
     {{- $ttl := .Values.ttlStrategy }}
