@@ -150,8 +150,7 @@ serviceaccount: {}
 # This can be used to suspend the cron workflow by default, set this to true to suspend the cron workflow by default
 suspend: false
 
-# Pod-level security attributes and common container settings
-# refer to https://argo-workflows.readthedocs.io/en/stable/fields/#podsecuritycontext for detail schema
+# container-level security attributes
 securityContext: {}
 
 # Holds strategic merge patch to apply
@@ -188,7 +187,7 @@ containers: []
 #   - outputs: Hold parameters, artifacts, and results, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#outputs
 #   - image: Image used in this container
 #   - resources: Resource required for the job
-#   - securityContext: Pod-level security attributes and common container settings
+#   - securityContext: container-level security attributes
 #   - args: Arguments required to pass in function
 #   - command: Command to trigger the function
 #
