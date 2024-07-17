@@ -152,6 +152,13 @@ serviceaccount: {}
 # This can be used to suspend the cron workflow by default, set this to true to suspend the cron workflow by default
 suspend: false
 
+# container-level security attributes
+securityContext: {}
+
+# Holds strategic merge patch to apply
+# podSpecPatch: ""
+
+
 pdb:
   # If you just set "enable: true", default will set to "minAvailable: 9999" unless you have set other parameters.
   enable: false
@@ -169,3 +176,88 @@ tolerations: []
 #   operator: "Equal"
 #   value: "true"
 #   effect: "NoSchedule"
+
+# Entrypoint for this argo workflow, default value: entry
+entrypoint: "entry"
+
+# Defined container template, used for multi-steps, will override the default container template. Only used on Argo cron workflow
+containers: []
+# schema:
+#   - name: Name for this container template, required
+#   - podSpecPatch: Holds strategic merge patch to apply, will override default podSpecPatch
+#   - inputs: Describe what inputs parameters and artifacts are supplied to this template, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#inputs
+#   - outputs: Hold parameters, artifacts, and results, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#outputs
+#   - image: Image used in this container
+#   - resources: Resource required for the job
+#   - securityContext: container-level security attributes
+#   - args: Arguments required to pass in function
+#   - command: Command to trigger the function
+#
+# example
+# containers:
+#   - name: "example-container"
+#     podSpecPatch: '{"terminationGracePeriodSeconds":5}'
+#     inputs:
+#       parameters:
+#         - name: message
+#     outputs:
+#       parameters:
+#         - name: result
+#           valueFrom:
+#             path: /tmp/result.txt 
+#     command:                    
+#       - bundle
+#       - exec
+#       - rails
+#       - test
+#     args:
+#      - "abc"
+#     resources:
+#       requests:
+#         cpu: "300m"
+#         memory: "2Gi"
+#     securityContext:
+#       runAsNonRoot: true
+
+# Defined steps template, used for multi-steps, optional, Only used on Argo cron workflow
+steps: []
+  # - name: entry
+  #   steps:
+  #     - - name: step1
+  #         template: template
+# schema:
+#   - name: Name for this container template, required
+#   - inputs: Describe what inputs parameters and artifacts are supplied to this template, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#inputs
+#   - outputs: Hold parameters, artifacts, and results, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#outputs
+#   - steps: Define a series of sequential/parallel workflow steps, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#workflowstep
+#   - job: Retry strategy for this step, object
+#   - job.retries: Maximum number of retries if error occurred
+#   - job.retryPolicy: Retry Policy of the cronjob
+#
+# example
+# steps:
+#   - name: "step-1"
+#     inputs:
+#       parameters:
+#         - name: message
+#     outputs:
+#       parameters:
+#         - name: result
+#           valueFrom:
+#             path: /tmp/result.txt 
+#     steps:
+#       - - name: "step-1-1"
+#           template: "example-container"
+#     job:
+#       limit: 10
+#       retryPolicy: OnFailure
+
+# Defined suspends template, used for multi-steps and create suspend step
+suspends: []
+# schema:
+#  - name: name for this suspends template
+#  - duration: time to suspends
+# example
+# suspends:
+#   - name: "sleep-60s"
+#     duration: "60"
