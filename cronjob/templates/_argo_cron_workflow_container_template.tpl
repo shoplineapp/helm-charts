@@ -2,9 +2,12 @@
 {{- $input := index . 0 -}}
 {{- $namespace := index . 1 -}}
 {{- $workflowName := index . 2 -}}
+{{- $businessid := index . 3 -}}
 name: {{ $input.name }}
 metadata:
   namespace: {{ $namespace }}
+  labels:
+    businessid: {{ $businessid | quote }}
 {{- with $input.podSpecPatch }}
 podSpecPatch: {{ quote . }}
 {{- end }}

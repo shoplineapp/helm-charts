@@ -3,6 +3,8 @@
     metadata:
       annotations:
         cronjob_name: {{ .Values.name }}
+    	labels:
+				businessid: {{ .Values.businessid | quote }}
     spec:
       backoffLimit: {{ .Values.job.retries }}
       activeDeadlineSeconds: {{ .Values.job.timeout }}
@@ -13,6 +15,8 @@
             {{- range $key, $value := .Values.annotations }}
             {{ $key | quote }} : {{ $value | quote }}
             {{- end }}
+					labels:
+		    		businessid: {{ .Values.businessid | quote }}
         spec:
           {{- if .Values.serviceaccount }}
           serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
