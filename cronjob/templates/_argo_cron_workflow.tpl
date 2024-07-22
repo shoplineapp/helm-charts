@@ -111,17 +111,11 @@
       {{- if .Values.containers }}
       {{- range .Values.containers }}
       {{ $value := list . $.Release.Namespace $.Values.name }}
-    #   {{- if $businessid }}
-    #   {{ $value = append $value $businessid }}
-    #   {{- end }}
       - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8}}
       {{- end }}
       {{- else }}
       {{- $defaultValue := merge (fromJson "{\"name\":\"template\"}") $.Values }}
       {{- $value := list $defaultValue $.Release.Namespace $.Values.name }}
-    #   {{- if $businessid }}
-    #   {{- $value = append $value $businessid }}
-    #   {{- end }}
       - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8 }}
       {{- end }}
 
