@@ -25,6 +25,12 @@
               name: {{ $ref.name }}
               key: {{ $ref.key | quote }}
         {{- end }}
+        {{- range .envFromFieldRefs }}
+        - name: {{ .name }}
+          valueFrom:
+            fieldRef:
+              fieldPath: {{ .fieldPath }}
+        {{- end }}
         envFrom:
         {{- range .envFromConfigmap }}
         - configMapRef:
