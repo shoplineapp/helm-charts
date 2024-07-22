@@ -1,11 +1,10 @@
 {{- define "cronjob.argo_cron_workflow" -}}
-    {{- $businessid := .Values.businessid -}}
     workflowSpec:
     podMetadata:
       labels:
         name: {{ .Values.name }}
-        {{- if $businessid }}
-        businessid: {{ $businessid | quote }}
+        {{- if .Values.businessid }}
+        businessid: {{ .Values.businessid | quote }}
         {{- end }}
       annotations:
         {{- range $key, $value := .Values.annotations }}
@@ -14,8 +13,8 @@
     workflowMetadata:
       labels:
         name: {{ .Values.name }}
-        {{- if $businessid }}
-        businessid: {{ $businessid | quote }}
+        {{- if .Values.businessid }}
+        businessid: {{ .Values.businessid | quote }}
         {{- end }}
       annotations:
         {{- range $key, $value := .Values.annotations }}
