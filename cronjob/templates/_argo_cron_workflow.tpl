@@ -1,9 +1,12 @@
 {{- define "cronjob.argo_cron_workflow" -}}
+    {{- $businessid := .Values.businessid -}}
     workflowSpec:
     podMetadata:
       labels:
         name: {{ .Values.name }}
-        businessid: {{ .Values.businessid | quote }}
+        {{- if $businessid }}
+        businessid: {{ $businessid | quote }}
+        {{- end }}
       annotations:
         {{- range $key, $value := .Values.annotations }}
         {{ $key | quote }} : {{ $value | quote }}
@@ -11,7 +14,9 @@
     workflowMetadata:
       labels:
         name: {{ .Values.name }}
-        businessid: {{ .Values.businessid | quote }}
+        {{- if $businessid }}
+        businessid: {{ $businessid | quote }}
+        {{- end }}
       annotations:
         {{- range $key, $value := .Values.annotations }}
         {{ $key | quote }} : {{ $value | quote }}
@@ -105,12 +110,18 @@
 
       {{- if .Values.containers }}
       {{- range .Values.containers }}
-      {{ $value := list . $.Release.Namespace $.Values.name $.Values.businessid }}
+      {{ $value := list . $.Release.Namespace $.Values.name }}
+    #   {{- if $businessid }}
+    #   {{ $value = append $value $businessid }}
+    #   {{- end }}
       - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8}}
       {{- end }}
       {{- else }}
       {{- $defaultValue := merge (fromJson "{\"name\":\"template\"}") $.Values }}
-      {{- $value := list $defaultValue $.Release.Namespace $.Values.name $.Values.businessid }}
+      {{- $value := list $defaultValue $.Release.Namespace $.Values.name }}
+    #   {{- if $businessid }}
+    #   {{- $value = append $value $businessid }}
+    #   {{- end }}
       - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8 }}
       {{- end }}
 

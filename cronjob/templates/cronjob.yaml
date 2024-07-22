@@ -11,7 +11,9 @@ metadata:
   name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
   labels:
+    {{- if .Values.businessid }}
     businessid: {{ .Values.businessid | quote }}
+    {{- end }}
 spec:
   schedule: {{ .Values.schedule | quote }}
   # If "kind" eq to "CronWorkflow", timezone can be set. If "kind" eq to "CronWorkflow" and timezone are not set, "Asia/Taipei" will be used
