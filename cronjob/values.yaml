@@ -14,7 +14,7 @@ kind: "CronJob"
 # example
 # kind: CronWorkflow
 
-# Optional, should be a quoted string
+# Required: please quote the businessid as string
 # businessid: "xxxxxxxxxxxxxxxxxx"
 
 # Starting Deadline Seconds of cron job. Will be assign to spec.startingDeadlineSeconds.

@@ -4,9 +4,7 @@
       annotations:
         cronjob_name: {{ .Values.name }}
       labels:
-        {{- if .Values.businessid }}
         businessid: {{ .Values.businessid | quote }}
-        {{- end }}
     spec:
       backoffLimit: {{ .Values.job.retries }}
       activeDeadlineSeconds: {{ .Values.job.timeout }}
@@ -18,9 +16,7 @@
             {{ $key | quote }} : {{ $value | quote }}
             {{- end }}
           labels:
-            {{- if .Values.businessid }}
             businessid: {{ .Values.businessid | quote }}
-            {{- end }}
         spec:
           {{- if .Values.serviceaccount }}
           serviceAccountName: {{ .Values.serviceaccount.name | default (printf "%s-pod-service-account" .Values.name) }}
