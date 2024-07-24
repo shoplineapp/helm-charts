@@ -128,8 +128,10 @@
         -
           # If .Values.exitNotifications.slackApp is set, slackApp will be notify if the job is done 
           {{- if .Values.exitNotifications.slackApp }}
+          {{- if list nil true "true" | has .Values.exitNotifications.slackApp.sendOnSuccess }}
           - name: Notice-SlackApp-Succeeded
             template: notice-slack-app-succeeded 
+          {{- end }}
           {{- end }}
           # If .Values.exitNotifications.healthcheckIo is set, Healthcheck IO will be notify if the job is done
           {{- if .Values.exitNotifications.healthcheckIo }}
@@ -142,8 +144,10 @@
         -
           # If .Values.exitNotifications.slackApp is set, slackApp will be notify if the job is failed
           {{- if .Values.exitNotifications.slackApp }}
+          {{- if list nil true "true" | has .Values.exitNotifications.slackApp.sendOnFailure }}
           - name: Notice-SlackApp-Failed
             template: notice-slack-app-failed 
+          {{- end }}
           {{- end }}
           # If .Values.exitNotifications.newRelic is set, New Relic will be notify if the job is failed
           {{- if .Values.exitNotifications.newRelic }}
