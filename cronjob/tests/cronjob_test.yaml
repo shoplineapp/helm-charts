@@ -2,7 +2,7 @@ suite: CronJob Test
 templates:
   - cronjob.yaml
 tests:
-  - it: should render a argo cron workflow with default values
+  - it: should render an argo cron workflow with default values
     values:
       - ./values/cronjob/argo.yaml
     asserts:
@@ -39,7 +39,7 @@ tests:
           path: spec.workflowSpec.templates[1].container.image
           value: "test/testImage:latest"
 
-  - it: should render a argo cron workflow with custom values
+  - it: should render an argo cron workflow with custom values
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -153,7 +153,7 @@ tests:
           value:
             - /app/run.sh
 
-  - it: should render a argo cron workflow when exitNotifications.slackApp exists and mention is null
+  - it: should render an argo cron workflow when exitNotifications.slackApp exists and mention is null
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -166,7 +166,7 @@ tests:
       - isKind:
           of: CronWorkflow
 
-  - it: should render a argo cron workflow when exitNotifications.slackApp.mention exists and onSuccess is null
+  - it: should render an argo cron workflow when exitNotifications.slackApp.mention exists and onSuccess is null
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -180,7 +180,7 @@ tests:
       - isKind:
           of: CronWorkflow
 
-  - it: should render a argo cron workflow when exitNotifications.slackApp.mention exists and onFailure is null
+  - it: should render an argo cron workflow when exitNotifications.slackApp.mention exists and onFailure is null
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -194,7 +194,25 @@ tests:
       - isKind:
           of: CronWorkflow
 
-  - it: should not render a argo cron workflow when image.repository is null
+  - it: should render an argo cron workflow when runbooks contain single or/and double quotes
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      exitNotifications:
+        slackApp:
+          runbook:
+            - testing double quotes " something "
+            - testing single quotes ' something '
+    asserts:
+      - equal:
+          path: spec.workflowSpec.templates[6].name
+          value: "notice-slack-app-failed"
+      - matchRegex:
+          path: spec.workflowSpec.templates[6].container.args[0]
+          pattern: >
+            .*"text":\s*"\*Runbook\*\\ntesting double quotes \\" something \\"\\ntesting single quotes ' something '".*
+
+  - it: should not render an argo cron workflow when image.repository is null
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -204,7 +222,7 @@ tests:
       - failedTemplate:
           errorMessage: image.repository must be provided
 
-  - it: should not render a argo cron workflow when image.tag is null
+  - it: should not render an argo cron workflow when image.tag is null
     values:
       - ./values/cronjob/argo.yaml
     set:
@@ -214,7 +232,7 @@ tests:
       - failedTemplate:
           errorMessage: image.tag must be provided
 
-  - it: should render a argo cron workflow with minimal values
+  - it: should render an argo cron workflow with minimal values
     values:
       - ./values/cronjob/argo_minimal.yaml
     asserts:
