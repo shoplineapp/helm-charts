@@ -3,6 +3,7 @@
     podMetadata:
       labels:
         name: {{ .Values.name }}
+        businessid: {{ .Values.businessid | quote }}
       annotations:
         {{- range $key, $value := .Values.annotations }}
         {{ $key | quote }} : {{ $value | quote }}
@@ -10,6 +11,7 @@
     workflowMetadata:
       labels:
         name: {{ .Values.name }}
+        businessid: {{ .Values.businessid | quote }}
       annotations:
         {{- range $key, $value := .Values.annotations }}
         {{ $key | quote }} : {{ $value | quote }}
