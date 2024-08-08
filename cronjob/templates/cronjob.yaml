@@ -10,6 +10,10 @@ kind: CronJob
 metadata:
   name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
+  labels:
+    {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
+    businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
+    {{- end }}
 spec:
   schedule: {{ .Values.schedule | quote }}
   # If "kind" eq to "CronWorkflow", timezone can be set. If "kind" eq to "CronWorkflow" and timezone are not set, "Asia/Taipei" will be used

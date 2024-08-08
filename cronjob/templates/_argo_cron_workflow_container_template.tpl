@@ -5,6 +5,8 @@
 name: {{ $input.name }}
 metadata:
   namespace: {{ $namespace }}
+  labels:
+    businessid: {{ $input.businessid | quote }}
 {{- with $input.podSpecPatch }}
 podSpecPatch: {{ quote . }}
 {{- end }}

@@ -240,3 +240,12 @@ tests:
           count: 1
       - isKind:
           of: CronWorkflow
+
+  - it: should not render an argo cron workflow when businessid is null
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    set:
+      businessid: ~
+    asserts:
+      - failedTemplate:
+          errorMessage: businessid must be provided
