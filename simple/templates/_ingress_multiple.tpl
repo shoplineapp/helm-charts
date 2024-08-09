@@ -14,7 +14,7 @@ metadata:
     {{- end }}
   annotations:
 {{ toYaml $ref.annotations | indent 4 }}
-    {{- if and (not (index $ref.annotations "alb.ingress.kubernetes.io/ssl-policy")) (index $ref.annotations "alb.ingress.kubernetes.io/load-balancer-name") }}
+    {{- if and (not (index $ref.annotations "alb.ingress.kubernetes.io/ssl-policy")) (index $ref.annotations "alb.ingress.kubernetes.io/load-balancer-name") (index $ref.annotations "alb.ingress.kubernetes.io/certificate-arn") }}
     alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-2021-06"
     {{- end }}
     {{- if eq (index $ref.annotations "kubernetes.io/ingress.class") "alb" }}
