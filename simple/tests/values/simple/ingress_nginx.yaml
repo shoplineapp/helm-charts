@@ -1,0 +1,18 @@
+businessid: "00123"
+deployment:
+  containers:
+    app:
+      image:
+        repository: nginx
+        tag: latest
+ingress:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: app
+          servicePort: use-annotation
+        path: /*
+name: app

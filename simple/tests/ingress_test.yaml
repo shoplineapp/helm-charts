@@ -1,0 +1,47 @@
+suite: Ingress Test
+templates:
+  - ingress.yaml
+tests:
+  - it: should render alb with a cost tag annotation
+    values:
+      - ./values/simple/ingress_alb.yaml
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            kubernetes.io/ingress.class: alb
+            alb.ingress.kubernetes.io/tags: businessid=00123
+
+  - it: should render alb multiple ingress with a cost tag annotation with
+    values:
+      - ./values/simple/ingress_alb_multiple.yaml
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            kubernetes.io/ingress.class: alb
+            alb.ingress.kubernetes.io/tags: businessid=00123
+
+  - it: should keep original alb.ingress.kubernetes.io/tags from values
+    values:
+      - ./values/simple/ingress_alb.yaml
+    set:
+      ingress:
+        annotations:
+          alb.ingress.kubernetes.io/tags: businessid=00456
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            kubernetes.io/ingress.class: alb
+            alb.ingress.kubernetes.io/tags: businessid=00456
+
+  - it: should not render alb with a cost tag annotation
+    values:
+      - ./values/simple/ingress_nginx.yaml
+    asserts:
+      - isNotSubset:
+          path: metadata.annotations
+          content:
+            kubernetes.io/ingress.class: alb
+            alb.ingress.kubernetes.io/tags: businessid=00123

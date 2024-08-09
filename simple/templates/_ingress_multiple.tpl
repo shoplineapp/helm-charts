@@ -17,6 +17,11 @@ metadata:
     {{- if and (not (index $ref.annotations "alb.ingress.kubernetes.io/ssl-policy")) (index $ref.annotations "alb.ingress.kubernetes.io/load-balancer-name") }}
     alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-2021-06"
     {{- end }}
+    {{- if eq (index $ref.annotations "kubernetes.io/ingress.class") "alb" }}
+    {{- if not (index $ref.annotations "alb.ingress.kubernetes.io/tags") }}
+    alb.ingress.kubernetes.io/tags: {{ printf "businessid=%s" $businessid | quote }}
+    {{- end }}
+    {{- end }}
 spec:
   {{- if $ref.tls }}
   tls:
