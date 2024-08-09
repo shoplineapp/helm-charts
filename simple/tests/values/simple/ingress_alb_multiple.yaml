@@ -1,0 +1,22 @@
+businessid: "00123"
+deployment:
+  containers:
+    app:
+      image:
+        repository: nginx
+        tag: latest
+EnableMutilpleIngress: true
+ingress:
+  nginx:
+    annotations:
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]'
+      alb.ingress.kubernetes.io/scheme: internet-facing
+      kubernetes.io/ingress.class: alb
+    rules:
+    - http:
+        paths:
+        - backend:
+            serviceName: app
+            servicePort: use-annotation
+          path: /*
+name: app
