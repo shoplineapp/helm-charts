@@ -5,10 +5,12 @@ on:
   push:
     paths:
       - cronjob/**
+      - simple/**
       - .github/workflows/**
   pull_request:
     paths:
       - cronjob/**
+      - simple/**
       - .github/workflows/**
 
 jobs:
@@ -37,3 +39,7 @@ jobs:
       - name: Run cronjob chart tests
         run: |
           helm unittest cronjob
+
+      - name: Run simple chart tests
+        run: |
+          helm unittest simple
