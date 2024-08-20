@@ -35,6 +35,21 @@ tests:
           content:
             kubernetes.io/ingress.class: alb
             alb.ingress.kubernetes.io/tags: businessid=00456
+  
+  - it: should keep original alb.ingress.kubernetes.io/tags from values for multiple ingresses
+    values:
+      - ./values/simple/ingress_alb_multiple.yaml
+    set:
+      ingress:
+        nginx:
+          annotations:
+            alb.ingress.kubernetes.io/tags: businessid=00456
+    asserts:
+    - isSubset:
+        path: metadata.annotations
+        content:
+          alb.ingress.kubernetes.io/tags: businessid=00456
+          kubernetes.io/ingress.class: alb
 
   - it: should not render alb with a cost tag annotation
     values:
@@ -45,3 +60,32 @@ tests:
           content:
             kubernetes.io/ingress.class: alb
             alb.ingress.kubernetes.io/tags: businessid=00123
+
+  - it: should append businessid tag annotation when other tags exist
+    values:
+      - ./values/simple/ingress_alb.yaml
+    set:
+      ingress:
+        annotations:
+          alb.ingress.kubernetes.io/tags: Environment=production
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            kubernetes.io/ingress.class: alb
+            alb.ingress.kubernetes.io/tags: Environment=production,businessid=00123
+
+  - it: should append businessid tag annotation when other tags exist for multiple ingresses
+    values:
+      - ./values/simple/ingress_alb_multiple.yaml
+    set:
+      ingress:
+        nginx:
+          annotations:
+            alb.ingress.kubernetes.io/tags: Environment=production
+    asserts:
+    - isSubset:
+        path: metadata.annotations
+        content:
+          alb.ingress.kubernetes.io/tags: Environment=production,businessid=00123
+          kubernetes.io/ingress.class: alb
