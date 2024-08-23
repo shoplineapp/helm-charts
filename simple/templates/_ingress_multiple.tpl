@@ -13,13 +13,22 @@ metadata:
     {{ $key }}: {{ $value }}
     {{- end }}
   annotations:
-{{ toYaml $ref.annotations | indent 4 }}
+    {{- $omittedAnnotations := omit $ref.annotations "alb.ingress.kubernetes.io/tags" }}
+{{ toYaml $omittedAnnotations | indent 4 }}
     {{- if and (not (index $ref.annotations "alb.ingress.kubernetes.io/ssl-policy")) (index $ref.annotations "alb.ingress.kubernetes.io/load-balancer-name") (index $ref.annotations "alb.ingress.kubernetes.io/certificate-arn") }}
     alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-TLS13-1-2-2021-06"
     {{- end }}
     {{- if eq (index $ref.annotations "kubernetes.io/ingress.class") "alb" }}
     {{- if not (index $ref.annotations "alb.ingress.kubernetes.io/tags") }}
     alb.ingress.kubernetes.io/tags: {{ printf "businessid=%s" $businessid | quote }}
+    {{- else }}
+    {{- $tags := index $ref.annotations "alb.ingress.kubernetes.io/tags" }}
+    {{- if not (regexMatch "businessid=[^,]+" $tags) }}
+    {{- $newTags := printf "%s,businessid=%s" $tags $businessid | quote }}
+    alb.ingress.kubernetes.io/tags: {{ $newTags }}
+    {{- else }}
+    alb.ingress.kubernetes.io/tags: {{ $tags }}
+    {{- end }}
     {{- end }}
     {{- end }}
 spec:
