@@ -45,6 +45,15 @@
         - name: ndots
           value: "2"
     {{- end }}
+    {{- if hasKey .Values "affinity" }}
+    affinity:
+      {{- if hasKey .Values.affinity "nodeAffinity" }}
+      nodeAffinity: {{- toYaml .Values.affinity.nodeAffinity | nindent 10 }}
+      {{- end }}
+      {{- if hasKey .Values.affinity "podAffinity" }}
+      podAffinity: {{- toYaml .Values.affinity.podAffinity | nindent 10 }}
+      {{- end }}
+    {{- end }}
     metrics:
       prometheus:
         # Metric name (will be prepended with "argo_workflows_")

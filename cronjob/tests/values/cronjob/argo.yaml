@@ -78,3 +78,18 @@ dnsConfig:
   options:
     - name: ndots
       value: "5"
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: node.kubernetes.io/instance-type
+              operator: In
+              values:
+                - m6i.2xlarge
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            a: 1
+        topologyKey: topology.kubernetes.io/zone
