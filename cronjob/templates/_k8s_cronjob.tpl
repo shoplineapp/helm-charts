@@ -20,6 +20,9 @@
           serviceAccountName: {{ .Values.name }}-pod-service-account
           {{- end }}
           restartPolicy: Never
+          {{- with .Values.securityContextForPod }}
+          securityContext: {{ toYaml . | nindent 12 }}
+          {{- end }}
           containers:
             -
               name: app

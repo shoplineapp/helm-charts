@@ -1,0 +1,46 @@
+suite: SecurityContextForPod Test
+templates:
+  - cronjob.yaml
+tests:
+
+  - it: should render nothing for an argo workflow if securityContextForPod is not specified
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    asserts:
+      - notExists:
+          path: spec.workflowSpec.securityContext
+
+  - it: should render securityContext for an argo workflow if securityContextForPod is specified
+    values:
+      - ./values/cronjob/argo.yaml
+    asserts:
+      - exists:
+          path: spec.workflowSpec.securityContext
+      - equal:
+          path: spec.workflowSpec.securityContext
+          value:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+
+  - it: should render securityContext for an argo workflow if securityContextForPod is specified
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      securityContextForPod:
+    asserts:
+      - notExists:
+          path: spec.workflowSpec.securityContext
+
+  - it: should render securityContext for a k8s cron job if securityContextForPod is specified
+    values:
+      - ./values/cronjob/k8s.yaml
+    asserts:
+      - exists:
+          path: spec.jobTemplate.spec.template.spec.securityContext
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.securityContext
+          value:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000

@@ -33,6 +33,9 @@
     {{- if and (.Values.job) (.Values.job.timeout) }}
     activeDeadlineSeconds: {{.Values.job.timeout }}
     {{- end }}
+    {{- with .Values.securityContextForPod }}
+    securityContext: {{ toYaml . | nindent 6 }}
+    {{- end }}
     metrics:
       prometheus:
         # Metric name (will be prepended with "argo_workflows_")

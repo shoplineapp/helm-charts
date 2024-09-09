@@ -63,6 +63,10 @@ serviceaccount:
 pdb:
   enable: true
   minAvailable: 9999
+securityContextForPod:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
 nodeSelector:
   nodegroup: ec-eks-db-cpu-node-autoscaling-group
 tolerations:
