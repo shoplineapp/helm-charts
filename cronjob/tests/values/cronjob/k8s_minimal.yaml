@@ -1,0 +1,5 @@
+name: my-cron-job
+schedule: "0 * * * *"
+image:
+  repository: test/testImage:latest
+  tag: v1.0.0

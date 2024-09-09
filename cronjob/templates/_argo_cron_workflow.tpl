@@ -1,5 +1,5 @@
 {{- define "cronjob.argo_cron_workflow" -}}
-    workflowSpec:
+  workflowSpec:
     podMetadata:
       labels:
         name: {{ .Values.name }}
@@ -35,6 +35,15 @@
     {{- end }}
     {{- with .Values.securityContextForPod }}
     securityContext: {{ toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if .Values.dnsConfig }}
+    dnsConfig:
+      {{- toYaml .Values.dnsConfig | nindent 6 }}
+    {{- else }}
+    dnsConfig:
+      options:
+        - name: ndots
+          value: "2"
     {{- end }}
     metrics:
       prometheus:
