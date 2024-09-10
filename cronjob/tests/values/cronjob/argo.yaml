@@ -63,6 +63,10 @@ serviceaccount:
 pdb:
   enable: true
   minAvailable: 9999
+securityContextForPod:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
 nodeSelector:
   nodegroup: ec-eks-db-cpu-node-autoscaling-group
 tolerations:
@@ -70,3 +74,22 @@ tolerations:
     operator: Equal
     value: "true"
     effect: NoSchedule
+dnsConfig:
+  options:
+    - name: ndots
+      value: "5"
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: node.kubernetes.io/instance-type
+              operator: In
+              values:
+                - m6i.2xlarge
+  podAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            a: 1
+        topologyKey: topology.kubernetes.io/zone

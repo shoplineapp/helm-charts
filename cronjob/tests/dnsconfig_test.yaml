@@ -1,0 +1,51 @@
+suite: DnsConfig Test
+templates:
+  - cronjob.yaml
+tests:
+
+  - it: should render default dnsConfig in an Argo cron workflow
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    asserts:
+      - equal:
+          path: spec.workflowSpec.dnsConfig
+          value:
+            options:
+              - name: ndots
+                value: "2"
+
+
+  - it: should render default dnsConfig in a k8s cronjob
+    values:
+      - ./values/cronjob/k8s_minimal.yaml
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.dnsConfig
+          value:
+            options:
+              - name: ndots
+                value: "2"
+
+  - it: should render custom dnsConfig in an Argo cron workflow
+    values:
+      - ./values/cronjob/argo.yaml
+    asserts:
+      - equal:
+          path: spec.workflowSpec.dnsConfig
+          value:
+            options:
+              - name: ndots
+                value: "5"
+
+
+  - it: should render custom dnsConfig in a k8s cronjob
+    values:
+      - ./values/cronjob/k8s.yaml
+    asserts:
+      - equal:
+          path: spec.jobTemplate.spec.template.spec.dnsConfig
+          value:
+            options:
+              - name: ndots
+                value: "5"
+

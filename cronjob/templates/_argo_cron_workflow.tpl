@@ -1,5 +1,5 @@
 {{- define "cronjob.argo_cron_workflow" -}}
-    workflowSpec:
+  workflowSpec:
     podMetadata:
       labels:
         name: {{ .Values.name }}
@@ -32,6 +32,27 @@
     # If .Values.job.timeout equal to null, the pod will be kill ONLY the job is done. Otherwise, the pod will kill after the value you set
     {{- if and (.Values.job) (.Values.job.timeout) }}
     activeDeadlineSeconds: {{.Values.job.timeout }}
+    {{- end }}
+    {{- with .Values.securityContextForPod }}
+    securityContext: {{ toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if .Values.dnsConfig }}
+    dnsConfig:
+      {{- toYaml .Values.dnsConfig | nindent 6 }}
+    {{- else }}
+    dnsConfig:
+      options:
+        - name: ndots
+          value: "2"
+    {{- end }}
+    {{- if hasKey .Values "affinity" }}
+    affinity:
+      {{- if hasKey .Values.affinity "nodeAffinity" }}
+      nodeAffinity: {{- toYaml .Values.affinity.nodeAffinity | nindent 10 }}
+      {{- end }}
+      {{- if hasKey .Values.affinity "podAffinity" }}
+      podAffinity: {{- toYaml .Values.affinity.podAffinity | nindent 10 }}
+      {{- end }}
     {{- end }}
     metrics:
       prometheus:

@@ -158,6 +158,9 @@ suspend: false
 # container-level security attributes
 securityContext: {}
 
+# pod-level security attributes
+securityContextForPod: {}
+
 # Holds strategic merge patch to apply
 # podSpecPatch: ""
 
