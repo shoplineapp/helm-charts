@@ -2,16 +2,16 @@ apiVersion: v1
 entries:
   argo-event:
   - apiVersion: v2
-    created: "2024-08-23T03:04:36.017776864Z"
+    created: "2024-09-10T10:09:35.708562396Z"
     description: A Helm chart for deploying argo event
-    digest: aedb181c437fc777ecb403f852943d24a1a829bfcdd15e3134aa0a6cc417adb0
+    digest: f4bd41ca18be0c1c6eb9f955b73ae9ed47e06d8f37ed98b71bed8c969300760b
     name: argo-event
     type: application
     urls:
     - https://shoplineapp.github.io/helm-charts/argo-event/argo-event-0.0.2.tgz
     version: 0.0.2
   - apiVersion: v2
-    created: "2024-08-23T03:04:36.016260044Z"
+    created: "2024-09-10T10:09:35.70668573Z"
     description: A Helm chart for deploying argo event
     digest: 5a8767254be0383c1361bbb759d0c96febe03c0d580b387e263b7cc2b75c00ae
     name: argo-event
@@ -22,16 +22,16 @@ entries:
   backburner:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.019091608Z"
+    created: "2024-09-10T10:09:35.709888642Z"
     description: Helm chart for ruby backburner workers
-    digest: ebe96a812d8d7ee0c4b0951854e64d2c0f4b1be1c45abe960130f71a5421b99e
+    digest: 048618d033f5c5215b2f4408ed3f9930b33420cfe4b2e0075338d2041344a87d
     name: backburner
     urls:
     - https://shoplineapp.github.io/helm-charts/backburner/backburner-0.5.1.tgz
     version: 0.5.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.018874784Z"
+    created: "2024-09-10T10:09:35.709639725Z"
     description: Helm chart for ruby backburner workers
     digest: f805c12d7f514ecd9ab7787c9088826fcc7b24724fff05d3507dae34c2e69591
     name: backburner
@@ -40,7 +40,7 @@ entries:
     version: 0.5.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.018663138Z"
+    created: "2024-09-10T10:09:35.70941812Z"
     description: Helm chart for ruby backburner workers
     digest: d4a8ddd27f87db3190f44ca11fb5bd4c9a6d7fdddb0e00b5a15a0ffcf9df627f
     name: backburner
@@ -49,7 +49,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.018453377Z"
+    created: "2024-09-10T10:09:35.709203277Z"
     description: Helm chart for ruby backburner workers
     digest: ffd6b29fc61b7681a6f7b4844cd48dfe757790220329c6245bd15bded2f1c6af
     name: backburner
@@ -58,7 +58,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.01824612Z"
+    created: "2024-09-10T10:09:35.708997632Z"
     description: Helm chart for ruby backburner workers
     digest: 4c229f294493aee47afe1279f90cf5a815634a03cbcc962170c376709271f9e6
     name: backburner
@@ -67,7 +67,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.018022453Z"
+    created: "2024-09-10T10:09:35.708793049Z"
     description: Helm chart for ruby backburner workers
     digest: ecbc13263a4cc88d2f796c0525e23dae668aacc5f1eca5f05b91022e965a3700
     name: backburner
@@ -77,7 +77,16 @@ entries:
   cronjob:
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.031438605Z"
+    created: "2024-09-10T10:09:35.723936452Z"
+    description: Helm chart with simple cronjob template
+    digest: 1ee291051924b7772cbb33eac6d3714023da4ecd2e915a182b77b5a0aa6d081d
+    name: cronjob
+    urls:
+    - https://shoplineapp.github.io/helm-charts/cronjob/cronjob-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v1
+    appVersion: 1.0.0
+    created: "2024-09-10T10:09:35.723462363Z"
     description: Helm chart with simple cronjob template
     digest: 1157a46225d75cb81ffbf3c2f2d2e245fdfc797dd0a77a21224cd5a008aa2166
     name: cronjob
@@ -86,7 +95,7 @@ entries:
     version: 1.0.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.022050077Z"
+    created: "2024-09-10T10:09:35.711845479Z"
     description: Helm chart with simple cronjob template
     digest: 06b535d04acebbdd639597661c093f76f24d68f668c54f71a66c8b798c11eaa1
     name: cronjob
@@ -95,7 +104,7 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.021539995Z"
+    created: "2024-09-10T10:09:35.711390286Z"
     description: Helm chart with simple cronjob template
     digest: a7c78c2b73897a7782132f3c4fd2c20d57f74c7e4112cb9c94905b85d449d029
     name: cronjob
@@ -104,7 +113,7 @@ entries:
     version: 0.10.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.03098042Z"
+    created: "2024-09-10T10:09:35.721106563Z"
     description: Helm chart with simple cronjob template
     digest: 553951943e18bb034b9ebfffc041429bfbf5ed9fdee8ad5842cb62518e5c243c
     name: cronjob
@@ -113,7 +122,7 @@ entries:
     version: 0.9.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.03053602Z"
+    created: "2024-09-10T10:09:35.720666738Z"
     description: Helm chart with simple cronjob template
     digest: c99a1ab4f1d47ef4025c279e471467a5338e08dc65e1358c85c5780a1ae879eb
     name: cronjob
@@ -122,7 +131,7 @@ entries:
     version: 0.8.0
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.030157273Z"
+    created: "2024-09-10T10:09:35.720295964Z"
     description: Helm chart with simple cronjob template
     digest: d5663741b889b851f0896e4631355d7e2e3dd5493bc2721cf1792c131f076e8d
     name: cronjob
@@ -131,7 +140,7 @@ entries:
     version: 0.7.5
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.029786701Z"
+    created: "2024-09-10T10:09:35.71993128Z"
     description: Helm chart with simple cronjob template
     digest: caaf478a1f0f9295900610ccc44002896e28dd706a0721c8a2f22626830b54c9
     name: cronjob
@@ -140,7 +149,7 @@ entries:
     version: 0.7.4
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.029390773Z"
+    created: "2024-09-10T10:09:35.719570805Z"
     description: Helm chart with simple cronjob template
     digest: 173245437d77dbb1453182e4f6f42eb0978240202b51901cb385236ce97c47fd
     name: cronjob
@@ -149,7 +158,7 @@ entries:
     version: 0.7.3
   - apiVersion: v1
     appVersion: 1.0.0
-    created: "2024-08-23T03:04:36.029026473Z"
+    created: "2024-09-10T10:09:35.719209478Z"
     description: Helm chart with simple cronjob template
     digest: cc74e81d2e61838dc6860c60d832108a7db0fd515713544e763018aa8c60b9c9
     name: cronjob
@@ -158,7 +167,7 @@ entries:
     version: 0.7.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.028657815Z"
+    created: "2024-09-10T10:09:35.718841859Z"
     description: Helm chart with simple cronjob template
     digest: 949efad016f8782a2f155d3dcd57855a28626c564accad931737a32e90a3bf82
     name: cronjob
@@ -167,7 +176,7 @@ entries:
     version: 0.7.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.028285179Z"
+    created: "2024-09-10T10:09:35.718481374Z"
     description: Helm chart with simple cronjob template
     digest: b194b26444e5f9ba4e319b75870046a30760cdaa464490bda46e5453cbd4ee3d
     name: cronjob
@@ -176,7 +185,7 @@ entries:
     version: 0.7.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.027909097Z"
+    created: "2024-09-10T10:09:35.718120728Z"
     description: Helm chart with simple cronjob template
     digest: f575d49aa992fa0190a40f3d596f3a19d0324fd8b959ef9dc150db98121ec42b
     name: cronjob
@@ -185,7 +194,7 @@ entries:
     version: 0.6.4
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.027281611Z"
+    created: "2024-09-10T10:09:35.717763068Z"
     description: Helm chart with simple cronjob template
     digest: 02a3192334fb102e4d279eff8de3abc7ffce6457b6de322a5130a0fad1f4f9f9
     name: cronjob
@@ -194,7 +203,7 @@ entries:
     version: 0.6.3
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.026464977Z"
+    created: "2024-09-10T10:09:35.717371744Z"
     description: Helm chart with simple cronjob template
     digest: 2c71b75908e0bc2a4961f1a454eb467c9d227519183a77455fcd8e9e697ded16
     name: cronjob
@@ -203,7 +212,7 @@ entries:
     version: 0.6.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.026125233Z"
+    created: "2024-09-10T10:09:35.717032188Z"
     description: Helm chart with simple cronjob template
     digest: 6115e71b36547b115deef47dbe0f09702edb665ba40a77cbda89b9011f473ec7
     name: cronjob
@@ -212,7 +221,7 @@ entries:
     version: 0.6.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.025784066Z"
+    created: "2024-09-10T10:09:35.716694876Z"
     description: Helm chart with simple cronjob template
     digest: 0fdd42dbeee964a99839b8d0e88b445a3036a49863a22c820552e6fb2f81dd08
     name: cronjob
@@ -221,7 +230,7 @@ entries:
     version: 0.6.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.025408064Z"
+    created: "2024-09-10T10:09:35.716348196Z"
     description: Helm chart with simple cronjob template
     digest: 682f207f7a422d1ec9a6b0a7d4bdaf74c5c438bd7237d8ff249e5b585f9bf622
     name: cronjob
@@ -230,7 +239,7 @@ entries:
     version: 0.5.3
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.025064273Z"
+    created: "2024-09-10T10:09:35.71441854Z"
     description: Helm chart with simple cronjob template
     digest: 69ed37d48fa542830bfb91d6906baa242382ebbeecdc755c3e3387b5c3c53714
     name: cronjob
@@ -239,7 +248,7 @@ entries:
     version: 0.5.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.024570782Z"
+    created: "2024-09-10T10:09:35.71409307Z"
     description: Helm chart with simple cronjob template
     digest: 6e652d34de43b749ddbad18c7ab5251bcf3d95ee965322d5855b82f63fe867b5
     name: cronjob
@@ -248,7 +257,7 @@ entries:
     version: 0.5.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.024002561Z"
+    created: "2024-09-10T10:09:35.713518664Z"
     description: Helm chart with simple cronjob template
     digest: 289045879f226c8fc809818bf9e045b51775b8f3949cf49d101a9c0d9f1b8f4a
     name: cronjob
@@ -257,7 +266,7 @@ entries:
     version: 0.5.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.023490185Z"
+    created: "2024-09-10T10:09:35.713199235Z"
     description: Helm chart with simple cronjob template
     digest: 6446daa5c9f43fb454301849161e4afa0df7637695ea07960f46a65b6b80d560
     name: cronjob
@@ -266,7 +275,7 @@ entries:
     version: 0.4.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.023006101Z"
+    created: "2024-09-10T10:09:35.712887331Z"
     description: Helm chart with simple cronjob template
     digest: 09da86bf874809ccd263cad163d12fcfa4d75804ecb6aec740d435c8d3c0a543
     name: cronjob
@@ -275,7 +284,7 @@ entries:
     version: 0.4.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.022703386Z"
+    created: "2024-09-10T10:09:35.712484987Z"
     description: Helm chart with simple cronjob template
     digest: 824803131ea6db148d9e738019b9ec40314c7e9ea83781e58737c5bcde1072c2
     name: cronjob
@@ -284,7 +293,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.022403937Z"
+    created: "2024-09-10T10:09:35.712188702Z"
     description: Helm chart with simple cronjob template
     digest: 1f61e6a2fed18354f24ada9c7c78ce325923fcb3a2c1bce9cc37bb439b6c1e2c
     name: cronjob
@@ -293,7 +302,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.022226156Z"
+    created: "2024-09-10T10:09:35.712024804Z"
     description: Helm chart with simple cronjob template
     digest: 2632d45b6b9deb0bb42ab6509d64268087faa634b7aabaa0d15a7317c57597e0
     name: cronjob
@@ -302,7 +311,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.02103373Z"
+    created: "2024-09-10T10:09:35.710915726Z"
     description: Helm chart with simple cronjob template
     digest: 9cdff93150c962dde424c7cb6e0fba0104e6aca478146bedf44515a6edf5d89b
     name: cronjob
@@ -311,7 +320,7 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.019870452Z"
+    created: "2024-09-10T10:09:35.710307437Z"
     description: Helm chart with simple cronjob template
     digest: 8f31f4642f23bc70d8430c674fb5a3103f4b716cf386b3078a2fb6e76e325185
     name: cronjob
@@ -321,16 +330,16 @@ entries:
   eks:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.032454771Z"
+    created: "2024-09-10T10:09:35.724958988Z"
     description: Helm chart to init namespace
-    digest: e0a9a8ff243ea1f24b08abca6be2b28be943a67f46838b036a17befd4d0ab356
+    digest: 6cc9dc584ce37295d248deb918f761f26d257ec69a0660039db6db5f7e5ac52f
     name: eks
     urls:
     - https://shoplineapp.github.io/helm-charts/eks/eks-0.5.0.tgz
     version: 0.5.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.032297888Z"
+    created: "2024-09-10T10:09:35.724802635Z"
     description: Helm chart to init namespace
     digest: 422c5ebf00c858f6f6d9037a54dac119db9aaca72d30095993f4161410cb7075
     name: eks
@@ -339,7 +348,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.032145905Z"
+    created: "2024-09-10T10:09:35.724648917Z"
     description: Helm chart to init namespace
     digest: dd962a53bb87e30653ebe4ad3a457f5a281d9d7487076b9f7a637a6aa4b535ef
     name: eks
@@ -348,7 +357,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.031992859Z"
+    created: "2024-09-10T10:09:35.724496641Z"
     description: Helm chart to init eks and add role policy
     digest: 1bfea72c14554b1ee08d498e0c8ca827adb8f2476114d2193dc2a48bbd1f263d
     name: eks
@@ -357,7 +366,7 @@ entries:
     version: 0.2.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.031850383Z"
+    created: "2024-09-10T10:09:35.724353734Z"
     description: Helm chart to init eks and add role policy
     digest: a6443630d41d12e598daef2c87e38b9001e74a2ff48c16bd9d76caee4a054942
     name: eks
@@ -366,7 +375,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.031702898Z"
+    created: "2024-09-10T10:09:35.724206999Z"
     description: Helm chart to init eks and add role policy
     digest: 670a36362be889750664b9e6ac7cb85d7c2cc10471de6c3e832bef0d56763500
     name: eks
@@ -375,7 +384,7 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.031574618Z"
+    created: "2024-09-10T10:09:35.72407415Z"
     description: Helm chart to init eks and add role policy
     digest: 17c1f96130e6c3dc4978ed0eb391bec964c4af2e4476f5dc956d68ca1c4bf271
     name: eks
@@ -385,16 +394,16 @@ entries:
   fluentd-cloudwatch:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.0331508Z"
+    created: "2024-09-10T10:09:35.725279358Z"
     description: Helm chart to add fluentd daemonset and send logs to cloudwatch
-    digest: e75cb29fe9db92d3c7b157f80d71e16fcd607790d0166847a06942cfb8f041d6
+    digest: 47d573541f5ae950bf7adf9b8644e09b7a384d4f307223968d79392c415e5f08
     name: fluentd-cloudwatch
     urls:
     - https://shoplineapp.github.io/helm-charts/fluentd-cloudwatch/fluentd-cloudwatch-0.1.0.tgz
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.032615862Z"
+    created: "2024-09-10T10:09:35.725120911Z"
     description: Helm chart to add fluentd daemonset and send logs to cloudwatch
     digest: 0964f6380e98758411d4904bd0385c39ca0e1adf647ff2b919480c0ed5c245d2
     name: fluentd-cloudwatch
@@ -404,9 +413,9 @@ entries:
   oomkill-exporter:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.033751747Z"
+    created: "2024-09-10T10:09:35.72546161Z"
     description: Get oom kill information from kmsg
-    digest: 07352a8568be6080ce4cda2a4d2d53a90fd2e1830275e13b6bae440991d4adcb
+    digest: 2b9d56793e9f72e31aca32b5219bedec2220d6f0aeb920f5b076bf48e92cbe44
     name: oomkill-exporter
     urls:
     - https://shoplineapp.github.io/helm-charts/oomkill-exporter/oomkill-exporter-0.1.0.tgz
@@ -414,16 +423,16 @@ entries:
   simple:
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.047814473Z"
+    created: "2024-09-10T10:09:35.740951279Z"
     description: Helm chart with simple deployment/service template
-    digest: 6fcee49e635e47fa89e265dfe42877b8e954f0a138a155cf9a1b5a848e49c44a
+    digest: 7495e54be65678b757a664dcff32066faf1215d4b06e7fc5b0703ba34548bff0
     name: simple
     urls:
     - https://shoplineapp.github.io/helm-charts/simple/simple-0.21.2.tgz
     version: 0.21.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.047272752Z"
+    created: "2024-09-10T10:09:35.740419082Z"
     description: Helm chart with simple deployment/service template
     digest: 7359f88873098f308504e5ef4515e0df694dcf4bd3859a96ad097c463d11071f
     name: simple
@@ -432,7 +441,7 @@ entries:
     version: 0.21.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.046746159Z"
+    created: "2024-09-10T10:09:35.739878679Z"
     description: Helm chart with simple deployment/service template
     digest: e353887c41c4b292561a5e8273ff6351818e5b555b368e9c26e9644d0b2da5c8
     name: simple
@@ -441,7 +450,7 @@ entries:
     version: 0.21.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.046217482Z"
+    created: "2024-09-10T10:09:35.739288574Z"
     description: Helm chart with simple deployment/service template
     digest: 84e6ce8c3720433287d951964bb34e74ee21cc9b2578fac0923d383c3487ce05
     name: simple
@@ -450,7 +459,7 @@ entries:
     version: 0.20.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.045684768Z"
+    created: "2024-09-10T10:09:35.738552812Z"
     description: Helm chart with simple deployment/service template
     digest: 444923077062820dca92f32b387e9b77ac2e8af522e499772286ae2026688dcc
     name: simple
@@ -459,7 +468,7 @@ entries:
     version: 0.20.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.043962925Z"
+    created: "2024-09-10T10:09:35.736068506Z"
     description: Helm chart with simple deployment/service template
     digest: cf5fe6927329ad653b310dcd8cc7b1f34c372ebb8c4b1f0904d092e666c64e5a
     name: simple
@@ -468,7 +477,7 @@ entries:
     version: 0.19.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.043406356Z"
+    created: "2024-09-10T10:09:35.735573839Z"
     description: Helm chart with simple deployment/service template
     digest: 805ffea53e51af0c19ef6e1f72af277c8afe3b4d26bd9948384232a0dd55c77e
     name: simple
@@ -477,7 +486,7 @@ entries:
     version: 0.18.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.042873772Z"
+    created: "2024-09-10T10:09:35.735061078Z"
     description: Helm chart with simple deployment/service template
     digest: 33edf1541b33bcfed7140d044b34f5dc131bb0adef6a85c2d503d7d1a2ec9ccd
     name: simple
@@ -486,7 +495,7 @@ entries:
     version: 0.18.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.042357389Z"
+    created: "2024-09-10T10:09:35.734567653Z"
     description: Helm chart with simple deployment/service template
     digest: 148ffc92f4b4acc381214aacca62424513e44befdaa30eff47c6c56bf5d4ee39
     name: simple
@@ -495,7 +504,7 @@ entries:
     version: 0.17.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.041816579Z"
+    created: "2024-09-10T10:09:35.73408032Z"
     description: Helm chart with simple deployment/service template
     digest: 17a3cbbb6903da308b79fb1ae80c3a206781e84e8fed9e8f616a44481dbd6075
     name: simple
@@ -504,7 +513,7 @@ entries:
     version: 0.17.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.040528946Z"
+    created: "2024-09-10T10:09:35.733565185Z"
     description: Helm chart with simple deployment/service template
     digest: 21371eae476547b856372a06903d8ac61b3954c41daddd6b2af903fdb1ed9395
     name: simple
@@ -513,7 +522,7 @@ entries:
     version: 0.17.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.039976315Z"
+    created: "2024-09-10T10:09:35.733072872Z"
     description: Helm chart with simple deployment/service template
     digest: 88c626855b423615f48a03b4e056637ee7c0fcd93d3402c29dfd59fb87d0b86e
     name: simple
@@ -522,7 +531,7 @@ entries:
     version: 0.16.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.039489556Z"
+    created: "2024-09-10T10:09:35.732540225Z"
     description: Helm chart with simple deployment/service template
     digest: b11002b930d1fc8308858078f56c2975ac2404e89602dfecaf9b330650de04bc
     name: simple
@@ -531,7 +540,7 @@ entries:
     version: 0.15.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.039000293Z"
+    created: "2024-09-10T10:09:35.73204684Z"
     description: Helm chart with simple deployment/service template
     digest: 481ac08f5576fcf1a19c1839fa4dfacf1c31e4877c67bb565153c695c99d05a5
     name: simple
@@ -540,7 +549,7 @@ entries:
     version: 0.14.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.038507724Z"
+    created: "2024-09-10T10:09:35.731560809Z"
     description: Helm chart with simple deployment/service template
     digest: 49324f1bcf5495dcef7f7f0141b9cb584d1500bc4b54bda8a7ab3460d9c18d4d
     name: simple
@@ -549,7 +558,7 @@ entries:
     version: 0.13.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.038025644Z"
+    created: "2024-09-10T10:09:35.731065331Z"
     description: Helm chart with simple deployment/service template
     digest: b8f25def342b3c5be7b1668c6d38e0cc663f61e8f9bda5878bb9569ef1ecbd04
     name: simple
@@ -558,7 +567,7 @@ entries:
     version: 0.12.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.037506385Z"
+    created: "2024-09-10T10:09:35.730100623Z"
     description: Helm chart with simple deployment/service template
     digest: 3fc54f98902f727381a71223b02d2f1d563022413b9762ababf18b74d4d92946
     name: simple
@@ -567,7 +576,7 @@ entries:
     version: 0.11.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.037015949Z"
+    created: "2024-09-10T10:09:35.728938766Z"
     description: Helm chart with simple deployment/service template
     digest: ad1282ada382a4364811f512652535eebdcd5cc3b3cf7f9b06db6035b741aa3a
     name: simple
@@ -576,7 +585,7 @@ entries:
     version: 0.10.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.052883888Z"
+    created: "2024-09-10T10:09:35.746147232Z"
     description: Helm chart with simple deployment/service template
     digest: befe9bb0d09eaaf2292033b2dcab10df12d2d6a36fbcee040fede25756c64b6c
     name: simple
@@ -585,7 +594,7 @@ entries:
     version: 0.9.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.052481917Z"
+    created: "2024-09-10T10:09:35.745334603Z"
     description: Helm chart with simple deployment/service template
     digest: 201466aa5c7e1534de470561f2c8ef0ec1d752f7ae78f716dc74b01e9d53c3b2
     name: simple
@@ -594,7 +603,7 @@ entries:
     version: 0.8.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.052087Z"
+    created: "2024-09-10T10:09:35.744435328Z"
     description: Helm chart with simple deployment/service template
     digest: 2fb03b4105f3c9b481a7ffd4d7463100967119e68cda4c355c1b88e7b93d81da
     name: simple
@@ -603,7 +612,7 @@ entries:
     version: 0.7.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.051711069Z"
+    created: "2024-09-10T10:09:35.744067439Z"
     description: Helm chart with simple deployment/service template
     digest: 10fd433d8870abb784a573e1233458a12b597fcb317c9857cf4246e6b4103c3b
     name: simple
@@ -612,7 +621,7 @@ entries:
     version: 0.6.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.051336259Z"
+    created: "2024-09-10T10:09:35.743702354Z"
     description: Helm chart with simple deployment/service template
     digest: 2311098edc28bf04a42af16a9a71c990d657a4b66120ebb7dc8f931e65591158
     name: simple
@@ -621,7 +630,7 @@ entries:
     version: 0.5.1
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.05099376Z"
+    created: "2024-09-10T10:09:35.743367056Z"
     description: Helm chart with simple deployment/service template
     digest: 6a9290e0668147e89923bbd8f51bfca04d1d6a3562af76760253216d70fb119a
     name: simple
@@ -630,7 +639,7 @@ entries:
     version: 0.5.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.050641923Z"
+    created: "2024-09-10T10:09:35.74302245Z"
     description: Helm chart with simple deployment/service template
     digest: c90191f26baddbf508900515f7b7de0be0c8be341e8cdc2319b5e889fef58e5a
     name: simple
@@ -639,7 +648,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.050295747Z"
+    created: "2024-09-10T10:09:35.742668427Z"
     description: Helm chart with simple deployment/service template
     digest: b91a7f8f233c6574b556a1a5e9d99733961bcec342047d05ca4a44139f63e228
     name: simple
@@ -648,7 +657,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.045183222Z"
+    created: "2024-09-10T10:09:35.737366098Z"
     description: Helm chart with simple deployment/service template
     digest: bc6051328b6615e3b142f565281027bd6deedadd121c82b504bda43856e08606
     name: simple
@@ -657,7 +666,7 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.036591657Z"
+    created: "2024-09-10T10:09:35.728190664Z"
     description: Helm chart with simple deployment/service template
     digest: 3238d8119738ae18e0b8f300842436f811706a362c6b1a3b1d774ff90a26c83b
     name: simple
@@ -666,7 +675,7 @@ entries:
     version: 0.1.0
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.035657544Z"
+    created: "2024-09-10T10:09:35.727264248Z"
     description: Helm chart with simple deployment/service template
     digest: 3fa2d8388efb4e8d7f0955e82e40174f47853f84e0bbb8962b36f8db14199630
     name: simple
@@ -675,7 +684,7 @@ entries:
     version: 0.0.3
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.034906132Z"
+    created: "2024-09-10T10:09:35.72653458Z"
     description: Helm chart with simple deployment/service template
     digest: 7fb69690579334b064bc9a32fd2c901cbecd354f1adb9b3d416f2efc25304857
     name: simple
@@ -684,7 +693,7 @@ entries:
     version: 0.0.2
   - apiVersion: v1
     appVersion: 0.0.1
-    created: "2024-08-23T03:04:36.034343812Z"
+    created: "2024-09-10T10:09:35.725990431Z"
     description: Helm chart with simple deployment/service template
     digest: 004ae3fce75b7bb4c981274d0bf3771799130e471240d8427c81c6661958528a
     name: simple
@@ -694,16 +703,16 @@ entries:
   sl-namespace-init:
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2024-08-23T03:04:36.053695192Z"
+    created: "2024-09-10T10:09:35.746944145Z"
     description: Helm chart to auto namespace init
-    digest: 72bcc263f31be8430169e02d774a4ccc100ff2b2f8bb73623a85ff9b9bb91dc8
+    digest: a2eede1c26a7f1fc4c5ba465af57068274477396803fb18483bd84a5fa532129
     name: sl-namespace-init
     urls:
     - https://shoplineapp.github.io/helm-charts/sl-namespace-init/sl-namespace-init-0.5.0.tgz
     version: 0.5.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2024-08-23T03:04:36.053531506Z"
+    created: "2024-09-10T10:09:35.746787532Z"
     description: Helm chart to auto namespace init
     digest: d58fed5934259507c6a08d5bf07cff3617c37fa4e303ae913d92d9c034fbe707
     name: sl-namespace-init
@@ -712,7 +721,7 @@ entries:
     version: 0.4.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2024-08-23T03:04:36.053368482Z"
+    created: "2024-09-10T10:09:35.746633483Z"
     description: Helm chart to auto namespace init
     digest: a78d5b1d7bb041a6b3cbbfb43dbc03257dc12361972ef1832694d5c0b204d8c9
     name: sl-namespace-init
@@ -721,7 +730,7 @@ entries:
     version: 0.3.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2024-08-23T03:04:36.053205799Z"
+    created: "2024-09-10T10:09:35.746480106Z"
     description: Helm chart to auto namespace init
     digest: 43ccf6e3ea9f3351f41ca83e7c94c0bb0c32887f5e55c4e09f9df4faace71589
     name: sl-namespace-init
@@ -730,11 +739,11 @@ entries:
     version: 0.2.0
   - apiVersion: v1
     appVersion: 0.1.0
-    created: "2024-08-23T03:04:36.053047573Z"
+    created: "2024-09-10T10:09:35.746321639Z"
     description: Helm chart to auto namespace init
     digest: 35f8156125a58ec109bfb73689df7d2c14a514b95ae24b87b232a87ee0a8bfed
     name: sl-namespace-init
     urls:
     - https://shoplineapp.github.io/helm-charts/sl-namespace-init/sl-namespace-init-0.1.0.tgz
     version: 0.1.0
-generated: "2024-08-23T03:04:36.015627944Z"
+generated: "2024-09-10T10:09:35.705950653Z"
