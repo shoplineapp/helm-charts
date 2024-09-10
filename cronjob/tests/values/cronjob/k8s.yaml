@@ -32,3 +32,11 @@ resources:
   limits:
     cpu: 500m
     memory: 512Mi
+securityContextForPod:
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+dnsConfig:
+  options:
+    - name: ndots
+      value: "5"

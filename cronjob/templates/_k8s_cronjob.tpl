@@ -20,6 +20,18 @@
           serviceAccountName: {{ .Values.name }}-pod-service-account
           {{- end }}
           restartPolicy: Never
+          {{- with .Values.securityContextForPod }}
+          securityContext: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.dnsConfig }}
+          dnsConfig:
+            {{- toYaml .Values.dnsConfig | nindent 12 }}
+          {{- else }}
+          dnsConfig:
+            options:
+              - name: ndots
+                value: "2"
+          {{- end }}
           containers:
             -
               name: app
