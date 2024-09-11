@@ -262,7 +262,16 @@ tests:
           path: spec.workflowSpec.activeDeadlineSeconds
 
   # Update this test case after fixing
-  - it: should not render activeDeadlineSeconds if timeout is set to null
+  - it: should render default activeDeadlineSeconds if timeout is set to null
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    asserts:
+      - equal:
+          path: spec.workflowSpec.activeDeadlineSeconds
+          value: 1800
+
+  # Update this test case after fixing
+  - it: should render activeDeadlineSeconds if timeout is set to null
     values:
       - ./values/cronjob/argo_minimal.yaml
     set:
