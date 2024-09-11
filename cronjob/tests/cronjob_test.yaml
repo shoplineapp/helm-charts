@@ -249,3 +249,26 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: businessid must be provided
+
+  # Update this test case after fixing
+  - it: should not render activeDeadlineSeconds if timeout is set to null
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    set:
+      job:
+        timeout: null
+    asserts:
+      - notExists:
+          path: spec.workflowSpec.activeDeadlineSeconds
+
+  # Update this test case after fixing
+  - it: should not render activeDeadlineSeconds if timeout is set to null
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    set:
+      job:
+        timeout: 1000
+    asserts:
+      - equal:
+          path: spec.workflowSpec.activeDeadlineSeconds
+          value: 1000
