@@ -5,15 +5,15 @@ metadata:
   name: role-{{ .Release.Namespace }}-po
   namespace: {{ .Release.Namespace }}
 rules:
-  - apiGroups: [""] 
+  - apiGroups: [""]
     resources: ["pods", "pods/log", "events"]
     verbs: ["get", "watch", "list"]
   - apiGroups: ["apps"]
     resources: ["deployments"]
     verbs: ["get", "watch", "list"]
-  - apiGroups: [""] 
+  - apiGroups: [""]
     resources: ["pods/exec"]
-    verbs: ["create"]
+    verbs: ["get", "create"]
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
