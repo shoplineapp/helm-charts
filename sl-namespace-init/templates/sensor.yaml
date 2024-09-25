@@ -69,7 +69,7 @@ spec:
                       if [[ ${phase} == "Active" ]]; then
                         echo "Namespace ${ns} created, trigger namespace-init"
                         helm repo update
-                        helm install namespace-init shopline-charts/eks -n ${ns} --version 0.5.0
+                        helm install namespace-init shopline-charts/eks -n ${ns} --version 0.6.0
                         kubectl label namespace ${ns} elbv2.k8s.aws/pod-readiness-gate-inject=enabled
                         echo -n 'Created' > /tmp/phase.txt
                       else
@@ -123,7 +123,7 @@ spec:
                     args:
                       - >-
                         curl -X POST -H 'Content-type: application/json' --data '{"attachments": [ { "color": "#E01E5A", "blocks": [ { "type":"header", "text": { "type": "plain_text", "text": "Workflow Failed -{{"{{"}}workflow.name{{"}}"}}", "emoji": true } }, { "type": "divider" }, {"type": "section", "fields": [ { "type": "mrkdwn", "text": "*Cluster*\n{{"{{"}}inputs.parameters.cluster_name{{"}}"}}" }, { "type": "mrkdwn", "text": "*Namespace*\n{{"{{"}}workflow.namespace{{"}}"}}" }, { "type": "mrkdwn", "text": "*Duration*\n{{"{{"}}workflow.duration{{"}}"}} sec" }, { "type": "mrkdwn", "text": "*Link*\n<{{"{{"}}inputs.parameters.argo_url{{"}}"}}/workflows/{{"{{"}}workflow.namespace{{"}}"}}/{{"{{"}}workflow.name{{"}}"}}?tab=workflow|View>" } ] } ] } ]}' {{"{{"}}inputs.parameters.argo_slack_url{{"}}"}}
-                        
+
           parameters:
             - src:
                 dependencyName: ns
