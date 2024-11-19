@@ -29,18 +29,10 @@ replicaCount: 1
 #     maxSkew: 1
 #     topologyKey: topology.kubernetes.io/zone
 #     whenUnsatisfiable: DoNotSchedule
-#   - labelSelector:
-#       matchLabels:
-#         app: app-name
-#     maxSkew: 1
-#     topologyKey: kubernetes.io/hostname
-#     whenUnsatisfiable: ScheduleAnyway
 
 affinity:
   nodeAffinity: {}
   podAffinity: {}
-  # if you set .podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution,you will combined with default setting.
-  # default: prefer difference az(weight:100) and node(weight:99)
   podAntiAffinity: {}
 
 deployment: {}
