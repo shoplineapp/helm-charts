@@ -55,12 +55,6 @@ spec:
           maxSkew: 1
           topologyKey: topology.kubernetes.io/zone
           whenUnsatisfiable: ScheduleAnyway
-        - labelSelector:
-            matchLabels:
-              app: {{ .Values.name }}
-          maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
       {{- end}}
       {{- if hasKey .Values "nodeSelector" }}
       nodeSelector:
@@ -74,32 +68,9 @@ spec:
         {{- if hasKey .Values.affinity "podAffinity" }}
         podAffinity: {{- toYaml .Values.affinity.podAffinity | nindent 10 }}
         {{- end }}
-        podAntiAffinity:
-          {{- if hasKey .Values.affinity.podAntiAffinity "requiredDuringSchedulingIgnoredDuringExecution" }}
-          requiredDuringSchedulingIgnoredDuringExecution: {{- toYaml .Values.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution | nindent 12 }}
-          {{- end }}
-          preferredDuringSchedulingIgnoredDuringExecution:
-          {{- if hasKey .Values.affinity.podAntiAffinity "preferredDuringSchedulingIgnoredDuringExecution" }}
-            {{- toYaml .Values.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution | nindent 12 }}
-          {{- end }}
-            - podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                    - {{ .Values.name }}
-                topologyKey: topology.kubernetes.io/zone
-              weight: 100
-            - podAffinityTerm:
-                labelSelector:
-                  matchExpressions:
-                  - key: app
-                    operator: In
-                    values:
-                    - {{ .Values.name }}
-                topologyKey: kubernetes.io/hostname
-              weight: 99
+        {{- if hasKey .Values.affinity "podAntiAffinity" }}
+        podAntiAffinity: {{- toYaml .Values.affinity.podAntiAffinity | nindent 10 }}
+        {{- end }}
       {{- end }}
       {{- if hasKey .Values "securityContextForPod" }}
       securityContext: {{ toYaml .Values.securityContextForPod | nindent 8 }}
