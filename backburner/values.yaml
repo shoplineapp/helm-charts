@@ -12,6 +12,21 @@ global:
   envFromSecret:
     - name: secret-env
   affinity: {}
+#   nodeSelector:
+#     labelName: nodegroup
+#     labelValue: "sl1.0businessplatform-businessplatform"
+#   tolerations:
+#   - key: "sl1.0businessplatform-businessplatform"
+#     operator: "Equal"
+#     value: "true"
+#     effect: "NoSchedule"
+#   topologySpreadConstraints:
+#     - labelSelector:
+#         matchLabels:
+#           app: app-name
+#       maxSkew: 1
+#       topologyKey: topology.kubernetes.io/zone
+#       whenUnsatisfiable: ScheduleAnyway
 
 workers: []
 # - name: custom-jobs

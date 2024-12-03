@@ -44,5 +44,25 @@ spec:
       {{- if $.Values.global.affinity }}
       affinity: {{ toYaml $.Values.global.affinity | nindent 8 }}
       {{- end }}
+      {{- if $.Values.global.nodeSelector }}
+      nodeSelector:
+        {{ $.Values.global.nodeSelector.labelName }}: {{ $.Values.global.nodeSelector.labelValue }}
+      {{- end}}
+      {{- if $.Values.global.tolerations }}
+      tolerations:
+        {{- toYaml $.Values.global.tolerations | nindent 8 }}
+      {{- end}}
+      {{- if $.Values.global.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml $.Values.global.topologySpreadConstraints | nindent 8 }}
+      {{- else }}
+      topologySpreadConstraints:
+        - labelSelector:
+            matchLabels:
+              app: {{ $.Values.name }}-{{ $resourceName }}
+          maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+      {{- end}}
 ---
 {{- end }}
