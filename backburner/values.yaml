@@ -12,6 +12,24 @@ global:
   envFromSecret:
     - name: secret-env
   affinity: {}
+  nodeSelector: {}
+#   nodeSelector:
+#     labelName: nodegroup
+#     labelValue: "nodepool-name"
+  tolerations: []
+#   tolerations:
+#   - key: "nodepool-name"
+#     operator: "Equal"
+#     value: "true"
+#     effect: "NoSchedule"
+  topologySpreadConstraints: []
+#   topologySpreadConstraints:
+#     - labelSelector:
+#         matchLabels:
+#           app: app-name
+#       maxSkew: 1
+#       topologyKey: topology.kubernetes.io/zone
+#       whenUnsatisfiable: ScheduleAnyway
 
 workers: []
 # - name: custom-jobs
