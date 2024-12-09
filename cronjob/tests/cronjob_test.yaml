@@ -249,3 +249,13 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: businessid must be provided
+
+  - it: should use workflowTemplateRef if enablePoMode is true
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      enablePoMode: true
+    asserts:
+      - equal:
+          path: spec.workflowSpec.workflowTemplateRef.name
+          value: po-simple-cron-workflow
