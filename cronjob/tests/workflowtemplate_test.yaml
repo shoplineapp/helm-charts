@@ -1,0 +1,31 @@
+suite: WorkflowTemplate Test
+templates:
+  - workflowtemplate.yaml
+tests:
+  - it: should render nothing if kind is not CronWorkflow
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      kind: unknown
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should render nothing if enablePoMode is false
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      enablePoMode: false
+    asserts:
+      - hasDocuments:
+          count: 0
+  - it: should render one workflowTemplate if enablePoMode is true
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      kind: CronWorkflow
+      enablePoMode: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: WorkflowTemplate

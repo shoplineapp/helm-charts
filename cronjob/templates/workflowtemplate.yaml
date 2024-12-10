@@ -1,0 +1,15 @@
+{{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
+{{- if .Values.enablePoMode }}
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: po-{{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
+    businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
+    {{- end }}
+spec:
+  {{ include "cronjob.argo_cron_workflow" . | nindent 2 }}
+{{- end }}
+{{- end }}
