@@ -24,8 +24,9 @@ job:
   # Number of retries if error occurred
   retries: 1
 
-  # Active Deadline Seconds of the pod. If you you are using argo cron workflow, you can use -1 to disable active Deadline Seconds
-  timeout: 1800
+  # Active Deadline Seconds of the pod.
+  # example
+  # timeout: 1800
 
   # Jobs History Limit of cron job. For "success", it will assign to spec.successfulJobsHistoryLimit. It is optional and having default value 3. For "failed", it will assign to spec.failedJobsHistoryLimit. It is optional and having default value 1
   history: {}
