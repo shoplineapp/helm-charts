@@ -95,6 +95,11 @@ metrics:
         # This increments the counter by 1
         value: "1"
 entrypoint: {{ .Values.entrypoint }}
+
+{{- with .Values.arguments }}
+arguments: {{ toYaml . | nindent 2 }}
+{{- end }}
+
 # If not exitNotifications config is set, the default exit-handler of the argo server will be used 
 {{- if .Values.exitNotifications }}
 onExit: exit-handler 

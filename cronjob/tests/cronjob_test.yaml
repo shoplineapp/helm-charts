@@ -259,3 +259,28 @@ tests:
       - equal:
           path: spec.workflowSpec.workflowTemplateRef.name
           value: po-simple-cron-workflow
+  
+  - it: should not render arguments field when arguments is missing
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    set:
+      arguments: ~
+    asserts:
+      - notExists:
+          path: spec.workflowSpec.arguments
+
+  - it: should not render arguments field when arguments is missing
+    values:
+      - ./values/cronjob/argo_minimal.yaml
+    set:
+      arguments: 
+        parameters:
+          - name: message
+            value: testing
+    asserts:
+      - equal:
+          path: spec.workflowSpec.arguments
+          value: 
+            parameters:
+              - name: message
+                value: testing
