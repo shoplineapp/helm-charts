@@ -1,4 +1,4 @@
-{{- define "cronjob._exit_handler_newrelic" -}}
+{{- define "workflow-lib._exit_handler_newrelic" -}}
 {{- $newRelic := .Values.exitNotifications.newRelic | default dict -}}
 {{- $image := $newRelic.image | default dict -}}
 - name: notice-newrelic-failed

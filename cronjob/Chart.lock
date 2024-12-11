@@ -1,0 +1,6 @@
+dependencies:
+- name: workflow-lib
+  repository: file://../workflow-lib
+  version: 0.1.0
+digest: sha256:a825bc58a89b9828010f616699d3b7a9bbddb768148dbc81e7365bcfd3f674de
+generated: "2024-12-11T18:01:18.461727+08:00"

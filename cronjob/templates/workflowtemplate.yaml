@@ -8,6 +8,6 @@ metadata:
   labels:
     businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
 spec:
-  {{ include "cronjob.argo_cron_workflow" . | nindent 2 }}
+  {{ include "workflow-lib.argo_cron_workflow" . | nindent 2 }}
 {{- end }}
 {{- end }}

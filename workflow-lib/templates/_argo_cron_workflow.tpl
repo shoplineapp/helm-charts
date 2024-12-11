@@ -1,4 +1,4 @@
-{{- define "cronjob.argo_cron_workflow" -}}
+{{- define "workflow-lib.argo_cron_workflow" -}}
 podMetadata:
   labels:
     name: {{ .Values.name }}
@@ -120,23 +120,23 @@ templates:
 
   {{- if .Values.steps }}
   {{- range .Values.steps }}
-  - {{- include "cronjob.argo_cron_workflow.step_template" . | nindent 8 }}
+  - {{- include "workflow-lib.argo_cron_workflow.step_template" . | nindent 8 }}
   {{- end }}
   {{- else }}
   {{- /* if no steps, use single step */}}
   {{- $defaultValue := merge (fromJson "{\"name\":\"entry\",\"steps\":[[{\"name\":\"step1\",\"template\":\"template\"}]]}") $.Values }}
-  - {{- include "cronjob.argo_cron_workflow.step_template" $defaultValue | nindent 8 }}
+  - {{- include "workflow-lib.argo_cron_workflow.step_template" $defaultValue | nindent 8 }}
   {{- end }}
 
   {{- if .Values.containers }}
   {{- range .Values.containers }}
   {{ $value := list . $.Release.Namespace $.Values.name }}
-  - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8}}
+  - {{- include "workflow-lib.argo_cron_workflow.container_template" $value | nindent 8}}
   {{- end }}
   {{- else }}
   {{- $defaultValue := merge (fromJson "{\"name\":\"template\"}") $.Values }}
   {{- $value := list $defaultValue $.Release.Namespace $.Values.name }}
-  - {{- include "cronjob.argo_cron_workflow.container_template" $value | nindent 8 }}
+  - {{- include "workflow-lib.argo_cron_workflow.container_template" $value | nindent 8 }}
   {{- end }}
 
   # The template of exist-handler if any .Values.exitNotifications config is set
@@ -188,15 +188,15 @@ templates:
       {{- end }}
   # If .Values.exitNotifications.slackApp is set, Slack app notification template will be loaded
   {{- if .Values.exitNotifications.slackApp }}
-  {{ include "cronjob._exit_handler_slack_app" . | nindent 2 }}
+  {{ include "workflow-lib._exit_handler_slack_app" . | nindent 2 }}
   {{- end }}
   # If .Values.exitNotifications.newRelic is set, New Relic notification template will be loaded
   {{- if .Values.exitNotifications.newRelic }}
-  {{ include "cronjob._exit_handler_newrelic" . | nindent 2 }}
+  {{ include "workflow-lib._exit_handler_newrelic" . | nindent 2 }}
   {{- end }}
   # If .Values.exitNotifications.healthcheckIo is set, Healthcheck IO notification template will be loaded
   {{- if .Values.exitNotifications.healthcheckIo }}
-  {{ include "cronjob._exit_handler_healthcheck_io" . | nindent 2 }}
+  {{ include "workflow-lib._exit_handler_healthcheck_io" . | nindent 2 }}
   {{- end }}
   {{- end }}
 

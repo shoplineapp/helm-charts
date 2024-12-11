@@ -1,4 +1,4 @@
-{{- define "cronjob._exit_handler_healthcheck_io" -}}
+{{- define "workflow-lib._exit_handler_healthcheck_io" -}}
 {{- $healthcheckIo := .Values.exitNotifications.healthcheckIo | default dict -}}
 - name: notice-healthcheck-io-succeeded # For cronjob health check, as the schedule may different therefore each cronjob will have different uuid
   container:
