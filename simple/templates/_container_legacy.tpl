@@ -56,6 +56,6 @@
         lifecycle:
           preStop:
             exec:
-              command: ["sleep", "15"]
+              command: ["sleep", "60"]
         {{- end }}
 {{- end -}}
