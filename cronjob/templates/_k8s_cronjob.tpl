@@ -5,7 +5,9 @@
         cronjob_name: {{ .Values.name }}
     spec:
       backoffLimit: {{ .Values.job.retries }}
-      activeDeadlineSeconds: {{ .Values.job.timeout }}
+      {{- with .Values.job.timeout }}
+      activeDeadlineSeconds: {{ . }}
+      {{- end }}
       template:
         metadata:
           annotations:
