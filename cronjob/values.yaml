@@ -14,6 +14,9 @@ kind: "CronJob"
 # example
 # kind: CronWorkflow
 
+# Enable the PO mode of the cron job. If it is set to true, the cron job will use the PO mode template. It is optional and having default value false
+enablePoMode: false
+
 # Required: please quote the businessid as string
 # businessid: "xxxxxxxxxxxxxxxxxx"
 
@@ -185,6 +188,9 @@ tolerations: []
 
 # Entrypoint for this argo workflow, default value: entry
 entrypoint: "entry"
+
+# Arguments for Argo workflow, only work in kind: CronWorkflow
+# arguments: {}
 
 # Defined container template, used for multi-steps, will override the default container template. Only used on Argo cron workflow
 containers: []
