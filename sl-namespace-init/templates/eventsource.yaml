@@ -9,9 +9,9 @@ spec:
     nodeSelector:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-    {{- if .Values.affinity }}
+    {{- with .Values.affinity }}
     affinity:
-      {{- toYaml .Values.affinity | nindent 6 }}
+      {{- toYaml . | nindent 6 }}
     {{- end }}
     {{- with .Values.tolerations }}
     tolerations:
