@@ -5,6 +5,18 @@ metadata:
 spec:
   template:
     serviceAccountName: kube-argo
+    {{- with .Values.nodeSelector }}
+    nodeSelector:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if .Values.affinity }}
+    affinity:
+      {{- toYaml .Values.affinity | nindent 6 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+    tolerations:
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
   dependencies:
     - name: ns
       eventSourceName: ns-event
@@ -123,7 +135,6 @@ spec:
                     args:
                       - >-
                         curl -X POST -H 'Content-type: application/json' --data '{"attachments": [ { "color": "#E01E5A", "blocks": [ { "type":"header", "text": { "type": "plain_text", "text": "Workflow Failed -{{"{{"}}workflow.name{{"}}"}}", "emoji": true } }, { "type": "divider" }, {"type": "section", "fields": [ { "type": "mrkdwn", "text": "*Cluster*\n{{"{{"}}inputs.parameters.cluster_name{{"}}"}}" }, { "type": "mrkdwn", "text": "*Namespace*\n{{"{{"}}workflow.namespace{{"}}"}}" }, { "type": "mrkdwn", "text": "*Duration*\n{{"{{"}}workflow.duration{{"}}"}} sec" }, { "type": "mrkdwn", "text": "*Link*\n<{{"{{"}}inputs.parameters.argo_url{{"}}"}}/workflows/{{"{{"}}workflow.namespace{{"}}"}}/{{"{{"}}workflow.name{{"}}"}}?tab=workflow|View>" } ] } ] } ]}' {{"{{"}}inputs.parameters.argo_slack_url{{"}}"}}
-
           parameters:
             - src:
                 dependencyName: ns
