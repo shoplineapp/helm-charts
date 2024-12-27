@@ -6,16 +6,13 @@ spec:
   template:
     serviceAccountName: kube-argo
     {{- with .Values.nodeSelector }}
-    nodeSelector:
-      {{- toYaml . | nindent 6 }}
+    nodeSelector: {{- toYaml . | nindent 6 }}
     {{- end }}
     {{- with .Values.affinity }}
-    affinity:
-      {{- toYaml . | nindent 6 }}
+    affinity: {{- toYaml . | nindent 6 }}
     {{- end }}
     {{- with .Values.tolerations }}
-    tolerations:
-      {{- toYaml . | nindent 4 }}
+    tolerations: {{- toYaml . | nindent 4 }}
     {{- end }}
   eventBusName: {{ .Values.eventBus | default "default" }}
   resource:
