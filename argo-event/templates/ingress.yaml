@@ -5,6 +5,8 @@ metadata:
   name: {{ .Values.name }}
   annotations:
     {{- toYaml .Values.ingress.annotations | nindent 4}}
+  labels:
+    businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
 spec:
   {{- if .Values.ingress.tls }}
   tls:

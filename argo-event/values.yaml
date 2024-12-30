@@ -6,6 +6,9 @@
 # Labels for eventbus, event source and sensor, optional
 labels: {}
 
+# Required: please quote the businessid as string
+# businessid: "xxxxxxxxxxxxxxxxxx"
+
 # For event bus
 eventbus:
   config:
