@@ -18,10 +18,10 @@ spec:
         businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
 
     version: {{ .Values.eventbus.config.version }}
-    {{- with .Values.nodeSelector }}
+    {{- with .Values.eventbus.config.nodeSelector }}
     nodeSelector: {{- toYaml . | nindent 6 }}
     {{- end }}
-    {{- with .Values.tolerations }}
+    {{- with .Values.eventbus.config.tolerations }}
     tolerations: {{- toYaml . | nindent 4 }}
     {{- end }}
     affinity:

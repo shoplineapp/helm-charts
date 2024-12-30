@@ -26,6 +26,17 @@ eventbus:
     #   accessMode: ReadWriteOnce
     #   volumeSize: 10Gi
 
+    nodeSelector: {}
+    # nodeSelector:
+    #   nodegroup: ec-eks-db-cpu-node-autoscaling-group
+
+    tolerations: []
+    # tolerations: 
+    # - key: "shop-callback-node"
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+
     # affinity, optional
     affinity:
       # nodeAffinity, optional
@@ -91,6 +102,17 @@ eventsource:
     # number of replicas for source pod
     replicas: 1
 
+    nodeSelector: {}
+    # nodeSelector:
+    #   nodegroup: ec-eks-db-cpu-node-autoscaling-group
+
+    tolerations: []
+    # tolerations: 
+    # - key: "shop-callback-node"
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+
     # affinity, optional
     affinity:
       # nodeAffinity, optional
@@ -154,6 +176,17 @@ eventsensor:
     # replicas: optional, default 1
     # number of replicas for source pod
     replicas: 1
+
+    nodeSelector: {}
+    # nodeSelector:
+    #   nodegroup: ec-eks-db-cpu-node-autoscaling-group
+
+    tolerations: []
+    # tolerations: 
+    # - key: "shop-callback-node"
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
 
     affinity:
       # nodeAffinity, optional
