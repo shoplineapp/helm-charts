@@ -19,6 +19,12 @@ spec:
         {{- end }}
         app: {{ .Values.name }}-eventsource
         businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
+    {{- with .Values.nodeSelector }}
+    nodeSelector: {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+    tolerations: {{- toYaml . | nindent 4 }}
+    {{- end }}
     affinity:
       {{- with .Values.eventsource.config.affinity.nodeAffinity }}
       nodeAffinity: {{- toYaml . | nindent 8 }}
