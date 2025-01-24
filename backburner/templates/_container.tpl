@@ -23,6 +23,7 @@
           {{- range $i, $items := .queue }}
             {{- $queueName := get $items "queueName" }}
             {{- $listener := get $items "listener" | int }}
+            {{- $garbage := get $items "garbage" | default "" }}
             {{- if (default $standAlone false ) }}
               {{- if gt $listener 1 }} 
               {{ fail "listener more than one failed when the standalone mode."}}
@@ -33,11 +34,11 @@
                 {{- $listener = 2 }}
               {{- end}}
             {{- end}}
-            {{- $tmpItem := printf "%v:%v" $queueName $listener }}
+            {{- $tmpItem := printf "%v:%v:%v" $queueName $listener $garbage }}
             {{- $queueList = append $queueList $tmpItem }}
           {{- end }}
-          {{- $queueName := (join "," $queueList) }}
-          - bundle exec backburner -e $RAILS_ENV -q {{ $queueName }}
+          {{- $queueName := printf "\"%s\"" (join "," $queueList) }}
+          - QUEUE={{ $queueName }} RAILS_ENV=$RAILS_ENV bundle exec rake backburner:threads_on_fork:work
         {{- end }}
         image: "{{ .image.repository }}:{{ .image.tag }}"
         imagePullPolicy: "IfNotPresent"
