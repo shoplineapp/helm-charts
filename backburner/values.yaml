@@ -36,6 +36,7 @@ workers: []
 #   queue:
 #     - queueName: custom-jobs
 #       listener: 2
+#       garbage: 100 # Number of job executions before garbage collection, note that this only works on ThreadsOnFork worker
 #   resources:
 #     limits:
 #       cpu: "300m"
@@ -56,8 +57,8 @@ workers: []
 #         percent: 70
 # - name: worker1
 #   queue:
-#     - queueName: user-import-notification0 # default listener: 2
-#     - queueName: user-import-notification1 # default listener: 2
+#     - queueName: user-import-notification0 # default listener: 2, default garbage: ""
+#     - queueName: user-import-notification1 # default listener: 2, default garbage: ""
 #   resources:
 #     limits:
 #       cpu: "2"
@@ -67,8 +68,8 @@ workers: []
 #       memory: "4Gi"
 # - name: worker2
 #   queue:
-#     - queueName: user-import-notification0 # default listener: 2
-#     - queueName: user-import-notification1 # default listener: 2
+#     - queueName: user-import-notification0 # default listener: 2, default garbage: ""
+#     - queueName: user-import-notification1 # default listener: 2, default garbage: ""
 #   resources:
 #     limits:
 #       cpu: "2"
