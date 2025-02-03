@@ -18,6 +18,13 @@ spec:
         {{ toYaml . | nindent 8 }}
         {{- end }}
         app: {{ .Values.name }}-sensor
+        businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
+    {{- with .Values.eventsensor.config.nodeSelector }}
+    nodeSelector: {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.eventsensor.config.tolerations }}
+    tolerations: {{- toYaml . | nindent 4 }}
+    {{- end }}
     affinity:
       {{- with .Values.eventsensor.config.affinity.nodeAffinity }}
       nodeAffinity: {{- toYaml . | nindent 8 }}

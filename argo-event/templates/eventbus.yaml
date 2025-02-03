@@ -15,9 +15,15 @@ spec:
         {{ toYaml . | nindent 8 }}
         {{- end }}
         app: {{ .Values.name }}-eventbus
+        businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
 
     version: {{ .Values.eventbus.config.version }}
-
+    {{- with .Values.eventbus.config.nodeSelector }}
+    nodeSelector: {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with .Values.eventbus.config.tolerations }}
+    tolerations: {{- toYaml . | nindent 4 }}
+    {{- end }}
     affinity:
       {{- with .Values.eventbus.config.affinity.nodeAffinity }}
       nodeAffinity: {{- toYaml . | nindent 8 }}

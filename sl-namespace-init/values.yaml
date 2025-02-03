@@ -9,3 +9,9 @@ argo_slack_url: ""
 argo_url: ""
 
 eventBus: ""
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

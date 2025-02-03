@@ -6,6 +6,9 @@
 # Labels for eventbus, event source and sensor, optional
 labels: {}
 
+# Required: please quote the businessid as string
+# businessid: "xxxxxxxxxxxxxxxxxx"
+
 # For event bus
 eventbus:
   config:
@@ -22,6 +25,17 @@ eventbus:
     #   storageClassName: storage-1
     #   accessMode: ReadWriteOnce
     #   volumeSize: 10Gi
+
+    nodeSelector: {}
+    # nodeSelector:
+    #   nodegroup: ec-eks-db-cpu-node-autoscaling-group
+
+    tolerations: []
+    # tolerations: 
+    # - key: "shop-callback-node"
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
 
     # affinity, optional
     affinity:
@@ -88,6 +102,17 @@ eventsource:
     # number of replicas for source pod
     replicas: 1
 
+    nodeSelector: {}
+    # nodeSelector:
+    #   nodegroup: ec-eks-db-cpu-node-autoscaling-group
+
+    tolerations: []
+    # tolerations: 
+    # - key: "shop-callback-node"
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
+
     # affinity, optional
     affinity:
       # nodeAffinity, optional
@@ -151,6 +176,17 @@ eventsensor:
     # replicas: optional, default 1
     # number of replicas for source pod
     replicas: 1
+
+    nodeSelector: {}
+    # nodeSelector:
+    #   nodegroup: ec-eks-db-cpu-node-autoscaling-group
+
+    tolerations: []
+    # tolerations: 
+    # - key: "shop-callback-node"
+    #   operator: "Equal"
+    #   value: "true"
+    #   effect: "NoSchedule"
 
     affinity:
       # nodeAffinity, optional
