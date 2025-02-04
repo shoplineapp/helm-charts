@@ -57,8 +57,8 @@ workers: []
 #         percent: 70
 # - name: worker1
 #   queue:
-#     - queueName: user-import-notification0 # default listener: 2, default garbage: ""
-#     - queueName: user-import-notification1 # default listener: 2, default garbage: ""
+#     - queueName: user-import-notification0 # default listener: 2, garbage: ""
+#     - queueName: user-import-notification1 # default listener: 2, garbage: ""
 #   resources:
 #     limits:
 #       cpu: "2"
@@ -68,8 +68,8 @@ workers: []
 #       memory: "4Gi"
 # - name: worker2
 #   queue:
-#     - queueName: user-import-notification0 # default listener: 2, default garbage: ""
-#     - queueName: user-import-notification1 # default listener: 2, default garbage: ""
+#     - queueName: user-import-notification0 # default listener: 2, garbage: ""
+#     - queueName: user-import-notification1 # default listener: 2, garbage: ""
 #   resources:
 #     limits:
 #       cpu: "2"
