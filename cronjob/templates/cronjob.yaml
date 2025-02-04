@@ -30,7 +30,13 @@ spec:
   {{- end }}
   # If "kind" eq to "CronWorkflow", argo cron workflow template will be loaded, otherwise, k8s cronjob template will be loaded
   {{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") }}
-  {{ template "cronjob.argo_cron_workflow" . }}
+  workflowSpec:
+  {{- if .Values.enablePoMode }}
+    workflowTemplateRef:
+      name: po-{{ .Values.name }}
+  {{- else }}
+  {{- include "cronjob.argo_cron_workflow" . | nindent 4 }}
+  {{- end }}
   {{- else }}
   {{ template "cronjob.k8s_cronjob" . }}
   {{- end}}
