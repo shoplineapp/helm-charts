@@ -57,16 +57,9 @@
         {{- if hasKey . "startupProbe" }}
         startupProbe: {{- toYaml .startupProbe | nindent 10 }}
         {{- end }}
-        {{- if hasKey . "volumes" }}
+        {{- if hasKey . "volumeMounts" }}
         volumeMounts:
-          {{- range $key, $vol := $.volumes }}
-          - name: {{ $vol.name }}
-            mountPath: {{ $vol.path | quote }}
-            readOnly: {{ $vol.readOnly | default "true" }}
-            {{- if hasKey $vol "subPath" }}
-            subPath: {{ $vol.subPath }}
-            {{- end }}
-          {{- end }}
+          {{- toYaml .volumeMounts | nindent 10 }}
         {{- end }}
         {{- if hasKey . "resources" }}
         resources: {{- toYaml .resources | nindent 10 }}
