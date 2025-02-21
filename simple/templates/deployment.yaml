@@ -1,5 +1,4 @@
 {{ include "resource_tag_checker" . }}
-{{ include "pvc_name_checker" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -59,7 +58,7 @@ spec:
       {{- end}}
       {{- if hasKey .Values "nodeSelector" }}
       nodeSelector:
-        {{ .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }}
+        {{ .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }} 
       {{- end}}
       {{- if hasKey .Values "affinity" }}
       affinity:
@@ -98,10 +97,6 @@ spec:
             {{- if hasKey $vol.configMap "items" }}
             items: {{- toYaml $vol.configMap.items | nindent 12}}
             {{- end }}
-          {{- end }}
-          {{- if hasKey $vol "persistentVolumeClaim" }}
-          persistentVolumeClaim:
-            {{- toYaml $vol.persistentVolumeClaim | nindent 12 }}
           {{- end }}
         {{- end }}
       {{- end }}
