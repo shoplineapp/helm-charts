@@ -332,3 +332,31 @@ analyses: {}
 #               sum(irate(
 #                 istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}"}[5m]
 #               ))
+
+## Persistence Parameters
+## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+##
+persistence:
+  ## @param persistence.enabled Enable persistence using Persistent Volume Claims
+  ##
+  enabled: false
+  ## @param persistence.name Persistent Volume Claim Name
+  ## Required if persistence.enabled ture, please note your PVC name must same value as deployment.volumes.persistentVolumeClaim.claimName
+  ##
+  name: ""
+  ## @param persistence.storageClass Persistent Volume storage class
+  ## If defined, storageClassName: <storageClass>
+  ## If undefined (the default) or set to gp3, choosing the default ebs csi driver as provisioner
+  ##
+  storageClass: "gp3"
+  ## @param persistence.accessModes [array] Persistent Volume access modes
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## @param persistence.size Persistent Volume size
+  ##
+  size: 10Gi
+  ## @param persistence.dataSource Custom PVC data source
+  ##
+  dataSource: {}
+  selector: {}
