@@ -31,3 +31,13 @@ labels:
 {{- fail "Error: persistence.name is required when persistence.enabled is true" }}
 {{- end }}
 {{- end -}}
+
+{{/* Compute checksum for configuration data */}}
+{{- define "simple.computeChecksum" -}}
+{{- $subpaths := splitList "/" .path }}
+{{- $data := .Values }}
+{{- range $key, $subpath := $subpaths }}
+  {{- $data = index $data $subpath }}
+{{- end }}
+{{- $data | sha256sum }}
+{{- end -}}
