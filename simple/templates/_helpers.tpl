@@ -17,10 +17,10 @@ labels:
 
 {{/* Validate required values */}}
 {{- define "simple.validateRequired" -}}
-{{- if not .Values.name -}}
+{{- if (eq .Values.name "") -}}
 {{- fail "name is required" -}}
 {{- end -}}
-{{- if not .Values.businessid -}}
+{{- if (eq .Values.businessid "") -}}
 {{- fail "businessid is required" -}}
 {{- end -}}
 {{- end }}

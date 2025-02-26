@@ -1,5 +1,5 @@
 ## @param name application name
-name: app-name
+name: ""
 
 ## @param replicaCount Number of application replicas to deploy
 ##
@@ -7,7 +7,7 @@ replicaCount: 1
 
 ## @param businessid Team reosurce tag id
 ## Required: please quote the businessid as string
-# businessid: "xxxxxxxxxxxxxxxxxx"
+businessid: ""
 
 ## @param nodeSelector Node labels for pod assignment
 ## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
