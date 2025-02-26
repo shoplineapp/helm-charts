@@ -80,8 +80,6 @@ spec:
   {{- range .Values.deployment.containers }}
       - {{ template "deployment.container" . }}
   {{- end}}
-{{- else}}
-      - {{ template "deployment.container_legacy" .Values }}
 {{- end}}
       {{- if hasKey .Values.deployment  "volumes" }}
       volumes:
