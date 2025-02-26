@@ -72,8 +72,8 @@ spec:
         podAntiAffinity: {{- toYaml .Values.affinity.podAntiAffinity | nindent 10 }}
         {{- end }}
       {{- end }}
-      {{- if hasKey .Values "securityContextForPod" }}
-      securityContext: {{ toYaml .Values.securityContextForPod | nindent 8 }}
+      {{- if .Values.podSecurityContext.enabled }}
+      securityContext: {{ toYaml .Values.podSecurityContext | nindent 8 }}
       {{- end}}
       containers:
 {{- if hasKey .Values.deployment "containers" }}
