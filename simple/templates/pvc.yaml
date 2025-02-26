@@ -1,4 +1,4 @@
-{{ include "pvc_name_checker" . }}
+{{ include "simple.validatePVC" . }}
 {{- if .Values.persistence.enabled }}
 kind: PersistentVolumeClaim
 apiVersion: v1

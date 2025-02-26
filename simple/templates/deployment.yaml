@@ -1,13 +1,9 @@
-{{ include "resource_tag_checker" . }}
-{{ include "pvc_name_checker" . }}
+{{ include "simple.validateRequired" . }}
+{{ include "simple.validatePVC" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Values.name }}
-  namespace: {{ .Release.Namespace }}
-  labels:
-    businessid: {{ $.Values.businessid | quote}}
-    app: {{ .Values.name }}
+  {{- include "simple.metadata" . | nindent 2 }}
 spec:
   {{- if not (or .Values.hpa .Values.hpav2 ((.Values.KEDA).ScaledObject)) }}
   replicas: {{ .Values.replicaCount }}

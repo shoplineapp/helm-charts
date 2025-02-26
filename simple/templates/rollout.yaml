@@ -1,5 +1,5 @@
 {{ if .Values.rollout }}
-{{ include "resource_tag_checker" . }}
+{{ include "simple.validateRequired" . }}
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
@@ -54,7 +54,7 @@ spec:
       steps:
       {{- toYaml .Values.rollout.strategy.canary.steps | nindent 6 }}
       {{ if .Values.rollout.strategy.canary.trafficRouting }}
-      trafficRouting: 
+      trafficRouting:
       {{- toYaml .Values.rollout.strategy.canary.trafficRouting | nindent 8 }}
       {{- end }}
       {{ if .Values.rollout.strategy.canary.extra }}
