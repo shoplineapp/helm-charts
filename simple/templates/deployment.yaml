@@ -58,8 +58,7 @@ spec:
           whenUnsatisfiable: ScheduleAnyway
       {{- end}}
       {{- if hasKey .Values "nodeSelector" }}
-      nodeSelector:
-        {{ .Values.nodeSelector.labelName }}: {{ .Values.nodeSelector.labelValue }}
+      nodeSelector: {{- toYaml . | nindent 6 }}
       {{- end}}
       {{- if hasKey .Values "affinity" }}
       affinity:

@@ -5,10 +5,10 @@ replicaCount: 1
 # Required: please quote the businessid as string
 # businessid: "xxxxxxxxxxxxxxxxxx"
 
-# Note: Please indicate labels of the specific node you willing to place your pods
-# nodeSelector:
-#   labelName: nodegroup
-#   labelValue: "ec-eks-db-cpu-node-autoscaling-group"
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+##
+nodeSelector: {}
 
 # tolerations:
 # - key: "shop-callback-node"
