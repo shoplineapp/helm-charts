@@ -85,24 +85,7 @@ spec:
 {{- end}}
       {{- if hasKey .Values.deployment  "volumes" }}
       volumes:
-        {{- range $key, $vol := $.Values.deployment.volumes }}
-        - name: {{ $vol.name }}
-          {{- if hasKey $vol "secret" }}
-          secret:
-            {{- toYaml $vol.secret | nindent 12 }}
-          {{- end }}
-          {{- if hasKey $vol "configMap" }}
-          configMap:
-            name: {{ $vol.name }}
-            {{- if hasKey $vol.configMap "items" }}
-            items: {{- toYaml $vol.configMap.items | nindent 12}}
-            {{- end }}
-          {{- end }}
-          {{- if hasKey $vol "persistentVolumeClaim" }}
-          persistentVolumeClaim:
-            {{- toYaml $vol.persistentVolumeClaim | nindent 12 }}
-          {{- end }}
-        {{- end }}
+        {{- toYaml . | nindent 10 }}
       {{- end }}
       restartPolicy: Always
       {{- if .Values.serviceaccount}}
