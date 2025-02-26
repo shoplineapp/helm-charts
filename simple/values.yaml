@@ -53,10 +53,11 @@ deployment: {}
 #         MONGODB_USER:
 #           name: mongodb
 #           key: MONGODB_USER
-#       volumes:
+#       volumeMounts:
 #       - name: app-config-1
 #         subPath: config.yaml
-#         path: /app/config.yaml
+#         mountPath: /app/config.yaml
+#         readOnly: true
 #   volumes:
 #     - name: app-config-1
 #       configMap: {}
