@@ -54,7 +54,7 @@ spec:
           whenUnsatisfiable: ScheduleAnyway
       {{- end}}
       {{- if hasKey .Values "nodeSelector" }}
-      nodeSelector: {{- toYaml . | nindent 6 }}
+      nodeSelector: {{- toYaml .Values.nodeSelector | nindent 8 }}
       {{- end}}
       {{- if hasKey .Values "affinity" }}
       affinity:
@@ -78,8 +78,7 @@ spec:
   {{- end}}
 {{- end}}
       {{- if hasKey .Values.deployment  "volumes" }}
-      volumes:
-        {{- toYaml . | nindent 10 }}
+      volumes: {{- toYaml .Values.deployment.volumes | nindent 8 }}
       {{- end }}
       restartPolicy: Always
       {{- if .Values.serviceaccount}}
