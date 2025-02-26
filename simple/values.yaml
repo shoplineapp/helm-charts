@@ -51,7 +51,7 @@ topologySpreadConstraints: []
 #     topologyKey: topology.kubernetes.io/zone
 #     whenUnsatisfiable: DoNotSchedule
 
-## @param affinity Affinity for pod assignment
+## @section Affinity for pod assignment
 ## @param affinity.nodeAffinity Node affinity preset type.
 ## @param affinity.podAffinity Pod affinity preset.
 ## @param affinity.podAntiAffinity Pod anti-affinity preset.
@@ -154,12 +154,16 @@ EnableMutilpleIngress: false
 #     type: ExternalName
 #     externalName: example.com
 
+## @section Pod Disruption Budget configuration
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param pdb.enable Enable a Pod Disruption Budget creation.
+## @param pdb.minAvailable Minimum number/percentage of pods that should remain scheduled.
+## @param pdb.maxUnavailable Maximum number/percentage of pods that may be made unavailable. Defaults to `50%` if both `pdb.minAvailable` and `pdb.maxUnavailable` are empty.
+##
 pdb:
-  # If you just set "enable: true", default will set to "minAvailable: 50%" unless you have set other parameters.
   enable: true
-  # Note: You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget, and if you setting both will only set maxUnavailable.
-  # minAvailable: 50%
-  # maxUnavailable: 50%
+  minAvailable: ""
+  maxUnavailable: ""
 
 # autoscaling/v1 block
 # hpa:
