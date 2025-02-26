@@ -1,8 +1,12 @@
+## @param name application name
 name: app-name
 
+## @param replicaCount Number of application replicas to deploy
+##
 replicaCount: 1
 
-# Required: please quote the businessid as string
+## @param businessid Team reosurce tag id
+## Required: please quote the businessid as string
 # businessid: "xxxxxxxxxxxxxxxxxx"
 
 ## @param nodeSelector Node labels for pod assignment
@@ -10,7 +14,12 @@ replicaCount: 1
 ##
 nodeSelector: {}
 
-# tolerations:
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+## Exmaple:
+# tolerations
 # - key: "shop-callback-node"
 #   operator: "Equal"
 #   value: "true"
@@ -22,7 +31,12 @@ nodeSelector: {}
 #   runAsGroup: 1000
 #   fsGroup: 1000
 
-# topologySpreadConstraints:
+## @param topologySpreadConstraints Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template
+## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods
+##
+topologySpreadConstraints: []
+## Exmaple:
+# topologySpreadConstraints
 #   - labelSelector:
 #       matchLabels:
 #         app: app-name
@@ -30,6 +44,12 @@ nodeSelector: {}
 #     topologyKey: topology.kubernetes.io/zone
 #     whenUnsatisfiable: DoNotSchedule
 
+## @param affinity Affinity for pod assignment
+## @param affinity.nodeAffinity Node affinity preset type.
+## @param affinity.podAffinity Pod affinity preset.
+## @param affinity.podAntiAffinity Pod anti-affinity preset.
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
 affinity:
   nodeAffinity: {}
   podAffinity: {}
