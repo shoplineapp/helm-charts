@@ -41,7 +41,7 @@ spec:
       tolerations:
         {{- toYaml .Values.tolerations | nindent 8 }}
       {{- end}}
-      {{- if hasKey .Values "topologySpreadConstraints" }}
+      {{- if and (hasKey .Values "topologySpreadConstraints") (not (empty .Values.topologySpreadConstraints)) }}
       topologySpreadConstraints:
         {{- toYaml .Values.topologySpreadConstraints | nindent 8 }}
       {{- else }}
@@ -69,8 +69,9 @@ spec:
         {{- end }}
       {{- end }}
       {{- if .Values.podSecurityContext.enabled }}
-      securityContext: {{ toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- end}}
+      securityContext:
+        {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
+      {{- end }}
       containers:
 {{- if hasKey .Values.deployment "containers" }}
   {{- range .Values.deployment.containers }}
