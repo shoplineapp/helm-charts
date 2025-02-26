@@ -137,7 +137,7 @@ EnableMutilpleIngress: false
 
 pdb:
   # If you just set "enable: true", default will set to "minAvailable: 50%" unless you have set other parameters.
-  enable: false
+  enable: true
   # Note: You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget, and if you setting both will only set maxUnavailable.
   # minAvailable: 50%
   # maxUnavailable: 50%
