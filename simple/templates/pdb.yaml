@@ -5,10 +5,11 @@ kind: PodDisruptionBudget
 metadata:
   name: {{ .Values.name }}
 spec:
-  {{- if .Values.pdb.maxUnavailable }}
-  maxUnavailable: {{ .Values.pdb.maxUnavailable }}
-  {{- else }}
-  minAvailable: {{ .Values.pdb.minAvailable | default "50%" }}
+  {{- if .Values.pdb.minAvailable }}
+  minAvailable: {{ .Values.pdb.minAvailable }}
+  {{- end }}
+  {{- if or .Values.pdb.maxUnavailable (not .Values.pdb.minAvailable) }}
+  maxUnavailable: {{ .Values.pdb.maxUnavailable | default "50%" }}
   {{- end }}
   selector:
     matchLabels:

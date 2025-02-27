@@ -1,8 +1,8 @@
 {{- if .Values.ingress }}
-{{ include "resource_tag_checker" . }}
+{{ include "simple.validateRequired" . }}
 {{- if hasKey .Values "EnableMutilpleIngress" }}
 {{ template "ingress.ingress_multiple" . }}
 {{- else }}
 {{ template "ingress.ingress_single" . }}
-{{- end}}
-{{- end}}
+{{- end }}
+{{- end }}

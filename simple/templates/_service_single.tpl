@@ -25,7 +25,7 @@ spec:
   type: {{ .Values.service.type }}
     {{- if hasKey .Values.service "clusterIP" }}
   clusterIP: {{ .Values.service.clusterIP }}
-    {{- end }}   
+    {{- end }}
   selector:
     app: {{ .Values.name }}
     {{- end }}
@@ -36,11 +36,11 @@ spec:
     port: {{ .port }}
     targetPort: {{ .target | default .port }}
     protocol: {{ .protocol | default "TCP" }}
-    {{- end}}
+    {{- end }}
   type: ClusterIP
     {{- if hasKey .Values.service "clusterIP" }}
   clusterIP: {{ .Values.service.clusterIP }}
-    {{- end }}  
+    {{- end }}
   selector:
     app: {{ .Values.name }}
   {{- end }}
