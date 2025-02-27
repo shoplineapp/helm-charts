@@ -270,7 +270,7 @@ externalSecrets: {}
 # serviceMonitors:
 #   mongodb-observer:
 #     namespaceSelector:
-#       - shoplytics
+#       - my-app
 #     selector:
 #       matchLabels:
 #         app: mongodb-observer # which service you want to match
@@ -280,7 +280,7 @@ externalSecrets: {}
 # podMonitors:
 #   mongodb-observer:
 #     namespaceSelector:
-#       - shoplytics
+#       - my-app
 #     selector:
 #       matchLabels:
 #         app: mongodb-observer # which service you want to match
