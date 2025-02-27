@@ -73,11 +73,11 @@ spec:
         {{- omit .Values.podSecurityContext "enabled" | toYaml | nindent 8 }}
       {{- end }}
       containers:
-{{- if hasKey .Values.deployment "containers" }}
-  {{- range .Values.deployment.containers }}
-      - {{ template "deployment.container" . }}
-  {{- end}}
-{{- end}}
+      {{- if hasKey .Values.deployment "containers" }}
+      {{- range .Values.deployment.containers }}
+        {{- include "deployment.container" . | nindent 6 }}
+      {{- end}}
+      {{- end}}
       {{- if hasKey .Values.deployment  "volumes" }}
       volumes: {{- toYaml .Values.deployment.volumes | nindent 8 }}
       {{- end }}
