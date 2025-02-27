@@ -22,4 +22,4 @@ spec:
       {{ $key }}: {{ $value | quote }}
       {{- end }}
   endpoints: {{- toYaml $ref.endpoints | nindent 4 }}
-{{- end}}
+{{- end }}

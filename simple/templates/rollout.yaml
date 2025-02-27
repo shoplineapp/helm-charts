@@ -93,7 +93,7 @@ spec:
     port: {{ .port }}
     targetPort: {{ .target | default .port }}
     protocol: {{ .protocol | default "TCP" }}
-    {{- end}}
+    {{- end }}
   type: ClusterIP
   selector:
     app: {{ .Values.name }}
@@ -133,7 +133,7 @@ spec:
     port: {{ .port }}
     targetPort: {{ .target | default .port }}
     protocol: {{ .protocol | default "TCP" }}
-    {{- end}}
+    {{- end }}
   type: ClusterIP
   selector:
     app: {{ .Values.name }}

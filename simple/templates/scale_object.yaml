@@ -11,7 +11,7 @@ metadata:
   {{- if hasKey .Values.KEDA.ScaledObject "annotations" }}
   annotations:
     {{- toYaml .Values.KEDA.ScaledObject.annotations | nindent 4 }}
-  {{- end}}
+  {{- end }}
 spec: {{ toYaml .Values.KEDA.ScaledObject.spec | nindent 2 }}
   scaleTargetRef:
     {{- if .Values.rollout }}
