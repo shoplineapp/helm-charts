@@ -165,17 +165,16 @@ pdb:
   minAvailable: ""
   maxUnavailable: ""
 
-# autoscaling/v1 block
+## @section HorizontalPodAutoscaler(HPA) configuration
+## ref: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/#HorizontalPodAutoscalerSpec
+## @param hpa.minReplicas Minimum number of application pod
+## @param hpa.maxReplicas Maximum number of application pod
+## @param hpa.Resource Resource refers to a resource metric from native Kubernetes HPA.
+## ref: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/#HorizontalPodAutoscalerSpec
+## Example
 # hpa:
 #   minReplicas: 1
 #   maxReplicas: 2
-#   targetCPUUtilizationPercentage: 60
-
-# autoscaling/v2beta2 block
-# hpav2:
-#   minReplicas: 1
-#   maxReplicas: 2
-#   # k8s hpav2 native only support cpu and memory
 #   Resource:
 #     - name: cpu
 #       # simple chart support percent and value setting

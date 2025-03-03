@@ -1,30 +1,11 @@
 {{- if .Values.hpa }}
-apiVersion: autoscaling/v1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: {{ .Values.name }}
-spec:
-  scaleTargetRef:
-    name: {{ .Values.name }}
-    {{- if .Values.rollout }}
-    kind: Rollout
-    apiVersion: argoproj.io/v1alpha1
-    {{- else }}
-    kind: Deployment
-    apiVersion: apps/v1
-    {{- end }}
-  minReplicas: {{ .Values.hpa.minReplicas }}
-  maxReplicas: {{ .Values.hpa.maxReplicas }}
-  targetCPUUtilizationPercentage: {{ .Values.hpa.targetCPUUtilizationPercentage }}
-{{- else if .Values.hpav2 }}
-  {{- if (empty .Values.hpav2.External) }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ .Values.name }}
 spec:
-  minReplicas: {{ .Values.hpav2.minReplicas }}
-  maxReplicas: {{ .Values.hpav2.maxReplicas }}
+  minReplicas: {{ .Values.hpa.minReplicas }}
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
   scaleTargetRef:
     {{- if .Values.rollout }}
     kind: Rollout
@@ -35,7 +16,7 @@ spec:
     {{- end }}
     name: {{ .Values.name }}
   metrics:
-  {{- range .Values.hpav2.Resource }}
+  {{- range .Values.hpa.Resource }}
   - type: Resource
     resource:
       name: {{ .name }}
@@ -47,15 +28,5 @@ spec:
         type: AverageValue
         averageValue: {{ .value }}
         {{- end }}
-  {{- end }}
-  {{- range .Values.hpav2.External }}
-  - type: External
-    external:
-      metric:
-        name: {{ .metricName }}
-      target:
-        type: {{ .type }}
-        value: {{ .value }}
-    {{- end }}
   {{- end }}
 {{- end }}
