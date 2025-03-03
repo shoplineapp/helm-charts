@@ -65,7 +65,21 @@ spec:
         podAffinity: {{- toYaml .Values.affinity.podAffinity | nindent 10 }}
         {{- end }}
         {{- if hasKey .Values.affinity "podAntiAffinity" }}
-        podAntiAffinity: {{- toYaml .Values.affinity.podAntiAffinity | nindent 10 }}
+        podAntiAffinity:
+          {{- if eq (len .Values.affinity.podAntiAffinity) 0 }}
+            {{- if eq (.Values.replicaCount | int) 2 }}
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - {{ .Values.name }}
+              topologyKey: "kubernetes.io/hostname"
+            {{- end }}
+          {{- else }}
+            {{- toYaml .Values.affinity.podAntiAffinity | nindent 10 }}
+          {{- end }}
         {{- end }}
       {{- end }}
       {{- if .Values.podSecurityContext.enabled }}
