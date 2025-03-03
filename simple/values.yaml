@@ -1,9 +1,9 @@
 ## @param name application name
 name: ""
 
-## @param replicaCount Number of application replicas to deploy
+## @param replicaCount Number of application replicas to deploy. Defaults to 2 for high availability.
 ##
-replicaCount: 1
+replicaCount: 2
 
 ## @param businessid Team reosurce tag id
 ## Required: please quote the businessid as string
@@ -62,8 +62,11 @@ affinity:
   podAffinity: {}
   podAntiAffinity: {}
 
+## @param deployment Kubernetest deployment configuration
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+##
 deployment: {}
-# deployment example
+## Example
 # deployment:
 #   annotations:
 #     checksum/config: checksum
@@ -93,7 +96,9 @@ deployment: {}
 #       - name: ndots
 #         value: "2"
 
-# configmaps example
+## @param deployment Kubernetest ConfigMap configuration
+## ref: https://kubernetes.io/docs/concepts/configuration/configmap/
+## Example
 # configmaps:
 #   app-config:
 #     name: app-config-1
@@ -101,6 +106,10 @@ deployment: {}
 #       config.yaml: |
 #         test: 1
 
+## @param EnableMutilpleIngress Enable Mutilple Ingresses. Defaults to `false`, that you will create single Ingress Kubernetes object.
+## @param ingress Kubernetest Ingress configuration
+## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
+## Example
 EnableMutilpleIngress: false
 # EnableMutilpleIngress: true
 # ingress:
@@ -129,7 +138,10 @@ EnableMutilpleIngress: false
 #             path: /health_check
 #             pathType: ImplementationSpecific
 
-# for single service
+## @param service Kubernetest Service configuration
+## @param services Mutilple Kubernetest Service configuration
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/
+## Exmaple: Single service
 # service:
 #   ports:
 #     - name: python-operator
@@ -139,8 +151,8 @@ EnableMutilpleIngress: false
 #   clusterIP: 10.100.0.0
 #   selector:
 #     app: python-operator
-
-# for multiple service
+#
+## Exmaple: Multiple service
 # services:
 #   service-1: # service name
 #     ports:
@@ -182,6 +194,12 @@ pdb:
 #     - name: memory
 #       value: 100Mi
 
+## @param role Kubernetest role
+## @param roleroleBinding Kubernetest roleroleBinding
+## @param clusterRole Kubernetest clusterRole
+## @param clusterRoleBinding Kubernetest clusterRoleBinding
+## ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+##
 # role:
 #   name: role_name
 #   rules:
@@ -196,7 +214,7 @@ pdb:
 #   - kind: ServiceAccount
 #     name: service_account_name
 #     namespace: service_account_namespace
-
+#
 # clusterRole:
 #   name: clusterrole_name
 #   rules:
@@ -229,6 +247,9 @@ externalSecrets: {}
 #         key: example-secret
 #         version: "uuid/VersionId"
 
+## @param secrets Kubernetest Secrets configuration
+## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+## Example
 # secrets:
 #   example-env:
 #     data:
@@ -244,6 +265,9 @@ externalSecrets: {}
 #        xcPaL4GCgUl+8TiK
 #        -----END CERTIFICATE-----
 
+## @param serviceMonitors Prometheus Operator ServiceMonitors
+## ref: https://prometheus-operator.dev/docs/developer/getting-started/#using-servicemonitors
+##
 # serviceMonitors:
 #   mongodb-observer:
 #     namespaceSelector:
@@ -254,6 +278,9 @@ externalSecrets: {}
 #     endpoints:
 #       - port: http # port name of the service expose
 
+## @param PodMonitors Prometheus Operator PodMonitors
+## ref: https://prometheus-operator.dev/docs/developer/getting-started/#using-podmonitors
+##
 # podMonitors:
 #   mongodb-observer:
 #     namespaceSelector:
@@ -264,14 +291,19 @@ externalSecrets: {}
 #     podMetricsEndpoints:
 #       - port: http # port name of the service expose
 
-# Don't combine ScaledObject with Horizontal Pod Autoscaler (HPA)
-# exmaple yaml please refer to example/example-keda.yaml
+
+## @param KEDA.ScaledObject.spec KEDA ScaledObject spec
+## ref: https://keda.sh/docs/2.14/concepts/scaling-deployments/#scaledobject-spec
+## NOTE: Don't combine ScaledObject with Horizontal Pod Autoscaler (HPA)
 # KEDA:
 #   ScaledObject:
 #     spec: {}
 
+## @param rollout Argo Rollout
+## ref: https://argoproj.github.io/argo-rollouts/features/specification/
+##
 # rollout: {}
-# https://argoproj.github.io/argo-rollouts/features/specification/
+## Exmaple
 # rollout:
 #   annotations:
 #     notifications.argoproj.io/subscribe.on-rollout-completed.slack_webhook: ""
