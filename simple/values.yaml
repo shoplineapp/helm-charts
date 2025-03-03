@@ -181,28 +181,6 @@ pdb:
 #       percent: 60
 #     - name: memory
 #       value: 100Mi
-#   # setting external mertics
-#   External:
-#     - metricName: shop-nc-alb-request
-#       # type support Value and AverageValue
-#       type: Value
-#       value: 10
-
-# ExternalMetric:
-#   name: shop-nc-alb-request
-#   # queries setting please reference AWS cloudwatch api document link:
-#   # https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricData.html#API_GetMetricData_Examples
-#   queries:
-#     # Note: id can't use "-"
-#     - id: shop_nc_alb_request
-#       metricNamespace: AWS/ApplicationELB
-#       metricName: RequestCount
-#       metricsDimensions:
-#         - name: LoadBalancer
-#           value: app/397da054-core-shopnc-5edd/d8f7dcbb27908840
-#       period: 60
-#       stat: Sum
-#       unit: Count
 
 # role:
 #   name: role_name

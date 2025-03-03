@@ -5,7 +5,7 @@ kind: Deployment
 metadata:
   {{- include "simple.metadata" . | nindent 2 }}
 spec:
-  {{- if not (or .Values.hpa .Values.hpav2 ((.Values.KEDA).ScaledObject)) }}
+  {{- if not (or .Values.hpa ((.Values.KEDA).ScaledObject)) }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   strategy:
