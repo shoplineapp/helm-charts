@@ -41,3 +41,16 @@ labels:
 {{- end }}
 {{- $data | sha256sum }}
 {{- end -}}
+
+
+{{/* Validate < 1.0.0 version  */}}
+{{- define "simple.v1BreakingChange" -}}
+{{ if or (.Values.nodeSelector.labelName) (.Values.nodeSelector.labelValue) }}
+{{- fail "Error: nodeSelector.labelName and nodeSelector.labelValue is depreacted, please use nodeSelector[]" }}
+{{- end }}
+
+{{ if .Values.hpav2 }}
+{{- fail "Error: hpav2 is depreacted, please use hpa(Default hpa uses autoscaling/v2 API version)" }}
+{{- end }}
+
+{{- end -}}

@@ -1,5 +1,6 @@
 {{ include "simple.validateRequired" . }}
 {{ include "simple.validatePVC" . }}
+{{ include "simple.v1BreakingChange" . }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
