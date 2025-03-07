@@ -30,7 +30,7 @@ jobs:
         run: |
           helm package simple -d simple
           helm package fluentd-cloudwatch -d fluentd-cloudwatch
-          helm package cronjob -d cronjob
+          helm package cronjob -d output
           helm package backburner -d backburner
           helm package eks -d eks
           helm package oomkill-exporter -d oomkill-exporter
