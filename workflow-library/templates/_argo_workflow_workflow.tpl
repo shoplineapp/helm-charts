@@ -183,15 +183,15 @@
           {{- end }}
       # If .Values.exitNotifications.slackApp is set, Slack app notification template will be loaded
       {{- if .Values.exitNotifications.slackApp }}
-      {{ template "workflow-library._exit_handler_slack_app" . }}
+      {{- include "workflow-library._exit_handler_slack_app" . | nindent 6 }}
       {{- end }}
       # If .Values.exitNotifications.newRelic is set, New Relic notification template will be loaded
       {{- if .Values.exitNotifications.newRelic }}
-      {{ template "workflow-library._exit_handler_newrelic" . }}
+      {{- include "workflow-library._exit_handler_newrelic" . | nindent 6 }}
       {{- end }}
       # If .Values.exitNotifications.healthcheckIo is set, Healthcheck IO notification template will be loaded
       {{- if .Values.exitNotifications.healthcheckIo }}
-      {{ template "workflow-library._exit_handler_healthcheck_io" . }}
+      {{- include "workflow-library._exit_handler_healthcheck_io" . | nindent 6 }}
       {{- end }}
       {{- end }}
 
