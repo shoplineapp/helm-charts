@@ -29,7 +29,7 @@ container:
   resources: {{- toYaml $input.resources | nindent 4 }}
   {{- else }}
   # default settings on resources
-  resources: {{- include "cronjob.argo_workflow_container.default_resource" . | nindent 4 }}
+  resources: {{- include "workflow-library.argo_workflow_container.default_resource" . | nindent 4 }}
   {{- end }}
   {{- with $input.securityContext }}
   securityContext: {{ toYaml . | nindent 4 }}

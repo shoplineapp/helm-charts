@@ -9,11 +9,11 @@ outputs: {{ toYaml . | nindent 2 }}
 steps: {{ toYaml .steps | nindent 2 }}
 {{- if (.job).retries }}
 retryStrategy:
-  {{- /*- Limit of retries if the job is fail */ -}}
+  {{- /*- Limit of retries if the job is fail */}}
   limit: {{ .job.retries }}
   {{- with .job.retryPolicy }}
-  {{- /*- Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure" */ -}}
+  {{- /*- Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure" */}}
   retryPolicy: {{ . }} 
-  {{- end }}
-{{- end }}
-{{- end -}}
+  {{ end -}}
+{{ end -}}
+{{ end -}}
