@@ -1,4 +1,4 @@
-{{- define "cronjob._exit_handler_slack_app" -}}
+{{- define "workflow-library._exit_handler_slack_app" -}}
 {{- $slackApp := .Values.exitNotifications.slackApp | default dict -}}
 {{- $sendOnSuccess := list nil true "true" | has $slackApp.sendOnSuccess -}}
 {{- $sendOnFailure := list nil true "true" | has $slackApp.sendOnFailure -}}

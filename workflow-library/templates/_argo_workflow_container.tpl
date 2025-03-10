@@ -1,4 +1,4 @@
-{{- define "cronjob.argo_cron_workflow.container_template" -}}
+{{- define "workflow-library.argo_workflow_container.template" -}}
 {{- $input := index . 0 -}}
 {{- $namespace := index . 1 -}}
 {{- $workflowName := index . 2 -}}
@@ -17,7 +17,7 @@ inputs: {{ toYaml . | nindent 2 }}
 outputs: {{ toYaml . | nindent 2 }}
 {{- end }}
 container:
-  image: {{ template "cronjob.argo_cron_workflow.image" $input.image }}
+  image: {{ template "workflow-library.argo_workflow_container.image_name" $input.image }}
   {{- with $input.command }}
   command: {{- toYaml . | nindent 4 }}
   {{- end }}
@@ -29,7 +29,7 @@ container:
   resources: {{- toYaml $input.resources | nindent 4 }}
   {{- else }}
   # default settings on resources
-  resources: {{- include "cronjob.argo_cron_workflow.default_resource" . | nindent 4 }}
+  resources: {{- include "cronjob.argo_workflow_container.default_resource" . | nindent 4 }}
   {{- end }}
   {{- with $input.securityContext }}
   securityContext: {{ toYaml . | nindent 4 }}
@@ -62,15 +62,15 @@ container:
   {{- end }}
 {{- end -}}
 
-{{- define "cronjob.argo_cron_workflow.default_resource" -}}
+{{- define "workflow-library.argo_workflow_container.image_name" -}}
+'{{ required "image.repository must be provided" .repository }}:{{ required "image.tag must be provided" .tag }}'
+{{- end -}}
+
+{{- define "workflow-library.argo_workflow_container.default_resource" -}}
 limits:
   memory: "2Gi"
   cpu: "1"
 requests:
   cpu: "300m"
   memory: "1Gi"
-{{- end -}}
-
-{{- define "cronjob.argo_cron_workflow.image" -}}
-'{{ required "image.repository must be provided" .repository }}:{{ required "image.tag must be provided" .tag }}'
 {{- end -}}

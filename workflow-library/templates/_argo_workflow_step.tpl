@@ -1,4 +1,4 @@
-{{- define "cronjob.argo_cron_workflow.step_template" -}}
+{{- define "workflow-library.argo_workflow_step.template" -}}
 name: {{ .name }}
 {{- with .inputs }}
 inputs: {{ toYaml . | nindent 2 }}
@@ -9,10 +9,10 @@ outputs: {{ toYaml . | nindent 2 }}
 steps: {{ toYaml .steps | nindent 2 }}
 {{- if (.job).retries }}
 retryStrategy:
-  # Limit of retries if the job is fail   
+  {{- /*- Limit of retries if the job is fail */ -}}
   limit: {{ .job.retries }}
   {{- with .job.retryPolicy }}
-  # Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure"
+  {{- /*- Valid Value:  "Always" | "OnFailure" | "OnError" | "OnTransientError", Default: "OnFailure" */ -}}
   retryPolicy: {{ . }} 
   {{- end }}
 {{- end }}
