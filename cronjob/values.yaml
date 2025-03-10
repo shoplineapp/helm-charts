@@ -268,3 +268,6 @@ suspends: []
 # suspends:
 #   - name: "sleep-60s"
 #     duration: "60"
+
+# Create the cronjob with workflow template
+createWithWorkflowTemplate: false
