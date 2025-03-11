@@ -53,4 +53,12 @@ labels:
 {{- fail "Error: hpav2 is depreacted, please use hpa(Default hpa uses autoscaling/v2 API version)" }}
 {{- end }}
 
+{{ if .Values.global.imagePullPolicy }}
+{{- fail "Error: global.imagePullPolicy is depreacted, please define in deploy object." }}
+{{- end }}
+
+{{ if .Values.ExternalMetric }}
+{{- fail "Error: ExternalMetric is deprecated, plsae use KEDA ScaleObject(KEDA.ScaledObject)" }}
+{{- end }}
+
 {{- end -}}
