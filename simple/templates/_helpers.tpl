@@ -45,7 +45,7 @@ labels:
 
 {{/* Validate < 1.0.0 version  */}}
 {{- define "simple.v1BreakingChange" -}}
-{{ if or (.Values.nodeSelector.labelName) (.Values.nodeSelector.labelValue) }}
+{{- if or (.Values.nodeSelector.labelName) (.Values.nodeSelector.labelValue) }}
 {{- fail "Error: nodeSelector.labelName and nodeSelector.labelValue is depreacted, please use nodeSelector[]" }}
 {{- end }}
 
@@ -53,11 +53,11 @@ labels:
 {{- fail "Error: hpav2 is depreacted, please use hpa(Default hpa uses autoscaling/v2 API version)" }}
 {{- end }}
 
-{{ if .Values.global.imagePullPolicy }}
+{{- if .Values.global }}
 {{- fail "Error: global.imagePullPolicy is depreacted, please define in deploy object." }}
 {{- end }}
 
-{{ if .Values.ExternalMetric }}
+{{- if .Values.ExternalMetric }}
 {{- fail "Error: ExternalMetric is deprecated, plsae use KEDA ScaleObject(KEDA.ScaledObject)" }}
 {{- end }}
 
