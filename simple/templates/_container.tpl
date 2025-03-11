@@ -57,6 +57,9 @@
   {{- if hasKey . "startupProbe" }}
   startupProbe: {{- toYaml .startupProbe | nindent 4 }}
   {{- end }}
+  {{- if hasKey . "volumes" }}
+  {{- fail "Error: deployment.container.volumes is depreacted, please use deployment.container.volumeMounts" }}
+  {{- end }}
   {{- if hasKey . "volumeMounts" }}
   volumeMounts:
     {{- toYaml .volumeMounts | nindent 4 }}
