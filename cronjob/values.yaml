@@ -271,3 +271,13 @@ suspends: []
 
 # Create the cronjob with workflow template
 createWithWorkflowTemplate: false
+
+# Arguments required to pass in workflow
+# Used in Argo Cronworkflow only
+# example
+# arguments:
+#   parameters:
+#     - name: "env"
+#       value: "production"
+arguments:
+  parameters: []

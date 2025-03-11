@@ -1,4 +1,22 @@
 {{- define "workflow-library.argo_workflow_workflow.template" -}}
+{{- /*
+  Set trigger_healthcheck to true if the workflow does not contain the trigger_healthcheck parameter
+*/ -}}
+{{- $new := list -}}
+{{- $arguments_parameters := .Values.arguments.parameters | default list -}}
+{{- $contain_trigger_healthcheck_io_params := include "workflow-library.argo_workflow_workflow.arguments.contain_specify_parameters" (dict "list" $arguments_parameters "target" "trigger_healthcheck_io") -}}
+arguments: 
+  parameters:
+  {{- range $arguments_parameters }}
+  - name: {{ .name | quote }}
+    value: {{ .value | quote }}
+  {{- end }}
+  {{- if and (.Values.exitNotifications) (.Values.exitNotifications.healthcheckIo) -}}
+  {{- if eq $contain_trigger_healthcheck_io_params "false"}}
+  - name: "trigger_healthcheck_io"
+    value: "true"
+  {{- end -}}
+  {{- end }}
 podMetadata:
   labels:
     name: {{ .Values.name }}
@@ -158,7 +176,8 @@ templates:
       # If .Values.exitNotifications.healthcheckIo is set, Healthcheck IO will be notify if the job is done
       {{- if .Values.exitNotifications.healthcheckIo }}
       - name: Notice-HealthcheckIo-Succeeded
-        template: notice-healthcheck-io-succeeded 
+        template: notice-healthcheck-io-succeeded
+        when: "{{ "{{" }}workflow.parameters.trigger_healthcheck_io{{ "}}" }} == true"
       {{- end }}
   # The template of steps will go through if the job is failed      
   - name: failure-handler
@@ -180,6 +199,7 @@ templates:
       {{- if  .Values.exitNotifications.healthcheckIo }}
       - name: Notice-HealthcheckIo-Failed
         template: notice-healthcheck-io-failed
+        when: "{{ "{{" }}workflow.parameters.trigger_healthcheck_io{{ "}}" }} == true"
       {{- end }}
   # If .Values.exitNotifications.slackApp is set, Slack app notification template will be loaded
   {{- if .Values.exitNotifications.slackApp }}
@@ -227,4 +247,15 @@ podGC:
   {{- else}}
   strategy: OnPodCompletion
   {{- end }}
+{{- end -}}
+
+{{- define "workflow-library.argo_workflow_workflow.arguments.contain_specify_parameters" -}}
+{{- $result := false -}}
+{{- $target := .target -}}
+{{- range .list -}}
+{{- if eq .name $target -}}
+{{- $result = true -}}
+{{- end -}}
+{{- end -}}
+{{- $result -}}
 {{- end -}}
