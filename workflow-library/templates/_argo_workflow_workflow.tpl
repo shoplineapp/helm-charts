@@ -11,11 +11,9 @@ arguments:
   - name: {{ .name | quote }}
     value: {{ .value | quote }}
   {{- end }}
-  {{- if and (.Values.exitNotifications) (.Values.exitNotifications.healthcheckIo) -}}
-  {{- if eq $contain_trigger_healthcheck_io_params "false"}}
+  {{- if and (.Values.exitNotifications) (.Values.exitNotifications.healthcheckIo) (eq $contain_trigger_healthcheck_io_params "false") }}
   - name: "trigger_healthcheck_io"
     value: "true"
-  {{- end -}}
   {{- end }}
 podMetadata:
   labels:
