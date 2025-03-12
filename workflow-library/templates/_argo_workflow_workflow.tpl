@@ -141,12 +141,12 @@ templates:
 
   {{- if .Values.containers }}
   {{- range .Values.containers }}
-  {{ $value := list . .Release.Namespace .Values.name }}
+  {{ $value := list (.) ($.Release.Namespace) ($.Values.name) }}
   - {{- include "workflow-library.argo_workflow_container.template" $value | nindent 4 }}
   {{- end }}
   {{- else }}
   {{- $defaultValue := merge (fromJson "{\"name\":\"template\"}") .Values }}
-  {{- $value := list $defaultValue .Release.Namespace .Values.name }}
+  {{- $value := list $defaultValue $.Release.Namespace $.Values.name }}
   - {{- include "workflow-library.argo_workflow_container.template" $value | nindent 4 }}
   {{- end }}
 
