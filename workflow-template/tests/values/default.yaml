@@ -1,6 +1,4 @@
-name: simple-cron-workflow
-schedule: 1 * * * *
-kind: CronWorkflow
+name: simple-workflow
 businessid: "some-business-id"
 startingDeadlineSeconds: {}
 job:
