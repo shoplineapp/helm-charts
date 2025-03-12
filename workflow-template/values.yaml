@@ -1,0 +1,251 @@
+# Name of cron job, required
+# example
+# name: simple-cron-workflow 
+
+# Required: please quote the businessid as string
+# businessid: "xxxxxxxxxxxxxxxxxx"
+
+# Starting Deadline Seconds of cron job. Will be assign to spec.startingDeadlineSeconds.
+startingDeadlineSeconds: {}
+
+job:
+  # Number of retries if error occurred
+  retries: 1
+
+  # Active Deadline Seconds of the pod.
+  # example
+  # timeout: 1800
+
+  # Jobs History Limit of cron job. For "success", it will assign to spec.successfulJobsHistoryLimit. It is optional and having default value 3. For "failed", it will assign to spec.failedJobsHistoryLimit. It is optional and having default value 1
+  history: {}
+  # example
+  # history:
+  #   success: 1
+  #   failed: 1
+  
+  # Concurrency Policy of cron job. It will assign to spec.concurrencyPolicy. Optional and having default value "Allow"
+  # example
+  # concurrency: "Forbid"
+
+  # Retry Policy of the cronjob. Only useful in argo cron workflow template. It is optional and having default value "OnFailure"
+  # retryPolicy: "OnFailure"
+
+# Time-to-live setting of the pod. The field secondsAfterCompletion is for setting the time of the pod alive about the job is done
+ttlStrategy: {}
+# Example
+# ttlStrategy:
+#   secondsAfterCompletion: 600
+
+# The mechanism for garbage collecting completed pods. There is default value "OnPodCompletion"
+podGC: {}
+# Example
+# podGC:
+#   strategy: "OnPodCompletion"
+
+# A map for storing self-define variable
+annotations: {}
+
+# Image of the pod, both fields "repository" and "tag" are required. 
+image:
+  # The repo of the image. 
+  # example
+  # repository: test/testImage
+  tag: latest
+
+# Command to trigger the function
+# example
+# command:                    
+#   - bundle
+#   - exec
+#   - rails
+#   - test
+
+# Arguments required to pass in function
+# example
+# args:
+#   - "abc"
+
+# Resource required for the job
+# example
+resources: {}
+# resources:
+#   requests:
+#     cpu: "300m"
+#     memory: "2Gi"
+
+
+# The exit handler setting for argo cron workflow template ONLY
+exitNotifications:
+  # The config of the slack. For the field "portalDomain" is the url to the argo server GUI. And for the field "webhookUrl" is the webhook for the slack argo apps 
+  # To mention someone in slack, you need to add the user id or group id in the field "onFailure" or "onSuccess"
+  # To get the slack user id, go to the user's profile -> click on the three dots -> click "Copy member ID"
+  # To get the slack group id, you must use the web app, https://slack.com/workspace-signin
+  # Click on any group, e.g. @engineers, and view the url, the last part of the url is the group id, e.g. https://xxxxx/groups/S024JSFJH, the group id is S024JSFJH
+  slackApp: {}
+  # example
+  # slackApp:
+  #   sendOnSuccess: true // optional, defaults to true
+  #   sendOnFailure: true // optional, defaults to true
+  #   portalDomain: "https://argo.com" 
+  #   webhookUrl: "https://webhook/service/test"  
+  #   mention:
+  #     onFailure:
+  #       - U0123ABC123
+  #       - S0345DEF345
+  #     onSuccess:
+  #       - U0123ABC123
+  #       - S0345DEF345
+
+  # The config of the New Relic. For the field "licenseKey", it is the licenseKey of New Relic. For the field "appName" is the name display in New Relic. For the field "repository" and "tag" is the image repo and tag New Relic agent image
+  newRelic: {}
+  # example
+  # newRelic:
+  #   image:
+  #     repository: test/test-newrelic-agent
+  #     tag: latest
+  #   licenseKey: "12345testtest1234test"
+  #   appName: "Test App"
+
+  # The config of the Healthcheck IO. For the field "uuid" is the uuid of Healthcheck IO check
+  healthcheckIo: {}
+  # example
+  # healthcheckIo:
+  #   uuid: "arf21-323s-232d-23dasd"  
+
+
+env: {}
+# example
+# env:
+#   RAILS_ENV: staging
+
+envSecrets: {}
+# example
+# envSecrets:
+#   MONGODB_USER: mongodb
+
+envFrom: {}
+# example
+# envFrom:
+#   configMapRef:
+#     - test-1-env
+#     - test-2-env
+#   secretRef:
+#     - test-1-secret
+#     - test-2-secret
+
+# Service account is used by pod. For more details on fields "serviceaccount" and "serviceAccount", please have a look on ./cronjob/templates/serviceaccount.yaml 
+serviceaccount: {}
+# example
+# serviceaccount:
+#   annotations:
+#     eks.amazonaws.com/role-arn: <aws-role-arn>
+#     name: <serviceaccount-name>
+
+# container-level security attributes
+securityContext: {}
+
+# pod-level security attributes
+securityContextForPod: {}
+
+pdb:
+  # If you just set "enable: true", default will set to "minAvailable: 9999" unless you have set other parameters.
+  enable: false
+  # Note: You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget, and if you setting both will only set maxUnavailable.
+  # minAvailable: 9999
+  # maxUnavailable: 0
+
+nodeSelector: {}
+# nodeSelector:
+#   nodegroup: ec-eks-db-cpu-node-autoscaling-group
+
+tolerations: []
+# tolerations: 
+# - key: "shop-callback-node"
+#   operator: "Equal"
+#   value: "true"
+#   effect: "NoSchedule"
+
+# Entrypoint for this argo workflow, default value: entry
+entrypoint: "entry"
+
+# Defined container template, used for multi-steps, will override the default container template. Only used on Argo cron workflow
+containers: []
+# schema:
+#   - name: Name for this container template, required
+#   - podSpecPatch: Holds strategic merge patch to apply, will override default podSpecPatch
+#   - inputs: Describe what inputs parameters and artifacts are supplied to this template, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#inputs
+#   - outputs: Hold parameters, artifacts, and results, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#outputs
+#   - image: Image used in this container
+#   - resources: Resource required for the job
+#   - securityContext: container-level security attributes
+#   - args: Arguments required to pass in function
+#   - command: Command to trigger the function
+#
+# example
+# containers:
+#   - name: "example-container"
+#     podSpecPatch: '{"terminationGracePeriodSeconds":5}'
+#     inputs:
+#       parameters:
+#         - name: message
+#     outputs:
+#       parameters:
+#         - name: result
+#           valueFrom:
+#             path: /tmp/result.txt 
+#     command:                    
+#       - bundle
+#       - exec
+#       - rails
+#       - test
+#     args:
+#      - "abc"
+#     resources:
+#       requests:
+#         cpu: "300m"
+#         memory: "2Gi"
+#     securityContext:
+#       runAsNonRoot: true
+
+# Defined steps template, used for multi-steps, optional, Only used on Argo cron workflow
+steps: []
+  # - name: entry
+  #   steps:
+  #     - - name: step1
+  #         template: template
+# schema:
+#   - name: Name for this container template, required
+#   - inputs: Describe what inputs parameters and artifacts are supplied to this template, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#inputs
+#   - outputs: Hold parameters, artifacts, and results, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#outputs
+#   - steps: Define a series of sequential/parallel workflow steps, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#workflowstep
+#   - job: Retry strategy for this step, object
+#   - job.retries: Maximum number of retries if error occurred
+#   - job.retryPolicy: Retry Policy of the cronjob
+#
+# example
+# steps:
+#   - name: "step-1"
+#     inputs:
+#       parameters:
+#         - name: message
+#     outputs:
+#       parameters:
+#         - name: result
+#           valueFrom:
+#             path: /tmp/result.txt 
+#     steps:
+#       - - name: "step-1-1"
+#           template: "example-container"
+#     job:
+#       limit: 10
+#       retryPolicy: OnFailure
+
+# Arguments required to pass in workflow
+# Used in Argo Cronworkflow only
+# example
+# arguments:
+#   parameters:
+#     - name: "env"
+#       value: "production"
+arguments:
+  parameters: []
