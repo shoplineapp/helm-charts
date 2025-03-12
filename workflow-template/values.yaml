@@ -1,11 +1,11 @@
-# Name of cron job, required
+# Name of job, required
 # example
-# name: simple-cron-workflow 
+# name: simple-workflow 
 
 # Required: please quote the businessid as string
 # businessid: "xxxxxxxxxxxxxxxxxx"
 
-# Starting Deadline Seconds of cron job. Will be assign to spec.startingDeadlineSeconds.
+# Starting Deadline Seconds of job. Will be assign to spec.startingDeadlineSeconds.
 startingDeadlineSeconds: {}
 
 job:
@@ -16,18 +16,18 @@ job:
   # example
   # timeout: 1800
 
-  # Jobs History Limit of cron job. For "success", it will assign to spec.successfulJobsHistoryLimit. It is optional and having default value 3. For "failed", it will assign to spec.failedJobsHistoryLimit. It is optional and having default value 1
+  # Jobs History Limit of job. For "success", it will assign to spec.successfulJobsHistoryLimit. It is optional and having default value 3. For "failed", it will assign to spec.failedJobsHistoryLimit. It is optional and having default value 1
   history: {}
   # example
   # history:
   #   success: 1
   #   failed: 1
   
-  # Concurrency Policy of cron job. It will assign to spec.concurrencyPolicy. Optional and having default value "Allow"
+  # Concurrency Policy of job. It will assign to spec.concurrencyPolicy. Optional and having default value "Allow"
   # example
   # concurrency: "Forbid"
 
-  # Retry Policy of the cronjob. Only useful in argo cron workflow template. It is optional and having default value "OnFailure"
+  # Retry Policy of the job. Only useful in argo  workflow template. It is optional and having default value "OnFailure"
   # retryPolicy: "OnFailure"
 
 # Time-to-live setting of the pod. The field secondsAfterCompletion is for setting the time of the pod alive about the job is done
@@ -74,7 +74,7 @@ resources: {}
 #     memory: "2Gi"
 
 
-# The exit handler setting for argo cron workflow template ONLY
+# The exit handler setting for argo workflow template ONLY
 exitNotifications:
   # The config of the slack. For the field "portalDomain" is the url to the argo server GUI. And for the field "webhookUrl" is the webhook for the slack argo apps 
   # To mention someone in slack, you need to add the user id or group id in the field "onFailure" or "onSuccess"
@@ -133,7 +133,7 @@ envFrom: {}
 #     - test-1-secret
 #     - test-2-secret
 
-# Service account is used by pod. For more details on fields "serviceaccount" and "serviceAccount", please have a look on ./cronjob/templates/serviceaccount.yaml 
+# Service account is used by pod. For more details on fields "serviceaccount" and "serviceAccount", please have a look on ./job/templates/serviceaccount.yaml 
 serviceaccount: {}
 # example
 # serviceaccount:
@@ -168,7 +168,7 @@ tolerations: []
 # Entrypoint for this argo workflow, default value: entry
 entrypoint: "entry"
 
-# Defined container template, used for multi-steps, will override the default container template. Only used on Argo cron workflow
+# Defined container template, used for multi-steps, will override the default container template. Only used on Argo workflow
 containers: []
 # schema:
 #   - name: Name for this container template, required
@@ -207,7 +207,7 @@ containers: []
 #     securityContext:
 #       runAsNonRoot: true
 
-# Defined steps template, used for multi-steps, optional, Only used on Argo cron workflow
+# Defined steps template, used for multi-steps, optional, Only used on Argo workflow
 steps: []
   # - name: entry
   #   steps:
@@ -220,7 +220,7 @@ steps: []
 #   - steps: Define a series of sequential/parallel workflow steps, refer to https://argo-workflows.readthedocs.io/en/stable/fields/#workflowstep
 #   - job: Retry strategy for this step, object
 #   - job.retries: Maximum number of retries if error occurred
-#   - job.retryPolicy: Retry Policy of the cronjob
+#   - job.retryPolicy: Retry Policy of the job
 #
 # example
 # steps:
@@ -241,7 +241,7 @@ steps: []
 #       retryPolicy: OnFailure
 
 # Arguments required to pass in workflow
-# Used in Argo Cronworkflow only
+# Used in Argo workflow only
 # example
 # arguments:
 #   parameters:

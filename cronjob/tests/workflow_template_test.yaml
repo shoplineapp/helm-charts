@@ -1,4 +1,4 @@
-suite: Wrokflow Template Test
+suite: WorkflowTemplate Test
 set:
   createWithWorkflowTemplate: true
 templates:
