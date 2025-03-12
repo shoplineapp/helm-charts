@@ -1,0 +1,22 @@
+suite: Wrokflow Template Test
+set:
+  createWithWorkflowTemplate: true
+templates:
+  - workflow_template.yaml
+tests:
+  - it: should create workflow template when createWithWorkflowTemplate is true
+    values:
+      - ./values/cronjob/argo.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: WorkflowTemplate
+  - it: should not create workflow template when createWithWorkflowTemplate is false
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      createWithWorkflowTemplate: false
+    asserts:
+      - hasDocuments:
+          count: 0

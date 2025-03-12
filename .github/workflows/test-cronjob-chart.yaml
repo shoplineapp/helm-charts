@@ -38,6 +38,7 @@ jobs:
 
       - name: Run cronjob chart tests
         run: |
+          helm dependency update cronjob
           helm unittest cronjob
 
       - name: Run simple chart tests

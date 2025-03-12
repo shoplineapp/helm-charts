@@ -249,3 +249,69 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: businessid must be provided
+
+  - it: should use workflowTemplateRef when createWithWorkflowTemplate is true
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      createWithWorkflowTemplate: true
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: CronWorkflow
+      - equal:
+          path: spec.workflowSpec.workflowTemplateRef.name
+          value: "simple-cron-workflow-workflow-template"
+  - it: should append trigger_healthcheck_io argument to workflow if not exists
+    values:
+      - ./values/cronjob/argo.yaml
+    asserts:
+      - contains:
+          path: spec.workflowSpec.arguments.parameters
+          content:
+            name: trigger_healthcheck_io
+            value: "true"
+          count: 1
+
+  - it: should not append trigger_healthcheck_io argument to workflow if exists
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      arguments:
+        parameters:
+          - name: trigger_healthcheck_io
+            value: "new_value"
+    asserts:
+      - contains:
+          path: spec.workflowSpec.arguments.parameters
+          content:
+            name: trigger_healthcheck_io
+            value: "new_value"
+          count: 1
+      - notContains:
+          path: spec.workflowSpec.arguments.parameters
+          content:
+            name: trigger_healthcheck_io
+            value: "true"
+
+  - it: should append trigger_healthcheck_io argument to workflow when there is another parameters
+    values:
+      - ./values/cronjob/argo.yaml
+    set:
+      arguments:
+        parameters:
+          - name: "other_parameter"
+            value: "new_value"
+    asserts:
+      - contains:
+          path: spec.workflowSpec.arguments.parameters
+          content:
+            name: other_parameter
+            value: "new_value"
+          count: 1
+      - contains:
+          path: spec.workflowSpec.arguments.parameters
+          content:
+            name: trigger_healthcheck_io
+            value: "true"
