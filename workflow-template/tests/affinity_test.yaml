@@ -1,0 +1,42 @@
+suite: Affinity Test
+templates:
+  - workflow_template.yaml
+tests:
+  - it: should render nothing for an argo workflow if affinity is not specified
+    values:
+      - ./values/minimal.yaml
+    asserts:
+      - notExists:
+          path: spec.affinity
+
+  - it: should render nodeAffinity for an argo workflow if nodeAffinity is specified
+    values:
+      - ./values/default.yaml
+    asserts:
+      - exists:
+          path: spec.affinity.nodeAffinity
+      - equal:
+          path: spec.affinity.nodeAffinity
+          value:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: node.kubernetes.io/instance-type
+                      operator: In
+                      values:
+                        - m6i.2xlarge
+
+  - it: should render podAffinity for an argo workflow if podAffinity is specified
+    values:
+      - ./values/default.yaml
+    asserts:
+      - exists:
+          path: spec.affinity.podAffinity
+      - equal:
+          path: spec.affinity.podAffinity
+          value:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchLabels:
+                    a: 1
+                topologyKey: topology.kubernetes.io/zone

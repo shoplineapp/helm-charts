@@ -1,0 +1,26 @@
+suite: DnsConfig Test
+templates:
+  - workflow_template.yaml
+tests:
+
+  - it: should render default dnsConfig in an Argo workflow
+    values:
+      - ./values/minimal.yaml
+    asserts:
+      - equal:
+          path: spec.dnsConfig
+          value:
+            options:
+              - name: ndots
+                value: "2"
+
+  - it: should render custom dnsConfig in an Argo workflow
+    values:
+      - ./values/default.yaml
+    asserts:
+      - equal:
+          path: spec.dnsConfig
+          value:
+            options:
+              - name: ndots
+                value: "5"

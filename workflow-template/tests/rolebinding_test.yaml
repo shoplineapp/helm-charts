@@ -1,0 +1,30 @@
+suite: RoleBinding Test
+templates:
+  - rolebinding.yaml
+tests:
+  - it: should render a RoleBinding for workflow template with default serviceaccount
+    set:
+      name: my-job
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: RoleBinding
+      - equal:
+          path: metadata.name
+          value: wf-role-binding-my-job-executor
+      - equal:
+          path: roleRef.apiGroup
+          value: rbac.authorization.k8s.io
+      - equal:
+          path: roleRef.kind
+          value: Role
+      - equal:
+          path: roleRef.name
+          value: wf-role-my-job-executor
+      - equal:
+          path: subjects[0].kind
+          value: ServiceAccount
+      - equal:
+          path: subjects[0].name
+          value: my-job-pod-service-account
