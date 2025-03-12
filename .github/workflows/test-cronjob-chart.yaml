@@ -5,11 +5,13 @@ on:
   push:
     paths:
       - cronjob/**
+      - workflow-library/**
       - simple/**
       - .github/workflows/**
   pull_request:
     paths:
       - cronjob/**
+      - workflow-library/**
       - simple/**
       - .github/workflows/**
 
