@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: {{ .Values.name }}-workflow-template
+  name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
   labels:
     businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
