@@ -1,0 +1,271 @@
+suite: WorkflowTemplate Test
+templates:
+  - workflow_template.yaml
+tests:
+  - it: should not append trigger_healthcheck_io argument to workflow if not enable healthcheck
+    values:
+      - ./values/minimal.yaml
+    asserts:
+      - isNullOrEmpty:
+          path: spec.arguments.parameters
+
+  - it: should not append trigger_healthcheck_io argument to workflow if exists
+    values:
+      - ./values/default.yaml
+    set:
+      arguments:
+        parameters:
+          - name: trigger_healthcheck_io
+            value: "new_value"
+    asserts:
+      - contains:
+          path: spec.arguments.parameters
+          content:
+            name: trigger_healthcheck_io
+            value: "new_value"
+          count: 1
+      - notContains:
+          path: spec.arguments.parameters
+          content:
+            name: trigger_healthcheck_io
+            value: "true"
+
+  - it: should append trigger_healthcheck_io argument to workflow when there is another parameters
+    values:
+      - ./values/default.yaml
+    set:
+      arguments:
+        parameters:
+          - name: "other_parameter"
+            value: "new_value"
+    asserts:
+      - contains:
+          path: spec.arguments.parameters
+          content:
+            name: other_parameter
+            value: "new_value"
+          count: 1
+      - contains:
+          path: spec.arguments.parameters
+          content:
+            name: trigger_healthcheck_io
+            value: "true"
+  
+  - it: should not render an workflow template when businessid is null
+    values:
+      - ./values/minimal.yaml
+    set:
+      businessid: ~
+    asserts:
+      - failedTemplate:
+          errorMessage: businessid must be provided
+  
+  - it: should render an workflow template and use businessid for labels when businessid not null
+    values:
+      - ./values/minimal.yaml
+    set:
+      businessid: "12345678"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: WorkflowTemplate
+      - equal:
+          path: spec.workflowMetadata.labels.businessid
+          value: "12345678"
+      - equal:
+          path: spec.podMetadata.labels.businessid
+          value: "12345678"
+
+  - it: should render an workflow template with annotation when annotation not null
+    values:
+      - ./values/minimal.yaml
+    set:
+      annotations:
+        test: "test-annotation"
+    asserts:
+      - hasDocuments:
+          count: 1
+      - isKind:
+          of: WorkflowTemplate
+      - equal:
+          path: spec.workflowMetadata.annotations.test
+          value: "test-annotation"
+      - equal:
+          path: spec.podMetadata.annotations.test
+          value: "test-annotation"
+    
+  - it: should setup healthcheck notification for exit-handler when enable healthcheck
+    values:
+      - ./values/minimal.yaml
+    set:
+      exitNotifications:
+        healthcheckIo:
+          uuid: "12345678"
+    asserts:
+      - contains: 
+          path: spec.arguments.parameters
+          content:
+            name: trigger_healthcheck_io
+            value: "true"
+      - contains:
+          path: spec.templates
+          content:
+            name: exit-handler
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: success-handler
+            steps:
+            - 
+              - name: Notice-HealthcheckIo-Succeeded
+                template: notice-healthcheck-io-succeeded
+                when: "{{workflow.parameters.trigger_healthcheck_io}} == true"
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: notice-healthcheck-io-succeeded
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: failure-handler
+            steps:
+            - 
+              - name: Notice-HealthcheckIo-Failed
+                template: notice-healthcheck-io-failed
+                when: "{{workflow.parameters.trigger_healthcheck_io}} == true"
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: notice-healthcheck-io-failed
+          any: true
+
+  - it: should setup newrelic notification for exit-handler when enable newrelic
+    values:
+      - ./values/minimal.yaml
+    set:
+      exitNotifications:
+        newRelic:
+          image:
+            repository: test/test-newrelic-agent
+            tag: latest
+          licenseKey: 12345testtest1234test
+          appName: Test App
+    asserts:
+      - contains:
+          path: spec.templates
+          content:
+            name: exit-handler
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: failure-handler
+            steps:
+            - 
+              - name: Notice-NewRelic-Failed
+                template: notice-newrelic-failed
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: notice-newrelic-failed
+          any: true
+
+  - it: should setup slack notification for exit-handler when enable slack
+    values:
+      - ./values/minimal.yaml
+    set:
+      exitNotifications:
+        slackApp:
+          portalDomain: https://argo.com
+          webhookUrl: https://webhook/service/test
+          mention:
+            onFailure:
+              - U0123ABC123
+              - S0345DEF345
+            onSuccess:
+              - U0123ABC123
+              - S0345DEF345
+    asserts:
+      - contains:
+          path: spec.templates
+          content:
+            name: exit-handler
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: success-handler
+            steps:
+            - 
+              - name: Notice-SlackApp-Succeeded
+                template: notice-slack-app-succeeded 
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: notice-slack-app-succeeded 
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: failure-handler
+            steps:
+            - 
+              - name: Notice-SlackApp-Failed
+                template: notice-slack-app-failed
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: notice-slack-app-failed
+          any: true
+  - it: should render for as single step workflow if step/container not defined
+    values:
+      - ./values/minimal.yaml
+    asserts:
+      - equal:
+          path: spec.entrypoint
+          value: "entry"
+      - contains:
+          path: spec.templates
+          content:
+            name: entry
+            steps:
+              - - name: step1
+                  template: template
+          any: true
+      - contains:
+          path: spec.templates
+          content:
+            name: template
+          any: true
+  - it: should render for as multi step workflow if step/container defined
+    values:
+      - ./values/minimal.yaml
+    set:
+      steps:
+        - name: step1
+          steps:
+            template: testContainer
+      containers:
+        - name: testContainer
+          image: 
+            repository: test/testImage
+            tag: testImage
+    release:
+      namespace: TESTING
+    asserts:
+      - equal:
+          path: spec.entrypoint
+          value: "entry"
+      - contains:
+          path: spec.templates
+          content:
+            name: testContainer
+          any: true

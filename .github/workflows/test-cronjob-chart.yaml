@@ -5,11 +5,15 @@ on:
   push:
     paths:
       - cronjob/**
+      - workflow-library/**
+      - workflow-template/**
       - simple/**
       - .github/workflows/**
   pull_request:
     paths:
       - cronjob/**
+      - workflow-library/**
+      - workflow-template/**
       - simple/**
       - .github/workflows/**
 
@@ -38,7 +42,13 @@ jobs:
 
       - name: Run cronjob chart tests
         run: |
+          helm dependency update cronjob
           helm unittest cronjob
+
+      - name: Run workflow template chart tests
+        run: |
+          helm dependency update workflow-template
+          helm unittest workflow-template
 
       - name: Run simple chart tests
         run: |

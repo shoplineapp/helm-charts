@@ -1,0 +1,12 @@
+{{- if and (.Values.kind ) (eq .Values.kind "CronWorkflow") -}}
+{{- if .Values.createWithWorkflowTemplate -}}
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: {{ .Values.name }}-workflow-template
+  namespace: {{ .Release.Namespace }}
+  labels:
+    businessid: {{ required "businessid must be provided" .Values.businessid | quote }}
+spec: {{- include "workflow-library.argo_workflow_workflow.template" . | nindent 2 }}
+{{- end -}}
+{{- end -}}

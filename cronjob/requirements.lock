@@ -1,0 +1,6 @@
+dependencies:
+- name: workflow-library
+  repository: file://../workflow-library
+  version: 0.1.0
+digest: sha256:cfd6c2cbb4b6dca5378016b779b0588950f411a622935093b5cde2eef22e9442
+generated: "2025-03-07T17:01:42.589525+08:00"

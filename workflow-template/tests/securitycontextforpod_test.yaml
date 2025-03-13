@@ -1,0 +1,34 @@
+suite: SecurityContextForPod Test
+templates:
+  - workflow_template.yaml
+tests:
+
+  - it: should render nothing for an argo workflow if securityContextForPod is not specified
+    values:
+      - ./values/minimal.yaml
+    asserts:
+      - notExists:
+          path: spec.securityContext
+
+  - it: should render securityContext for an argo workflow if securityContextForPod is specified
+    values:
+      - ./values/default.yaml
+    asserts:
+      - exists:
+          path: spec.securityContext
+      - equal:
+          path: spec.securityContext
+          value:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+
+  - it: should render securityContext for an argo workflow if securityContextForPod is specified
+    values:
+      - ./values/default.yaml
+    set:
+      securityContextForPod:
+    asserts:
+      - notExists:
+          path: spec.securityContext
+

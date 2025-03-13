@@ -1,0 +1,10 @@
+name: simple-workflow
+businessid: "some-business-id"
+image:
+  repository: test/testImage
+  tag: latest
+command:
+  - bundle
+  - exec
+  - rails
+  - test
