@@ -249,3 +249,12 @@ tests:
     asserts:
       - failedTemplate:
           errorMessage: businessid must be provided
+  - it: should render an multi-container argo cron workflow
+    values:
+      - ./values/cronjob/argo_multi_container.yaml
+    asserts:
+      - hasDocuments:
+          count: 1
+      - equal:
+          path: spec.workflowSpec.templates[1].metadata.labels.businessid
+          value: "some-business-id"
