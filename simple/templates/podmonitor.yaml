@@ -22,4 +22,4 @@ spec:
       {{ $key }}: {{ $value | quote }}
       {{- end }}
   podMetricsEndpoints: {{- toYaml $ref.podMetricsEndpoints | nindent 4 }}
-{{- end}}
+{{- end }}

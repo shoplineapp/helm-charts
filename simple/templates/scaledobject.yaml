@@ -1,0 +1,23 @@
+{{- if .Values.KEDA }}
+  {{- if (and .Values.KEDA.ScaledObject (or .Values.hpa)) }}
+    {{ fail "Don't create ScaledObject and HPA at same time." }}
+  {{- end }}
+  {{- if .Values.KEDA.ScaledObject }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Release.Namespace }}
+  {{- if hasKey .Values.KEDA.ScaledObject "annotations" }}
+  annotations:
+    {{- toYaml .Values.KEDA.ScaledObject.annotations | nindent 4 }}
+  {{- end }}
+spec: {{ toYaml .Values.KEDA.ScaledObject.spec | nindent 2 }}
+  scaleTargetRef:
+    {{- if .Values.rollout }}
+    kind: Rollout
+    apiVersion: argoproj.io/v1alpha1
+    {{- end }}
+    name: {{ .Values.name }}
+  {{- end }}
+{{- end }}

@@ -8,4 +8,4 @@ data:
   {{- range $key, $value := $ref.data }}
   {{ $key | quote }} : {{ $value | quote }}
   {{- end }}
-{{- end}}
+{{- end }}

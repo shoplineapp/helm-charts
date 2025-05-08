@@ -23,7 +23,7 @@ spec:
     port: {{ .port }}
     targetPort: {{ .target | default .port }}
     protocol: {{ .protocol | default "TCP" }}
-      {{- end}}
+      {{- end }}
   type: {{ $ref.type | default "ClusterIP" }}
     {{- if hasKey $ref "clusterIP" }}
   clusterIP: {{ $ref.clusterIP  }}

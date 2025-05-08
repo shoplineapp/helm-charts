@@ -4,9 +4,9 @@ kind: AnalysisTemplate
 metadata:
   name: {{ $analysis_name }}
 spec:
-  args: 
+  args:
   {{- toYaml ($ref.spec).args | nindent 4 }}
-  metrics: 
+  metrics:
   {{- toYaml ($ref.spec).metrics | nindent 4 }}
   dryRun:
   {{- toYaml ($ref.spec).dryRun | nindent 4 }}

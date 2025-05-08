@@ -1,28 +1,49 @@
-name: app-name
+## @param name application name
+name: ""
 
-replicaCount: 1
+## @param replicaCount Number of application replicas to deploy. Defaults to 2 for high availability.
+##
+replicaCount: 2
 
-# Required: please quote the businessid as string
-# businessid: "xxxxxxxxxxxxxxxxxx"
+## @param businessid Team reosurce tag id
+## Required: please quote the businessid as string
+businessid: ""
 
-# Note: Please indicate labels of the specific node you willing to place your pods
-# nodeSelector:
-#   labelName: nodegroup
-#   labelValue: "ec-eks-db-cpu-node-autoscaling-group"
+## @param nodeSelector Node labels for pod assignment
+## ref: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
+##
+nodeSelector: {}
 
-# tolerations:
+## @param tolerations Tolerations for pod assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
+##
+tolerations: []
+## Exmaple:
+# tolerations
 # - key: "shop-callback-node"
 #   operator: "Equal"
 #   value: "true"
 #   effect: "NoSchedule"
 
-# Note: Please indicate security contexts in here
-# securityContextForPod:
-#   runAsUser: 1000
-#   runAsGroup: 1000
-#   fsGroup: 1000
+## Configure Pods Security Context
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
+## @param podSecurityContext.enabled Enabled application pods' Security Context
+## @param podSecurityContext.fsGroupChangePolicy Set filesystem group change policy
+## @param podSecurityContext.sysctls Set kernel settings using the sysctl interface
+## @param podSecurityContext.supplementalGroups Set filesystem extra groups
+##
+podSecurityContext:
+  enabled: true
+  fsGroupChangePolicy: Always
+  sysctls: []
+  supplementalGroups: []
 
-# topologySpreadConstraints:
+## @param topologySpreadConstraints Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template
+## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/#spread-constraints-for-pods
+##
+topologySpreadConstraints: []
+## Exmaple:
+# topologySpreadConstraints
 #   - labelSelector:
 #       matchLabels:
 #         app: app-name
@@ -30,13 +51,22 @@ replicaCount: 1
 #     topologyKey: topology.kubernetes.io/zone
 #     whenUnsatisfiable: DoNotSchedule
 
+## @section Affinity for pod assignment
+## @param affinity.nodeAffinity Node affinity preset type.
+## @param affinity.podAffinity Pod affinity preset.
+## @param affinity.podAntiAffinity Pod anti-affinity preset.
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+##
 affinity:
   nodeAffinity: {}
   podAffinity: {}
   podAntiAffinity: {}
 
+## @param deployment Kubernetest deployment configuration
+## ref: https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+##
 deployment: {}
-# deployment example
+## Example
 # deployment:
 #   annotations:
 #     checksum/config: checksum
@@ -53,10 +83,11 @@ deployment: {}
 #         MONGODB_USER:
 #           name: mongodb
 #           key: MONGODB_USER
-#       volumes:
+#       volumeMounts:
 #       - name: app-config-1
 #         subPath: config.yaml
-#         path: /app/config.yaml
+#         mountPath: /app/config.yaml
+#         readOnly: true
 #   volumes:
 #     - name: app-config-1
 #       configMap: {}
@@ -65,7 +96,9 @@ deployment: {}
 #       - name: ndots
 #         value: "2"
 
-# configmaps example
+## @param deployment Kubernetest ConfigMap configuration
+## ref: https://kubernetes.io/docs/concepts/configuration/configmap/
+## Example
 # configmaps:
 #   app-config:
 #     name: app-config-1
@@ -73,14 +106,10 @@ deployment: {}
 #       config.yaml: |
 #         test: 1
 
-container:
-  image:
-    repository: repository_name/image
-    tag: tag
-
-global:
-  imagePullPolicy: IfNotPresent
-
+## @param EnableMutilpleIngress Enable Mutilple Ingresses. Defaults to `false`, that you will create single Ingress Kubernetes object.
+## @param ingress Kubernetest Ingress configuration
+## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
+## Example
 EnableMutilpleIngress: false
 # EnableMutilpleIngress: true
 # ingress:
@@ -109,7 +138,10 @@ EnableMutilpleIngress: false
 #             path: /health_check
 #             pathType: ImplementationSpecific
 
-# for single service
+## @param service Kubernetest Service configuration
+## @param services Mutilple Kubernetest Service configuration
+## ref: https://kubernetes.io/docs/concepts/services-networking/service/
+## Exmaple: Single service
 # service:
 #   ports:
 #     - name: python-operator
@@ -119,8 +151,8 @@ EnableMutilpleIngress: false
 #   clusterIP: 10.100.0.0
 #   selector:
 #     app: python-operator
-
-# for multiple service
+#
+## Exmaple: Multiple service
 # services:
 #   service-1: # service name
 #     ports:
@@ -134,53 +166,40 @@ EnableMutilpleIngress: false
 #     type: ExternalName
 #     externalName: example.com
 
+## @section Pod Disruption Budget configuration
+## ref: https://kubernetes.io/docs/tasks/run-application/configure-pdb/
+## @param pdb.enable Enable a Pod Disruption Budget creation.
+## @param pdb.minAvailable Minimum number/percentage of pods that should remain scheduled.
+## @param pdb.maxUnavailable Maximum number/percentage of pods that may be made unavailable. Defaults to `50%` if both `pdb.minAvailable` and `pdb.maxUnavailable` are empty.
+##
 pdb:
-  # If you just set "enable: true", default will set to "minAvailable: 50%" unless you have set other parameters.
-  enable: false
-  # Note: You can specify only one of maxUnavailable and minAvailable in a single PodDisruptionBudget, and if you setting both will only set maxUnavailable.
-  # minAvailable: 50%
-  # maxUnavailable: 50%
+  enable: true
+  minAvailable: ""
+  maxUnavailable: ""
 
-# autoscaling/v1 block
+## @section HorizontalPodAutoscaler(HPA) configuration
+## ref: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/#HorizontalPodAutoscalerSpec
+## @param hpa.minReplicas Minimum number of application pod
+## @param hpa.maxReplicas Maximum number of application pod
+## @param hpa.Resource Resource refers to a resource metric from native Kubernetes HPA.
+## ref: https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/horizontal-pod-autoscaler-v2/#HorizontalPodAutoscalerSpec
+## Example
 # hpa:
 #   minReplicas: 1
 #   maxReplicas: 2
-#   targetCPUUtilizationPercentage: 60
-
-# autoscaling/v2beta2 block
-# hpav2:
-#   minReplicas: 1
-#   maxReplicas: 2
-#   # k8s hpav2 native only support cpu and memory
 #   Resource:
 #     - name: cpu
 #       # simple chart support percent and value setting
 #       percent: 60
 #     - name: memory
 #       value: 100Mi
-#   # setting external mertics
-#   External:
-#     - metricName: shop-nc-alb-request
-#       # type support Value and AverageValue
-#       type: Value
-#       value: 10
 
-# ExternalMetric:
-#   name: shop-nc-alb-request
-#   # queries setting please reference AWS cloudwatch api document link:
-#   # https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricData.html#API_GetMetricData_Examples
-#   queries:
-#     # Note: id can't use "-"
-#     - id: shop_nc_alb_request
-#       metricNamespace: AWS/ApplicationELB
-#       metricName: RequestCount
-#       metricsDimensions:
-#         - name: LoadBalancer
-#           value: app/397da054-core-shopnc-5edd/d8f7dcbb27908840
-#       period: 60
-#       stat: Sum
-#       unit: Count
-
+## @param role Kubernetest role
+## @param roleroleBinding Kubernetest roleroleBinding
+## @param clusterRole Kubernetest clusterRole
+## @param clusterRoleBinding Kubernetest clusterRoleBinding
+## ref: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+##
 # role:
 #   name: role_name
 #   rules:
@@ -195,7 +214,7 @@ pdb:
 #   - kind: ServiceAccount
 #     name: service_account_name
 #     namespace: service_account_namespace
-
+#
 # clusterRole:
 #   name: clusterrole_name
 #   rules:
@@ -211,7 +230,11 @@ pdb:
 #     name: service_account_name
 #     namespace: service_account_namespace
 
+## @param externalSecrets secretStore object from External Secrets Operator point to AWS Secrets Manager
+## ref: https://external-secrets.io/latest/provider/aws-secrets-manager/
+##
 externalSecrets: {}
+## Example
 # externalSecrets:
 #   example-env-new:
 #     secretStore:
@@ -224,6 +247,9 @@ externalSecrets: {}
 #         key: example-secret
 #         version: "uuid/VersionId"
 
+## @param secrets Kubernetest Secrets configuration
+## ref: https://kubernetes.io/docs/concepts/configuration/secret/
+## Example
 # secrets:
 #   example-env:
 #     data:
@@ -239,34 +265,45 @@ externalSecrets: {}
 #        xcPaL4GCgUl+8TiK
 #        -----END CERTIFICATE-----
 
+## @param serviceMonitors Prometheus Operator ServiceMonitors
+## ref: https://prometheus-operator.dev/docs/developer/getting-started/#using-servicemonitors
+##
 # serviceMonitors:
 #   mongodb-observer:
 #     namespaceSelector:
-#       - shoplytics
+#       - my-app
 #     selector:
 #       matchLabels:
 #         app: mongodb-observer # which service you want to match
 #     endpoints:
 #       - port: http # port name of the service expose
 
+## @param PodMonitors Prometheus Operator PodMonitors
+## ref: https://prometheus-operator.dev/docs/developer/getting-started/#using-podmonitors
+##
 # podMonitors:
 #   mongodb-observer:
 #     namespaceSelector:
-#       - shoplytics
+#       - my-app
 #     selector:
 #       matchLabels:
 #         app: mongodb-observer # which service you want to match
 #     podMetricsEndpoints:
 #       - port: http # port name of the service expose
 
-# Don’t combine ScaledObject with Horizontal Pod Autoscaler (HPA)
-# exmaple yaml please refer to example/example-keda.yaml
+
+## @param KEDA.ScaledObject.spec KEDA ScaledObject spec
+## ref: https://keda.sh/docs/2.14/concepts/scaling-deployments/#scaledobject-spec
+## NOTE: Don't combine ScaledObject with Horizontal Pod Autoscaler (HPA)
 # KEDA:
 #   ScaledObject:
 #     spec: {}
 
+## @param rollout Argo Rollout
+## ref: https://argoproj.github.io/argo-rollouts/features/specification/
+##
 # rollout: {}
-# https://argoproj.github.io/argo-rollouts/features/specification/
+## Exmaple
 # rollout:
 #   annotations:
 #     notifications.argoproj.io/subscribe.on-rollout-completed.slack_webhook: ""
@@ -308,8 +345,11 @@ externalSecrets: {}
 #           - name: service-name
 #             value: guestbook-svc.default.svc.cluster.local
 
+## @param analyses Argo Rollout Analysis
+## ref: https://argoproj.github.io/argo-rollouts/features/analysis
+##
 analyses: {}
-# https://argoproj.github.io/argo-rollouts/features/analysis
+## Example
 # analyses:
 #   success-rate:
 #     spec:
@@ -332,3 +372,38 @@ analyses: {}
 #               sum(irate(
 #                 istio_requests_total{reporter="source",destination_service=~"{{args.service-name}}"}[5m]
 #               ))
+
+## @section Persistence Parameters
+## ref: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+##
+persistence:
+  ## @param persistence.enabled Enable persistence using Persistent Volume Claims
+  ##
+  enabled: false
+  ## @param persistence.name Persistent Volume Claim Name
+  ## Required if persistence.enabled ture, please note your PVC name must same value as deployment.volumes.persistentVolumeClaim.claimName
+  ##
+  name: ""
+  ## @param persistence.storageClass Persistent Volume storage class
+  ## If defined, storageClassName: <storageClass>
+  ## If undefined (the default) or set to gp3, choosing the default ebs csi driver as provisioner
+  ##
+  storageClass: "gp3"
+  ## @param persistence.accessModes [array] Persistent Volume access modes
+  ##
+  accessModes:
+    - ReadWriteOnce
+  ## @param persistence.size Persistent Volume size
+  ##
+  size: 10Gi
+  ## @param persistence.dataSource Custom PVC data source
+  ##
+  dataSource: {}
+  ## @param persistence.selector Selector to match an existing Persistent Volume for application data PVC
+  ## If set, the PVC can't have a PV dynamically provisioned for it
+  ## E.g.
+  ## selector:
+  ##   matchLabels:
+  ##     app: my-app
+  ##
+  selector: {}
